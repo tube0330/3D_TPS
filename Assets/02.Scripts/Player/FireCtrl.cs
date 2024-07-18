@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FireCtrl : MonoBehaviour
+{
+    [SerializeField] private Transform firePos;
+    [SerializeField] private AudioSource AudioSource;
+    [SerializeField] private AudioClip AudioClip;
+    void Start()
+    {
+        AudioSource = GetComponent<AudioSource>();
+        AudioClip = Resources.Load("Sounds/p_ak_1") as AudioClip;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Fire();
+        }
+    }
+
+    void Fire()
+    {
+        #region
+        //Instantiate(bullet, firePos.position, firePos.rotation);
+        #endregion
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W)) return;
+
+        #region object pooling
+        var _bullet = ObjectPoolingManager.poolingManager.GetBulletPool();
+
+        if (_bullet != null)
+        {
+            _bullet.transform.position = firePos.position;
+            _bullet.transform.rotation = firePos.rotation;
+            _bullet.SetActive(true);
+        }
+
+        AudioSource.PlayOneShot(AudioClip, 1f);
+        #endregion
+    }
+}
