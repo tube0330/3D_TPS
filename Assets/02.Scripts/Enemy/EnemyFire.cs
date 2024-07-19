@@ -28,20 +28,25 @@ public class EnemyFire : MonoBehaviour
     [SerializeField] private int curBullet = 0; //현재 총알 수
     [SerializeField] private bool isReload = false;
 
+    public MeshRenderer E_MuzzleFlash;
+
     void Start()
     {
         firePos = transform.GetChild(3).GetChild(0).GetChild(0).transform;
         ani = GetComponent<Animator>();
         enemyTr = GetComponent<Transform>();
         playerTr = GameObject.FindWithTag("Player").transform;
-        fireClip = Resources.Load<AudioClip>("Sounds/p_m4_1") as AudioClip;
+        fireClip = Resources.Load<AudioClip>("Sounds/p_m4_1");
         curBullet = maxBullet;
         reloadWs = new WaitForSeconds(reloadTime);
+        reloadClip = Resources.Load<AudioClip>("Sounds/p_reload");
+        E_MuzzleFlash = transform.GetChild(3).GetChild(0).GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
+        E_MuzzleFlash.enabled = false;  //mesh Renderer 안보이게
     }
 
     void Update()
     {
-        if (isFire)
+        if (isFire && !isReload)
         {
             if (Time.time >= nextFireTime)
             {
@@ -67,5 +72,33 @@ public class EnemyFire : MonoBehaviour
 
         ani.SetTrigger(hashFire);
         SoundManager.S_instance.PlaySound(firePos.position, fireClip);
+
+        isReload = (--curBullet % maxBullet) == 0;  //0되는 순간 true됨
+
+        if (isReload)
+        {
+            StartCoroutine(Reloading());
+        }
+
+        StartCoroutine(ShowMuzzleFlash());
+    }
+
+    IEnumerator Reloading()
+    {
+        ani.SetTrigger(hashReload);
+        SoundManager.S_instance.PlaySound(transform.position, reloadClip);
+
+        yield return reloadWs;  //재장전 시간만큼 대기하는 동안 제어권 양보
+
+        curBullet = maxBullet;
+        isReload = false;
+    }
+
+    IEnumerator ShowMuzzleFlash()
+    {
+        E_MuzzleFlash.enabled = true;
+
+        yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
+        E_MuzzleFlash.enabled = false;
     }
 }

@@ -7,10 +7,12 @@ public class FireCtrl : MonoBehaviour
     [SerializeField] private Transform firePos;
     [SerializeField] private AudioSource AudioSource;
     [SerializeField] private AudioClip AudioClip;
+    [SerializeField] private ParticleSystem MuzzleFlash;
     void Start()
     {
         AudioSource = GetComponent<AudioSource>();
         AudioClip = Resources.Load("Sounds/p_ak_1") as AudioClip;
+        MuzzleFlash.Stop();
     }
 
     // Update is called once per frame
@@ -19,7 +21,11 @@ public class FireCtrl : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
+            MuzzleFlash.Play();
         }
+
+        else if (Input.GetMouseButtonUp(0))
+            MuzzleFlash.Stop();
     }
 
     void Fire()
@@ -41,6 +47,8 @@ public class FireCtrl : MonoBehaviour
         }
 
         AudioSource.PlayOneShot(AudioClip, 1f);
+
+
         #endregion
     }
 }
