@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BarrelCtrl : MonoBehaviour
 {
-    
-    private CamerShake camShake;
+
     [SerializeField] private Texture[] textures;
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject Effect;
     [SerializeField] private int hitCount = 0;
+    //[SerializeField] private CamerShake camshake;
+    //[SerializeField] private Barrel bal;
 
     private readonly string bulletTag = "BULLET";
 
@@ -20,9 +21,9 @@ public class BarrelCtrl : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         textures = Resources.LoadAll<Texture>("BarrelTextures");
         meshRenderer.material.mainTexture = textures[Random.Range(0, textures.Length)];
-
         Effect = Resources.Load("BigExplosionEffect") as GameObject;
-        camShake = GetComponent<CamerShake>();
+        //camshake = GetComponent<CamerShake>();
+        //bal = GetComponent<Barrel>();
     }
 
     void OnTriggerEnter(Collider col)
@@ -41,8 +42,7 @@ public class BarrelCtrl : MonoBehaviour
     {
         GameObject eff = Instantiate(Effect, transform.position, Quaternion.identity);
         Destroy(eff, 2.0f);
-        
-        camShake.TurnOn();
+
         Collider[] cols = Physics.OverlapSphere(transform.position, 20f, 1 << 7);
         foreach (Collider col in cols)
         {
@@ -51,11 +51,11 @@ public class BarrelCtrl : MonoBehaviour
             if (rigidbody != null)
             {
                 rigidbody.mass = 1.0f;
-                
+
                 rigidbody.AddExplosionForce(1000, transform.position, 20f, 1200f);
                 SoundManager.S_instance.PlaySound(transform.position, SoundManager.S_instance.clip2);
             }
-
+            //camshake.TurnOn();
             Invoke("BarrelMassChange", 3.0f);
         }
     }

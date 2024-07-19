@@ -10,7 +10,6 @@ public class Barrel : MonoBehaviour
 
     [SerializeField] private Transform tr;
     [SerializeField] private Rigidbody rb;
-    private readonly string E_BulletTag = "E_BULLET";
 
     void Start()
     {
@@ -27,9 +26,5 @@ public class Barrel : MonoBehaviour
         rb.freezeRotation = true;
 
         Vector3 Distance = playerTr.position - tr.position;
-        if (Distance.magnitude >= 5f)
-        {
-            //
-        }
     }
 }
