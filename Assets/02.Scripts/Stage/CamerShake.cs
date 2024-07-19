@@ -25,7 +25,7 @@ public class CamerShake : MonoBehaviour
                 isShake = false;
                 Camera.main.transform.position = PosCamera;
                 Camera.main.transform.rotation = RotCamera;
-                //shakeTime = Time.time;
+                shakeTime = Time.time;
             }
         }
 

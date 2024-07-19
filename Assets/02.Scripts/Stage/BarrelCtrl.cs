@@ -10,7 +10,7 @@ public class BarrelCtrl : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject Effect;
     [SerializeField] private int hitCount = 0;
-    //[SerializeField] private CamerShake camshake;
+    [SerializeField] private CamerShake camshake;
     //[SerializeField] private Barrel bal;
 
     private readonly string bulletTag = "BULLET";
@@ -22,8 +22,7 @@ public class BarrelCtrl : MonoBehaviour
         textures = Resources.LoadAll<Texture>("BarrelTextures");
         meshRenderer.material.mainTexture = textures[Random.Range(0, textures.Length)];
         Effect = Resources.Load("BigExplosionEffect") as GameObject;
-        //camshake = GetComponent<CamerShake>();
-        //bal = GetComponent<Barrel>();
+        camshake = GameObject.Find("Main Camera").GetComponent<CamerShake>();
     }
 
     void OnTriggerEnter(Collider col)
@@ -55,7 +54,7 @@ public class BarrelCtrl : MonoBehaviour
                 rigidbody.AddExplosionForce(1000, transform.position, 20f, 1200f);
                 SoundManager.S_instance.PlaySound(transform.position, SoundManager.S_instance.clip2);
             }
-            //camshake.TurnOn();
+            camshake.TurnOn();
             Invoke("BarrelMassChange", 3.0f);
         }
     }

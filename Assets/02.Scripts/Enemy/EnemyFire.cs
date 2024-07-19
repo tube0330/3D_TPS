@@ -13,11 +13,20 @@ public class EnemyFire : MonoBehaviour
     [SerializeField] private AudioClip fireClip;
     [SerializeField] private Animator ani;
 
-    private readonly int hashFire = Animator.StringToHash("fire");
+    private readonly int hashFire = Animator.StringToHash("Fire");
+    private readonly int hashReload = Animator.StringToHash("Reload");
     private float nextFireTime = 0.0f;  //다음 발사 시간 계산용 변수 생성
     private readonly float fireInterval = 0.1f; //총알 발사 간격
     private readonly float damping = 10.0f; //플레이어를 향해 회전할 속도
     public bool isFire = false;
+
+    [Header("Reload")]
+    [SerializeField] private WaitForSeconds reloadWs;   //startcorutine에서 시간 정할 변수
+    [SerializeField] private AudioClip reloadClip;
+    [SerializeField] private readonly int maxBullet = 10;    //10발일 때 재장전을 하기 위한 max값
+    [SerializeField] private float reloadTime = 2.0f;   //재장전하려면 2초걸림
+    [SerializeField] private int curBullet = 0; //현재 총알 수
+    [SerializeField] private bool isReload = false;
 
     void Start()
     {
@@ -26,6 +35,8 @@ public class EnemyFire : MonoBehaviour
         enemyTr = GetComponent<Transform>();
         playerTr = GameObject.FindWithTag("Player").transform;
         fireClip = Resources.Load<AudioClip>("Sounds/p_m4_1") as AudioClip;
+        curBullet = maxBullet;
+        reloadWs = new WaitForSeconds(reloadTime);
     }
 
     void Update()
@@ -54,7 +65,7 @@ public class EnemyFire : MonoBehaviour
 
         E_bullet.gameObject.SetActive(true);
 
-        ani.SetTrigger("Fire");
+        ani.SetTrigger(hashFire);
         SoundManager.S_instance.PlaySound(firePos.position, fireClip);
     }
 }

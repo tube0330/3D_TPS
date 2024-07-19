@@ -1147,6 +1147,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1240,6 +1241,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df89b9967474054c81a1e7fe8159fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camTr: {fileID: 0}
+  target: {fileID: 1202815863}
+  h: 5
+  distance: 7
+  movedamping: 10
+  rotdamping: 15
+  targetOffset: 2
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 832fe2620fcc4674083143e7ebfca7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PosCamera: {x: 0, y: 0, z: 0}
+  RotCamera: {x: 0, y: 0, z: 0, w: 0}
+  shakeTime: 0
+  isShake: 0
 --- !u!1001 &966720553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1541,6 +1565,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1055093372}
+    - targetCorrespondingSourceObject: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1055093375}
   m_SourcePrefab: {fileID: 100100000, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
 --- !u!1 &1055093359 stripped
 GameObject:
@@ -1713,6 +1740,22 @@ MonoBehaviour:
   fireClip: {fileID: 0}
   ani: {fileID: 0}
   isFire: 0
+  reloadClip: {fileID: 0}
+  reloadTime: 2
+  curBullet: 0
+  isReload: 0
+--- !u!114 &1055093375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055093359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851eef4b28ba5af4e8d59a4198921c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1058509566
 GameObject:
   m_ObjectHideFlags: 0
