@@ -19,7 +19,12 @@ public class FollowCam : MonoBehaviour
 
         camTr = transform;
     }
+     void Update()
+     {
+        if (camTr == null) return;
 
+
+     }
     void LateUpdate()
     {
         var camPos = target.position/*target 포지션에서*/ - (target.forward * distance)/*distance만큼 뒤에 있고*/ + (target.up * h);/*위에 있음*/
@@ -32,6 +37,6 @@ public class FollowCam : MonoBehaviour
     {
         Gizmos.color = new Color(0, 255, 0);
         Gizmos.DrawSphere(target.position + (target.up * targetOffset), 0.1f/*반경*/);
-        Gizmos.DrawLine(target.position + (target.up * targetOffset), camTr.position);
+       // Gizmos.DrawLine(target.position + (target.up * targetOffset), camTr.position);
     }
 }
