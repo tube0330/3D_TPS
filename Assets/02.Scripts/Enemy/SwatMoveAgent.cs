@@ -18,9 +18,22 @@ public class SwatMoveAgent : MonoBehaviour
         tr = transform;
         nav = GetComponent<NavMeshAgent>();
         isChase = true;
-        ani = GetComponent<Animator>();
+        ani = GetComponent<Animator>();        
+
+        var group = GameObject.Find("WayPointGroup");
+
+        if (group != null)
+        {
+            group.GetComponentsInChildren<Transform>(WayPointList);
+            WayPointList.RemoveAt(0);
+        }
+        
         MovewayPoint();
         
+    }
+
+    void Update()
+    {
         float dist = Vector3.Distance(tr.position, WayPointList[nextIdx].position);
 
         if (isChase == false) return;
@@ -33,19 +46,6 @@ public class SwatMoveAgent : MonoBehaviour
                 MovewayPoint();
             }
         }
-    }
-
-    void Update()
-    {
-        /* var group = GameObject.Find("WayPointGroup");
-
-        if (group != null)
-        {
-            group.GetComponentsInChildren<Transform>(WayPointList);
-            WayPointList.RemoveAt(0);
-        }
-
-         */
     }
 
     void MovewayPoint()

@@ -65,14 +65,18 @@ public class EnemyFire : MonoBehaviour
     void Fire()
     {
         var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
+        //다 활성화 됐을 떄 총알 날아감 막기 if(!=dkslfk Eo)
 
-        E_bullet.transform.position = firePos.position;
-        E_bullet.transform.rotation = firePos.rotation;
+        if (E_bullet != null)
+        {
+            E_bullet.transform.position = firePos.position;
+            E_bullet.transform.rotation = firePos.rotation;
 
-        E_bullet.gameObject.SetActive(true);
+            E_bullet.gameObject.SetActive(true);
 
-        ani.SetTrigger(hashFire);
-        SoundManager.S_instance.PlaySound(firePos.position, fireClip);
+            ani.SetTrigger(hashFire);
+            SoundManager.S_instance.PlaySound(firePos.position, fireClip);
+        }
 
         isReload = (--curBullet % maxBullet) == 0;  //0되는 순간 true됨
 
