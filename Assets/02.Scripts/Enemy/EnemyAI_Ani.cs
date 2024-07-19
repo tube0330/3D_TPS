@@ -89,18 +89,21 @@ public class EnemyAI_Ani : MonoBehaviour
             switch (state)
             {
                 case State.PTROL:
+                GetComponent<Rigidbody>().isKinematic = false;
                     C_enemyFire.isFire = false;
                     C_moveAgent.patrolling = true;
                     ani.SetBool(hashMove, true);
                     break;
 
                 case State.TRACE:
+                GetComponent<Rigidbody>().isKinematic = false;
                     C_enemyFire.isFire = false;
                     C_moveAgent.traceTarget = playerTr.position;
                     ani.SetBool(hashMove, true);
                     break;
 
                 case State.ATTACK:
+                GetComponent<Rigidbody>().isKinematic = true;
                     C_enemyFire.isFire = true;
                     C_moveAgent.Stop();
                     ani.SetBool(hashMove, false);
