@@ -9,6 +9,7 @@ TagManager:
   - ENEMY
   - E_BULLET
   - PET
+  - SWAT
   layers:
   - Default
   - TransparentFX

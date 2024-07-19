@@ -152,6 +152,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   Effect: {fileID: 0}
   hitCount: 0
+  camshake: {fileID: 0}
 --- !u!114 &5044387173332261620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,3 +166,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletTag: BULLET
+  E_bulletTag: E_BULLET
