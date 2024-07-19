@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Codice.CM.Common.Merge;
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 [RequireComponent(typeof(Animator))]
 
@@ -13,18 +16,23 @@ public class EnemyAI_Ani : MonoBehaviour
 
     private EnemyMoveAgent C_moveAgent;
     private EnemyFire C_enemyFire;
+    private Pet C_Pet;
     public State state = State.PTROL;   //상태(State) 안에 있는 PTROL을 상태를 받을 수 있는 변수 state에 넘김
     [SerializeField] private Transform playerTr;    //거리를 재기 위해 선언
     [SerializeField] private Transform enemyTr;     //거리를 재기 위해 선언
     [SerializeField] private Animator ani;
 
     public float attackDist = 5.0f;   //attack 범위 설정
-    public float traceDist = 15f;     //추적 범위 설정
+    private float traceDist = 10f;     //추적 범위 설정
     public bool isDie = false;  //플레이어의 사망 여부 판단
     private WaitForSeconds wait;
 
     private readonly int hashMove = Animator.StringToHash("isMove");    //애니메이터컨트롤러에 정의한 parameter의 hash값을 정수로 미리 추출(정수형이 string보다 훨씬 빠르니까)
     private readonly int hashSpeed = Animator.StringToHash("moveSpeed");
+    private readonly int hashDie = Animator.StringToHash("Die");
+    private readonly int hashDieIndex = Animator.StringToHash("DieIdx");
+    private readonly int hashOffset = Animator.StringToHash("offset");
+    private readonly int hashWalkSpeed = Animator.StringToHash("walkSpeed");
 
     void Awake()
     {
@@ -39,10 +47,13 @@ public class EnemyAI_Ani : MonoBehaviour
 
         enemyTr = GetComponent<Transform>();
         wait = new WaitForSeconds(0.3f);
+        C_Pet = GetComponent<Pet>();
     }
 
     private void OnEnable() //오브젝트가 활성화될 때마다 호출
     {
+        ani.SetFloat(hashOffset, Random.Range(0.2f, 1.0f));
+        ani.SetFloat(hashWalkSpeed, Random.Range(1f, 2f));
         StartCoroutine(CheckState());
         StartCoroutine(Action());
     }
@@ -57,7 +68,9 @@ public class EnemyAI_Ani : MonoBehaviour
             float dist = (playerTr.position - enemyTr.position).magnitude;
 
             if (dist <= attackDist)
-                state = State.ATTACK;
+                {state = State.ATTACK;
+                // C_Pet.transform.position = new 
+                }
 
             else if (dist <= traceDist)
                 state = State.TRACE;
@@ -94,11 +107,38 @@ public class EnemyAI_Ani : MonoBehaviour
                     break;
 
                 case State.DIE:
-                    C_enemyFire.isFire = false;
-                    C_moveAgent.Stop();
+                    EnemyDie();
                     break;
             }
         }
+    }
+
+    private void EnemyDie()
+    {
+        C_enemyFire.isFire = false;
+        C_moveAgent.Stop();
+        isDie = true;
+        ani.SetTrigger(hashDie);
+        ani.SetInteger(hashDieIndex, Random.Range(0, 3));
+
+        //죽고나서 물리 제거
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<CapsuleCollider>().enabled = false;
+        gameObject.tag = "Untagged";    //사망했다면 태그 뺌
+
+        state = State.DIE;
+        StartCoroutine(ObjectPoolPush());
+    }
+
+    IEnumerator ObjectPoolPush()
+    {
+        yield return new WaitForSeconds(3f);
+        isDie = false;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<CapsuleCollider>().enabled = true;
+        gameObject.tag = "ENEMY"; ;     //오브젝트가 활성화 되기 전 태그 이름 줌
+        gameObject.SetActive(false);
+        state = State.PTROL;
     }
 
     void Update()

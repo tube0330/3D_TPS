@@ -8,6 +8,7 @@ TagManager:
   - BULLET
   - ENEMY
   - E_BULLET
+  - PET
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Pipes;
+using Codice.Client.BaseCommands.TubeClient;
 using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 
@@ -96,9 +97,23 @@ public class EnemyFire : MonoBehaviour
 
     IEnumerator ShowMuzzleFlash()
     {
-        E_MuzzleFlash.enabled = true;
+        #region
+        /* E_MuzzleFlash.enabled = true;
+        Vector2 offset = new Vector3(Random.Range(0, 2f), Random.Range(0f, 2f)) * 0.5f;
+        E_MuzzleFlash.transform.localScale = Vector3.one * offset;
 
         yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
+        E_MuzzleFlash.enabled = false; */
+        #endregion
+
+        E_MuzzleFlash.enabled = true;
+
+        E_MuzzleFlash.transform.localScale = Vector3.one * Random.Range(1.5f, 2.3f);
+        Quaternion rot = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+        E_MuzzleFlash.transform.localRotation = rot;
+
+        yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
+
         E_MuzzleFlash.enabled = false;
     }
 }

@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class BulletCtrl : MonoBehaviour
 {
     [SerializeField] Transform tr;
     [SerializeField] Rigidbody rb;
     [SerializeField] TrailRenderer trailRenderer;
     [SerializeField] float speed = 1000f;    //1500f;
+
+    public float damage = 25;
 
     void Awake()
     {
