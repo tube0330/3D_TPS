@@ -21,7 +21,7 @@ public class BarrelCtrl : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         textures = Resources.LoadAll<Texture>("BarrelTextures");
         meshRenderer.material.mainTexture = textures[Random.Range(0, textures.Length)];
-        Effect = Resources.Load("BigExplosionEffect") as GameObject;
+        Effect = Resources.Load("Effects/BigExplosionEffect") as GameObject;
         camshake = GameObject.Find("Main Camera").GetComponent<CamerShake>();
     }
 
