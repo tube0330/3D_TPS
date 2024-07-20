@@ -7,7 +7,6 @@ public class BarrelCtrl : MonoBehaviour
 
     [SerializeField] private Texture[] textures;
     [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject Effect;
     [SerializeField] private int hitCount = 0;
     [SerializeField] private CamerShake camshake;
@@ -17,7 +16,6 @@ public class BarrelCtrl : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         textures = Resources.LoadAll<Texture>("BarrelTextures");
         meshRenderer.material.mainTexture = textures[Random.Range(0, textures.Length)];
