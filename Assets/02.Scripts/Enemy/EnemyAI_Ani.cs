@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Codice.CM.Common.Merge;
-using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
+
 [RequireComponent(typeof(Animator))]
 
 //애니메이션 구현
@@ -122,7 +120,7 @@ public class EnemyAI_Ani : MonoBehaviour
         C_moveAgent.Stop();
         isDie = true;
         ani.SetTrigger(hashDie);
-        ani.SetInteger(hashDieIndex, Random.Range(0, 3));
+        ani.SetInteger(hashDieIndex, Random.Range(0, 2));
 
         //죽고나서 물리 제거
         GetComponent<Rigidbody>().isKinematic = true;

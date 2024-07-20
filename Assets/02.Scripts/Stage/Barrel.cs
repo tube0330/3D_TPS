@@ -14,15 +14,15 @@ public class Barrel : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider col)
+    private void OnCollisionEnter(Collision col)
     {
-        if (col.CompareTag(bulletTag))
+        if (col.collider.CompareTag(bulletTag))
         {
             SoundManager.S_instance.PlaySound(transform.position, SoundManager.S_instance.clip1);
             col.gameObject.SetActive(false);
         }
 
-        if (col.gameObject.CompareTag(E_bulletTag))
+        if (col.collider.CompareTag(E_bulletTag))
             col.gameObject.SetActive(false);
     }
 }

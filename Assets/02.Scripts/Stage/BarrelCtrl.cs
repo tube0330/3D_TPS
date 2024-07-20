@@ -25,7 +25,7 @@ public class BarrelCtrl : MonoBehaviour
         camshake = GameObject.Find("Main Camera").GetComponent<CamerShake>();
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag(bulletTag))
         {

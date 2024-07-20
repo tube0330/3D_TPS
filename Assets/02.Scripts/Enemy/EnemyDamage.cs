@@ -9,6 +9,7 @@ public class EnemyDamage : MonoBehaviour
 
     private float E_HP = 0;
     private float E_MaxHP = 100;
+    
     void Start()
     {
         BloodEff = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
@@ -17,7 +18,7 @@ public class EnemyDamage : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.collider.CompareTag(bulletTag))
+        if (col.gameObject.CompareTag(bulletTag))
         {
             col.gameObject.SetActive(false);
             ShowBloodEffect(col);

@@ -2791,6 +2791,7 @@ MonoBehaviour:
   playerTr: {fileID: 0}
   swatTr: {fileID: 0}
   ani: {fileID: 0}
+  cap: {fileID: 0}
 --- !u!114 &1644278698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2826,6 +2827,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d982e18ca382c42adce6618800f720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  C_swatAI: {fileID: 0}
+  ani: {fileID: 0}
+  BloodEff: {fileID: 0}
+  HP: 0
+  MaxHP: 100
 --- !u!1 &1669392355
 GameObject:
   m_ObjectHideFlags: 0

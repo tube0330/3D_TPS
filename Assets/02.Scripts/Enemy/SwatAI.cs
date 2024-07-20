@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Codice.CM.Common.Merge;
-using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
+
 [RequireComponent(typeof(Animator))]
 
 public class SwatAI : MonoBehaviour
@@ -22,6 +20,7 @@ public class SwatAI : MonoBehaviour
     [SerializeField] Transform playerTr;
     [SerializeField] Transform swatTr;
     [SerializeField] Animator ani;
+    [SerializeField] CapsuleCollider cap;
 
     private WaitForSeconds wait;
     private float attackDist = 5f;
@@ -31,6 +30,8 @@ public class SwatAI : MonoBehaviour
     private readonly int hashMove = Animator.StringToHash("isMove");
     private readonly int hashFire = Animator.StringToHash("Fire");
     private readonly int hashSpeed = Animator.StringToHash("walkSpeed");
+    private readonly int hashDie = Animator.StringToHash("Die");
+    private readonly int hashDieIndex = Animator.StringToHash("dieIdx");
 
 
     void Awake()
@@ -40,6 +41,7 @@ public class SwatAI : MonoBehaviour
 
         ani = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        cap = GetComponent<CapsuleCollider>();
         swatTr = transform;
         playerTr = GameObject.Find("Player").GetComponent<Transform>();
         if (playerTr != null)
@@ -102,12 +104,37 @@ public class SwatAI : MonoBehaviour
                     break;
 
                 case State.DIE:
-                    C_swatmove.Stop();
-                    isDie = true;
+                    SwatDie();
                     break;
             }
         }
 
+    }
+
+    private void SwatDie()
+    {
+        C_swatmove.Stop();
+        C_SwatFire.isFire = false;
+        isDie = true;
+        rb.isKinematic = true;
+        cap.enabled = false;
+
+        ani.SetTrigger(hashDie);
+        ani.SetInteger(hashDieIndex, Random.Range(0, 2));
+        gameObject.tag = "Untagged";
+        state = State.DIE;
+        StartCoroutine(ObjectPoolPush());
+    }
+
+    IEnumerator ObjectPoolPush()
+    {
+        yield return new WaitForSeconds(3f);
+
+        isDie = false;
+        rb.isKinematic = false;
+        cap.enabled = true;
+        gameObject.tag = "SWAT";
+        gameObject.SetActive(false);
     }
 
     void Update()
