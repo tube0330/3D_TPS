@@ -11,7 +11,7 @@ public class SwatAI : MonoBehaviour
     }
 
     SwatMoveAgent C_swatmove;
-    EnemyFire C_enemyFire;
+    SwatFire C_SwatFire;
 
     [SerializeField] Transform playerTr;
     [SerializeField] Transform swatTr;
@@ -88,7 +88,7 @@ public class SwatAI : MonoBehaviour
                     break;
 
                 case State.ATTACK:
-                    C_enemyFire.isFire = true;
+                    C_SwatFire.isFire = true;
                     rb.isKinematic = false;
                     C_swatmove.Stop();
                     ani.SetBool(hashMove, false);
