@@ -1563,7 +1563,7 @@ GameObject:
   - component: {fileID: 1179551944}
   - component: {fileID: 1179551946}
   - component: {fileID: 1179551945}
-  m_Layer: 13
+  m_Layer: 7
   m_Name: S_MuzzleFlash (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2052,6 +2052,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: w_rifle03
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2d02fd77a820e476e8c9047328380cd9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2d02fd77a820e476e8c9047328380cd9, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -2438,13 +2442,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8277846064677720048, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -6529273078546540562, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 235437627530067728, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 43f44aab6b6de854b91c79837ee4d6b5, type: 2}
+    - target: {fileID: 728699696802933350, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
       propertyPath: m_Name
       value: Swat
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: af19cc6a5ba952b4ba9d20ce847a2058, type: 3}
       propertyPath: m_TagString
@@ -2542,7 +2562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1479367070}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

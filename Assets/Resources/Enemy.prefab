@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 328150749343737188}
   - component: {fileID: 6516457244178513517}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: E_FirePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 3245915970140760122}
   - component: {fileID: 3375319796590653804}
   - component: {fileID: 3756730134116104353}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: E_MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,19 +140,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100006, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100020, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100030, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Name
@@ -160,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_TagString
@@ -402,7 +402,6 @@ MonoBehaviour:
   enemyTr: {fileID: 0}
   ani: {fileID: 0}
   attackDist: 5
-  traceDist: 15
   isDie: 0
 --- !u!114 &4161558081655973084
 MonoBehaviour:
@@ -454,7 +453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 03cd26eddfc134a6dbc4d40f15965660, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 03cd26eddfc134a6dbc4d40f15965660, type: 3}
       propertyPath: m_LocalScale.x
