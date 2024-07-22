@@ -824,6 +824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Barrel (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 884353640288500285, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1329,11 +1333,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 884353640288500285, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_Name
-      value: Barrel (5)
+      value: Barrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 884353640288500285, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: 6.95
       objectReference: {fileID: 0}
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1370,10 +1378,6 @@ PrefabInstance:
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029507335542338749, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
-      propertyPath: C_camerashake
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1908,6 +1912,10 @@ PrefabInstance:
     - target: {fileID: 884353640288500285, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_Name
       value: Barrel (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 884353640288500285, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2987,9 +2995,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Barrel (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 884353640288500285, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 14.34
       objectReference: {fileID: 0}
     - target: {fileID: 884353640288986653, guid: 906c772c5551b7b4b8ed8315090ad827, type: 3}
       propertyPath: m_LocalPosition.y

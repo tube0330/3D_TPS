@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0cb3a092ec94c2741979790357cabba3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0cb3a092ec94c2741979790357cabba3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -80,6 +80,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 0cb3a092ec94c2741979790357cabba3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5044387173332261620}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 0cb3a092ec94c2741979790357cabba3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3261146445664957485}
   m_SourcePrefab: {fileID: 100100000, guid: 0cb3a092ec94c2741979790357cabba3, type: 3}
 --- !u!1 &884353640288500285 stripped
 GameObject:
@@ -149,7 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textures: []
   meshRenderer: {fileID: 0}
-  rb: {fileID: 0}
   Effect: {fileID: 0}
   hitCount: 0
   camshake: {fileID: 0}
@@ -167,3 +169,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletTag: BULLET
   E_bulletTag: E_BULLET
+--- !u!208 &3261146445664957485
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884353640288500285}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.75, y: 0.75, z: 1.15}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 1.125}
+  m_TimeToStationary: 0.5

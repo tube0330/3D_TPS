@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "3DGame_TPS.sln"
+    "dotnet.defaultSolution": "3DGame_TPS-1.sln"
 }
