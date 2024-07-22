@@ -7,7 +7,6 @@ using UnityEngine;
 //애니메이션 구현
 public class EnemyAI_Ani : MonoBehaviour
 {
-    public static EnemyAI_Ani E_instance;
     public enum State
     {
         PTROL = 0, TRACE, ATTACK, DIE, PLAYERDIE //앞에서 0으로 했으니까 뒤는 자동으로 1 2 3 들어감 ->enum이라서
@@ -48,7 +47,6 @@ public class EnemyAI_Ani : MonoBehaviour
         enemyTr = GetComponent<Transform>();
         wait = new WaitForSeconds(0.3f);
         //C_Pet = GetComponent<Pet>();
-        E_instance = this;
     }
 
     private void OnEnable() //오브젝트가 활성화될 때마다 호출
@@ -69,13 +67,14 @@ public class EnemyAI_Ani : MonoBehaviour
             float dist = (playerTr.position - enemyTr.position).magnitude;
 
             if (dist <= attackDist)
-            {
                 state = State.ATTACK;
-                // C_Pet.transform.position = new 
-            }
+            // C_Pet.transform.position = new
 
             else if (dist <= traceDist)
                 state = State.TRACE;
+
+            /* else if ()
+                state = State.PLAYERDIE; */
 
             else state = State.PTROL;
 
@@ -116,10 +115,9 @@ public class EnemyAI_Ani : MonoBehaviour
                     break;
 
                 case State.PLAYERDIE:
-                    GetComponent<Rigidbody>().isKinematic = false;
                     C_enemyFire.isFire = false;
-                    C_moveAgent.Stop();
-                    ani.SetTrigger(hashPlayerDie);
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    OnPlayerDie();
                     break;
 
             }
@@ -152,6 +150,14 @@ public class EnemyAI_Ani : MonoBehaviour
         gameObject.tag = "ENEMY"; ;     //오브젝트가 활성화 되기 전 태그 이름 줌
         gameObject.SetActive(false);
         state = State.PTROL;
+    }
+
+    void OnPlayerDie()
+    {
+        StopAllCoroutines();    //모든 코루틴 종료
+        ani.SetTrigger(hashPlayerDie);
+        GameManager.G_Instance.isGameOver = true;
+
     }
 
     void Update()

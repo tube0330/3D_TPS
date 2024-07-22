@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
     //private readonly string E_bulletTag = "E_BULLET";
-    private float HP = 0f;
-    private readonly float MaxHP = 100;
     public GameObject bloodEffect;
+    public float HP = 0;
+    public float MaxHP = 100;
+    private string enemyTag = "ENEMY";
+    private string swatTag = "SWAT";
 
     void Start()
     {
@@ -34,12 +37,34 @@ public class Damage : MonoBehaviour
 
     void playerDamage(object[] obj)
     {
+        ShowBloodEffect((Vector3)obj[0]);
+
+        Debug.Log("맞음");
         HP -= (float)obj[1];
         Mathf.Clamp(HP, 0, MaxHP);
 
         if (HP <= 0f)
-            EnemyAI_Ani.E_instance.state = EnemyAI_Ani.State.PLAYERDIE;
+            PlayerDie();
+    }
 
+    public void PlayerDie()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] swates = GameObject.FindGameObjectsWithTag(swatTag);
 
+        for(int i = 0; i<enemies.Length; i++)
+        enemies[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+
+        for(int i = 0; i<swates.Length; i++)
+        swates[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+    }
+
+    private void ShowBloodEffect(Vector3 col)
+    {
+        Vector3 pos = col;  //위치
+        Vector3 nor = col.normalized;   //방향
+        Quaternion rot = Quaternion.FromToRotation(Vector3.forward, nor);
+        GameObject blood = Instantiate(bloodEffect, pos, rot);
+        Destroy(blood, 1.0f);
     }
 }

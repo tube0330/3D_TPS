@@ -8,7 +8,7 @@ public class SwatAI : MonoBehaviour
 {
     public enum State
     {
-        PATROL = 0, TRACE, ATTACK, DIE
+        PATROL = 0, TRACE, ATTACK, DIE, PLAYERDIE
     }
 
     SwatMoveAgent C_swatmove;
@@ -32,6 +32,7 @@ public class SwatAI : MonoBehaviour
     private readonly int hashSpeed = Animator.StringToHash("walkSpeed");
     private readonly int hashDie = Animator.StringToHash("Die");
     private readonly int hashDieIndex = Animator.StringToHash("dieIdx");
+    private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
 
 
     void Awake()
@@ -106,6 +107,12 @@ public class SwatAI : MonoBehaviour
                 case State.DIE:
                     SwatDie();
                     break;
+
+                case State.PLAYERDIE:
+                    C_SwatFire.isFire = false;
+                    rb.isKinematic = false;
+                    OnPlayerDie();
+                    break;
             }
         }
 
@@ -135,6 +142,13 @@ public class SwatAI : MonoBehaviour
         cap.enabled = true;
         gameObject.tag = "SWAT";
         gameObject.SetActive(false);
+    }
+
+    void OnPlayerDie()
+    {
+        StopAllCoroutines();    //모든 코루틴 종료
+        ani.SetTrigger(hashPlayerDie);
+        GameManager.G_Instance.isGameOver = true;
     }
 
     void Update()

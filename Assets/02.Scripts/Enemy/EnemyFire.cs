@@ -45,6 +45,8 @@ public class EnemyFire : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.G_Instance.isGameOver) return;
+        
         if (isFire && !isReload)
         {
             if (Time.time >= nextFireTime)
@@ -73,7 +75,7 @@ public class EnemyFire : MonoBehaviour
             E_bullet.gameObject.SetActive(true);
 
             ani.SetTrigger(hashFire);
-        }
+        }*/
 
         isReload = (--curBullet % maxBullet) == 0;  //0되는 순간 true됨
 
@@ -82,7 +84,7 @@ public class EnemyFire : MonoBehaviour
             StartCoroutine(Reloading());
         }
 
-        StartCoroutine(ShowMuzzleFlash()); */
+        StartCoroutine(ShowMuzzleFlash());
         #endregion
 
         RaycastHit hit;

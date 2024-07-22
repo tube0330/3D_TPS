@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
+using UnityEditor;
 using UnityEngine;
 
 public class SwatFire : MonoBehaviour
@@ -28,6 +30,7 @@ public class SwatFire : MonoBehaviour
     [SerializeField] private bool isReload = false;
 
     public MeshRenderer S_MuzzleFlash;
+    private readonly string PlayerTag = "Player";
 
     void Start()
     {
@@ -45,6 +48,8 @@ public class SwatFire : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.G_Instance.isGameOver) return;
+        
         if (isFire && !isReload)
         {
             if (Time.time >= nextFireTime)
@@ -61,7 +66,7 @@ public class SwatFire : MonoBehaviour
 
     void Fire()
     {
-        var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
+        /* var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
 
         if (E_bullet != null)
         {
@@ -72,7 +77,7 @@ public class SwatFire : MonoBehaviour
 
             ani.SetTrigger(hashFire);
             SoundManager.S_instance.PlaySound(firePos.position, fireClip);
-        }
+        } */
 
         isReload = (--curBullet % maxBullet) == 0;
 
@@ -82,6 +87,20 @@ public class SwatFire : MonoBehaviour
         }
 
         StartCoroutine(ShowMuzzleFlash());
+
+        RaycastHit hit;
+        if (Physics.Raycast(firePos.position, firePos.forward, out hit, 15f))
+        {
+            if(hit.collider.CompareTag(PlayerTag))
+            {
+                object[] obj = new object[2];
+                obj[0] = hit.point;
+                obj[1] = 50f;
+
+                hit.collider.SendMessage("playerDamage", obj, SendMessageOptions.DontRequireReceiver);
+            }
+        }
+        SoundManager.S_instance.PlaySound(firePos.position, fireClip);
     }
 
     IEnumerator Reloading()
