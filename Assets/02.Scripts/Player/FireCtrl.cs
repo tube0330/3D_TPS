@@ -10,6 +10,7 @@ public class FireCtrl : MonoBehaviour
     [SerializeField] private ParticleSystem MuzzleFlash;
     private readonly string EnemyTag ="ENEMY";  //레이캐스트를 위해 선언
     private readonly string WallTag = "WALL";
+    private readonly string BarrelTag = "BARREL";
 
     void Start()
     {
@@ -61,9 +62,9 @@ public class FireCtrl : MonoBehaviour
         //광선을 쏘았을 때 맞았는지 여부
         if (Physics.Raycast(firePos.position, firePos.forward, out hit, 15f))
         {
-            if(hit.collider.CompareTag(EnemyTag) || hit.collider.CompareTag(WallTag))
+            if(hit.collider.CompareTag(EnemyTag) || hit.collider.CompareTag(WallTag)||hit.collider.CompareTag(BarrelTag))
             {
-                Debug.Log("맞음");
+                //Debug.Log("맞음");
                 object[] _params = new object[2];
                 _params[0] = hit.point; //맞은 위치 전달
                 _params[1] = 25f;       //데미지 값 전달

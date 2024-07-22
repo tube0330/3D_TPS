@@ -23,7 +23,7 @@ public class BarrelCtrl : MonoBehaviour
         camshake = GameObject.Find("Main Camera").GetComponent<CamerShake>();
     }
 
-    void OnCollisionEnter(Collision col)
+    /* void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag(bulletTag))
         {
@@ -31,7 +31,14 @@ public class BarrelCtrl : MonoBehaviour
             {
                 ExplosionBarrel();
             }
+        }
+    } */
 
+    void OnDamage(object[] _params)
+    {
+        if (++hitCount == 5)
+        {
+            ExplosionBarrel();
         }
     }
 

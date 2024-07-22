@@ -34,15 +34,10 @@ public class Wall : MonoBehaviour
 
     void OnDamage(object[] _params)
     {
-        ShowBloodEffect((Vector3)_params[0]);
-    }
-
-    private void ShowBloodEffect(Vector3 col)
-    {
-        Vector3 pos = col;  //위치
-        Vector3 nor = col.normalized;   //방향
-        Quaternion rot = Quaternion.FromToRotation(Vector3.forward, nor);
-        GameObject blood = Instantiate(Effect, pos, rot);
+        Vector3 hitPos = (Vector3) _params[0];
+        Quaternion rot = Quaternion.FromToRotation(Vector3.forward, hitPos.normalized);
+        GameObject blood = Instantiate(Effect, hitPos, rot);
         Destroy(blood, 1.0f);
+        SoundManager.S_instance.PlaySound(hitPos, clip);
     }
 }
