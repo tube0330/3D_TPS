@@ -10,6 +10,7 @@ TagManager:
   - E_BULLET
   - PET
   - SWAT
+  - WALL
   layers:
   - Default
   - TransparentFX

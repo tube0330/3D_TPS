@@ -62,7 +62,6 @@ public class EnemyFire : MonoBehaviour
     void Fire()
     {
         var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
-        //다 활성화 됐을 떄 총알 날아감 막기 if(!=dkslfk Eo)
 
         if (E_bullet != null)
         {
