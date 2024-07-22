@@ -8,9 +8,7 @@ public class Wall : MonoBehaviour
     AudioSource source;
     [SerializeField] AudioClip clip;
     [SerializeField] GameObject Effect;
-
-    [SerializeField] string bulletTag = "BULLET";
-    [SerializeField] string E_bulletTag = "E_BULLET";
+    
     void Start()
     {
         rb = GetComponent<Rigidbody>();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 public class FireCtrl : MonoBehaviour
@@ -8,7 +9,7 @@ public class FireCtrl : MonoBehaviour
     [SerializeField] private AudioSource AudioSource;
     [SerializeField] private AudioClip AudioClip;
     [SerializeField] private ParticleSystem MuzzleFlash;
-    private readonly string EnemyTag ="ENEMY";  //레이캐스트를 위해 선언
+    private readonly string EnemyTag = "ENEMY";  //레이캐스트를 위해 선언
     private readonly string WallTag = "WALL";
     private readonly string BarrelTag = "BARREL";
 
@@ -39,12 +40,12 @@ public class FireCtrl : MonoBehaviour
     {
         #region projectile movement 방식
         /* #region not object pooling
-        //Instantiate(bullet, firePos.position, firePos.rotation);
+        //Instantiate(bullet, firePos.position, firePos.rotation);*/
         #endregion
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W)) return;
 
-        #region object pooling
+        /*#region object pooling
         var _bullet = ObjectPoolingManager.poolingManager.GetBulletPool();
 
         if (_bullet != null)
@@ -54,7 +55,6 @@ public class FireCtrl : MonoBehaviour
             _bullet.SetActive(true);
         }
         #endregion */
-        #endregion
 
         //광선이 오브젝트에 맞으면 충돌지점이나 거리 등을 알려주는 구조
         RaycastHit hit;
@@ -62,7 +62,7 @@ public class FireCtrl : MonoBehaviour
         //광선을 쏘았을 때 맞았는지 여부
         if (Physics.Raycast(firePos.position, firePos.forward, out hit, 15f))
         {
-            if(hit.collider.CompareTag(EnemyTag) || hit.collider.CompareTag(WallTag)||hit.collider.CompareTag(BarrelTag))
+            if (hit.collider.CompareTag(EnemyTag) || hit.collider.CompareTag(WallTag))
             {
                 //Debug.Log("맞음");
                 object[] _params = new object[2];
@@ -70,6 +70,14 @@ public class FireCtrl : MonoBehaviour
                 _params[1] = 25f;       //데미지 값 전달
 
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
+                hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+            }
+
+            if (hit.collider.CompareTag(BarrelTag))
+            {
+                object[] _params = new object[2];
+                _params[0] = firePos.position;  //발사 위치
+                _params[1] = hit.point;         //맞은 위치
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
             }
         }

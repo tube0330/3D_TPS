@@ -101,7 +101,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -121,8 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: ec603c67cf226dc428331cc2ddb5dbfc, type: 3}
   Effect: {fileID: 100006, guid: ccbcfc705a39717429590a9f247ec30a, type: 3}
-  bulletTag: BULLET
-  E_bulletTag: E_BULLET
 --- !u!82 &1286766381773959433
 AudioSource:
   m_ObjectHideFlags: 0

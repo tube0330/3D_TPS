@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour
 {
-    [SerializeField] private readonly string bulletTag = "BULLET";
     [SerializeField] private GameObject BloodEff;
 
     private float E_HP = 0;

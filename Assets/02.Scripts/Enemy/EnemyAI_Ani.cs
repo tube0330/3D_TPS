@@ -7,14 +7,15 @@ using UnityEngine;
 //애니메이션 구현
 public class EnemyAI_Ani : MonoBehaviour
 {
+    public static EnemyAI_Ani E_instance;
     public enum State
     {
-        PTROL = 0, TRACE, ATTACK, DIE //앞에서 0으로 했으니까 뒤는 자동으로 1 2 3 들어감 ->enum이라서
+        PTROL = 0, TRACE, ATTACK, DIE, PLAYERDIE //앞에서 0으로 했으니까 뒤는 자동으로 1 2 3 들어감 ->enum이라서
     }
 
     private EnemyMoveAgent C_moveAgent;
     private EnemyFire C_enemyFire;
-    private Pet C_Pet;
+    //private Pet C_Pet;
     public State state = State.PTROL;   //상태(State) 안에 있는 PTROL을 상태를 받을 수 있는 변수 state에 넘김
     [SerializeField] private Transform playerTr;    //거리를 재기 위해 선언
     [SerializeField] private Transform enemyTr;     //거리를 재기 위해 선언
@@ -31,6 +32,7 @@ public class EnemyAI_Ani : MonoBehaviour
     private readonly int hashDieIndex = Animator.StringToHash("DieIdx");
     private readonly int hashOffset = Animator.StringToHash("offset");
     private readonly int hashWalkSpeed = Animator.StringToHash("walkSpeed");
+    private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
 
     void Awake()
     {
@@ -45,7 +47,8 @@ public class EnemyAI_Ani : MonoBehaviour
 
         enemyTr = GetComponent<Transform>();
         wait = new WaitForSeconds(0.3f);
-        C_Pet = GetComponent<Pet>();
+        //C_Pet = GetComponent<Pet>();
+        E_instance = this;
     }
 
     private void OnEnable() //오브젝트가 활성화될 때마다 호출
@@ -66,9 +69,10 @@ public class EnemyAI_Ani : MonoBehaviour
             float dist = (playerTr.position - enemyTr.position).magnitude;
 
             if (dist <= attackDist)
-                {state = State.ATTACK;
+            {
+                state = State.ATTACK;
                 // C_Pet.transform.position = new 
-                }
+            }
 
             else if (dist <= traceDist)
                 state = State.TRACE;
@@ -87,21 +91,21 @@ public class EnemyAI_Ani : MonoBehaviour
             switch (state)
             {
                 case State.PTROL:
-                GetComponent<Rigidbody>().isKinematic = false;
+                    GetComponent<Rigidbody>().isKinematic = false;
                     C_enemyFire.isFire = false;
                     C_moveAgent.patrolling = true;
                     ani.SetBool(hashMove, true);
                     break;
 
                 case State.TRACE:
-                GetComponent<Rigidbody>().isKinematic = false;
+                    GetComponent<Rigidbody>().isKinematic = false;
                     C_enemyFire.isFire = false;
                     C_moveAgent.traceTarget = playerTr.position;
                     ani.SetBool(hashMove, true);
                     break;
 
                 case State.ATTACK:
-                GetComponent<Rigidbody>().isKinematic = true;
+                    GetComponent<Rigidbody>().isKinematic = true;
                     C_enemyFire.isFire = true;
                     C_moveAgent.Stop();
                     ani.SetBool(hashMove, false);
@@ -110,6 +114,14 @@ public class EnemyAI_Ani : MonoBehaviour
                 case State.DIE:
                     EnemyDie();
                     break;
+
+                case State.PLAYERDIE:
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    C_enemyFire.isFire = false;
+                    C_moveAgent.Stop();
+                    ani.SetTrigger(hashPlayerDie);
+                    break;
+
             }
         }
     }

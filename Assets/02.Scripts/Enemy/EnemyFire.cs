@@ -27,6 +27,7 @@ public class EnemyFire : MonoBehaviour
     [SerializeField] private bool isReload = false;
 
     public MeshRenderer E_MuzzleFlash;
+    private readonly string PlayerTag = "Player";
 
     void Start()
     {
@@ -61,7 +62,8 @@ public class EnemyFire : MonoBehaviour
 
     void Fire()
     {
-        var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
+        #region projectile Movement 방식
+        /* var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
 
         if (E_bullet != null)
         {
@@ -71,7 +73,6 @@ public class EnemyFire : MonoBehaviour
             E_bullet.gameObject.SetActive(true);
 
             ani.SetTrigger(hashFire);
-            SoundManager.S_instance.PlaySound(firePos.position, fireClip);
         }
 
         isReload = (--curBullet % maxBullet) == 0;  //0되는 순간 true됨
@@ -81,7 +82,24 @@ public class EnemyFire : MonoBehaviour
             StartCoroutine(Reloading());
         }
 
-        StartCoroutine(ShowMuzzleFlash());
+        StartCoroutine(ShowMuzzleFlash()); */
+        #endregion
+
+        RaycastHit hit;
+
+        if(Physics.Raycast(firePos.position, firePos.forward,out hit, 15f))
+        {
+            if(hit.collider.CompareTag(PlayerTag))
+            {
+            object[] obj = new object[2];
+            obj[0] = hit.point;
+            obj[1] = 50f;   //데미지
+
+            hit.collider.SendMessage("playerDamage", obj, SendMessageOptions.DontRequireReceiver);
+            }
+        }
+
+        SoundManager.S_instance.PlaySound(firePos.position, fireClip);
     }
 
     IEnumerator Reloading()
