@@ -95,7 +95,7 @@ public class SwatFire : MonoBehaviour
             {
                 object[] obj = new object[2];
                 obj[0] = hit.point;
-                obj[1] = 50f;
+                obj[1] = 0.1f;
 
                 hit.collider.SendMessage("playerDamage", obj, SendMessageOptions.DontRequireReceiver);
             }

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Damage : MonoBehaviour
 {
@@ -12,11 +12,13 @@ public class Damage : MonoBehaviour
     public float MaxHP = 100;
     private string enemyTag = "ENEMY";
     private string swatTag = "SWAT";
+    [SerializeField] private Image BloodScreen;
 
     void Start()
     {
         HP = MaxHP;
         bloodEffect = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
+        BloodScreen = GameObject.Find("Canvas_UI").transform.GetChild(0).GetComponent<Image>();
     }
 
     #region projectiling 방식
@@ -39,12 +41,21 @@ public class Damage : MonoBehaviour
     {
         ShowBloodEffect((Vector3)obj[0]);
 
-        Debug.Log("맞음");
+        Debug.Log("플레이어가 맞음");
         HP -= (float)obj[1];
         Mathf.Clamp(HP, 0, MaxHP);
 
         if (HP <= 0f)
             PlayerDie();
+
+        StartCoroutine(ShowBloodScreen());
+    }
+
+    IEnumerator ShowBloodScreen()
+    {
+        BloodScreen.color = new Color(1, 0, 0, Random.Range(0.25f, 0.35f));
+        yield return new WaitForSeconds(0.1f);
+        BloodScreen.color  =Color.clear;    //텍스처의 색깔을 전부 0
     }
 
     public void PlayerDie()
@@ -52,11 +63,11 @@ public class Damage : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         GameObject[] swates = GameObject.FindGameObjectsWithTag(swatTag);
 
-        for(int i = 0; i<enemies.Length; i++)
-        enemies[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+        for (int i = 0; i < enemies.Length; i++)
+            enemies[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
 
-        for(int i = 0; i<swates.Length; i++)
-        swates[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+        for (int i = 0; i < swates.Length; i++)
+            swates[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
     }
 
     private void ShowBloodEffect(Vector3 col)
