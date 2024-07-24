@@ -19,12 +19,13 @@ public class FireCtrl: MonoBehaviour
 
     [SerializeField] float firetime;
     [SerializeField] private Transform firePos;
-    [SerializeField] AudioClip fireclip;
-    [SerializeField] AudioSource Source;
+    //[SerializeField] AudioClip fireclip;
+    //[SerializeField] AudioSource Source;
     [SerializeField] Player Player;
 
     [SerializeField] private ParticleSystem muzzleFlash;
     private readonly string enemyTag = "ENEMY";
+    private readonly string swatTag = "SWAT";
     private readonly string WallTag = "WALL";
     private readonly string BarrelTag = "BARREL";
     private const float DIST = 20f;
@@ -40,14 +41,14 @@ public class FireCtrl: MonoBehaviour
 
     void Start()
     {
-        Source = GetComponent<AudioSource>();
+        //Source = GetComponent<AudioSource>();
         firetime = Time.time;
-        fireclip = Resources.Load("Sounds/p_ak_1") as AudioClip;
+        //fireclip = Resources.Load("Sounds/p_ak_1") as AudioClip;
         Player =GetComponent<Player>();
         muzzleFlash.Stop();
         /* magazineImage = GameObject.Find("Canvas").transform.GetChild(1).GetChild(2).GetComponent<Image>();
         magazineTxt = GameObject.Find("Canvas").transform.GetChild(1).GetChild(0).GetComponent<Text>(); */
-        Source = GetComponent<AudioSource>();
+        //Source = GetComponent<AudioSource>();
         
     }
     void Update()
@@ -111,6 +112,16 @@ public class FireCtrl: MonoBehaviour
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
+            if (hit.collider.CompareTag(swatTag))
+            {
+                Debug.Log("Enemy가 맞음");
+
+                object[] _params = new object[2];
+                _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
+                _params[1] = 25f;// 데미지 값을 전달
+                hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+                //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
+            }
             if (hit.collider.CompareTag(WallTag))
             {
 
@@ -131,8 +142,8 @@ public class FireCtrl: MonoBehaviour
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
         }
-        Source.PlayOneShot(fireclip, 1.0f);
-        
+        //Source.PlayOneShot(fireclip, 1.0f);
+        SoundManager.S_instance.PlaySound(transform.position,playerSound.fire[(int)curtype]);
         UpdateBulletTxt();
 
 

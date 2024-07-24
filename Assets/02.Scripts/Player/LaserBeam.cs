@@ -28,10 +28,9 @@ public class LaserBeam : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * 100f, Color.blue);
 
         if (Input.GetMouseButtonDown(0)) //&& fireCtrl.curBullet>0)
-            
+        {
             line.SetPosition(0, tr.InverseTransformPoint(ray.origin));  //라인 랜더러의 첫번째 점의 위치 설정
 
-        {
             //월드좌표 방향을 로컬좌표 방향으로 변경
             //어떤 물체에 광선이 맞았을 때의 위치를 Line Renderer의 끝점으로 설정
             if (Physics.Raycast(ray, out hit, 100f))
@@ -43,10 +42,10 @@ public class LaserBeam : MonoBehaviour
                 line.SetPosition(1, tr.InverseTransformPoint(ray.GetPoint(100f)));
 
             }
-            StartCoroutine(ShowRaserBeam());
+            StartCoroutine(ShowLaserBeam());
         }
     }
-    IEnumerator ShowRaserBeam()
+    IEnumerator ShowLaserBeam()
     {
         line.enabled = true;
         yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
