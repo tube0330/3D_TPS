@@ -15,4 +15,5 @@ spawnpoint마다 다른 아이콘으로 patroll point 다른 아이콘
 
 2. 총기 교체 버튼을 만들어 아이콘 변경, 총마다 소리 변경, 버튼(UI)을 누르면 총알 발사 막기(using EventSystem)
 
-3. 일시정지 버튼 눌러 시간 중지
+3. 일시정지 버튼 눌러 시간 중지: 싱글 게임에만 해당
+canvasGroup -> blockRayCast 활성화 비활성화에 따라 UI 이벤트를 받을건지 여부

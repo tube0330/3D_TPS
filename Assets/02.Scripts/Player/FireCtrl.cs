@@ -14,7 +14,7 @@ public class FireCtrl : MonoBehaviour
 {
     public enum weaponType
     {
-        RIFLE = 1, SHOTGUN = 2
+        RIFLE = 0, SHOTGUN = 1
     }
     public weaponType curWeaponType = weaponType.SHOTGUN;
     public PlayerSound playerSound;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,14 +21,25 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
     }
 
-    private bool isPause;
+    public bool isPause = false;
+    
     public void OnPauseClick()
     {
         isPause = !isPause;
+
         Time.timeScale = (isPause) ? 0.0f : 1f;
+
         var playerObj = GameObject.FindGameObjectWithTag("Player");
+        var scripts = playerObj.GetComponents<MonoBehaviour>(); //player에 있는 MonoBehaviour를 상속하는 스크립트들을 가져옴
+
+        foreach (var script in scripts)
+        {
+            script.enabled = !isPause;
+        }
+
+        var canvasGroup = GameObject.Find("Panel_Weapon").GetComponent<CanvasGroup>();
+        canvasGroup.blocksRaycasts = !isPause;
     }
 }

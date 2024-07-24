@@ -22,7 +22,9 @@ public class LaserBeam : MonoBehaviour
     }
     void Update()
     {
-        if(EventSystem.current.IsPointerOverGameObject()) return;
+        if(Time.timeScale <= 0f) return;
+
+        if(EventSystem.current.IsPointerOverGameObject()) return;   //UI위에 마우스 포인터나 손가락이 올려져 있다면 빠져나감
         
         //if (fireCtrl.isReload) return;
         //광선을 미리 생성
