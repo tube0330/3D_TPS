@@ -18,9 +18,16 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
 
+    }
+
+    private bool isPause;
+    public void OnPauseClick()
+    {
+        isPause = !isPause;
+        Time.timeScale = (isPause) ? 0.0f : 1f;
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
     }
 }

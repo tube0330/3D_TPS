@@ -84,7 +84,7 @@ public class FireCtrl : MonoBehaviour
 
     private void UpdateBulletTxt()
     {
-        magazineImage.fillAmount = curBullet * 0.1f;
+        magazineImage.fillAmount = (float)curBullet / (float)maxBullet;
         magazineTxt.text = $"<color=#64FFFF>{curBullet}</color>/{maxBullet}";
     }
 
@@ -97,13 +97,13 @@ public class FireCtrl : MonoBehaviour
     IEnumerator Reloading()
     {
         isReload = true;
-
-        yield return new WaitForSeconds(playerSound.reload[(int)curWeaponType].length + 0.3f);
+    SoundManager.S_instance.PlaySound(transform.position, playerSound.reload[(int)curWeaponType]);
+        yield return new WaitForSeconds(playerSound.reload[(int)curWeaponType].length + 0.0f);
 
         curBullet = maxBullet;
+        magazineImage.fillAmount = 1.0f;
+        UpdateBulletTxt();
         isReload = false;
-        magazineTxt.text = $"<color=#64FFFF>{curBullet}</color>/{maxBullet}";
-        magazineImage.fillAmount = curBullet * 0.1f;
     }
 
 

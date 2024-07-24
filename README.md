@@ -8,7 +8,7 @@
 3. Mecanim 방식으로 공격(총알쏘기) Reload 기능으로 Avata 만들어서 구현
 4. enemy 총알 오브젝트 풀링
 
-> 240724
+# 240724
 1. 사용자 정의 Gizmo
 MyGizmo 클래스에 원하는 아이콘 이미지 넣기
 spawnpoint마다 다른 아이콘으로 patroll point 다른 아이콘
