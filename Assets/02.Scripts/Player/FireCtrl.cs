@@ -8,11 +8,11 @@ public struct PlayerSound
     public AudioClip[] fire;
     public AudioClip[] reload;
 }
-public class FireCtrl: MonoBehaviour 
+public class FireCtrl : MonoBehaviour
 {
     public enum weaponType
     {
-        RIFLE=0,SHOTGUN=1
+        RIFLE = 0, SHOTGUN = 1
     }
     public weaponType curtype = weaponType.SHOTGUN;
     public PlayerSound playerSound;
@@ -22,7 +22,6 @@ public class FireCtrl: MonoBehaviour
     //[SerializeField] AudioClip fireclip;
     //[SerializeField] AudioSource Source;
     [SerializeField] Player Player;
-
     [SerializeField] private ParticleSystem muzzleFlash;
     private readonly string enemyTag = "ENEMY";
     private readonly string swatTag = "SWAT";
@@ -37,33 +36,36 @@ public class FireCtrl: MonoBehaviour
     public int maxBullet = 10;
     public int curBullet = 10;
 
+    public Sprite[] weaponIcon;
+    public Image weaponImg;
+
 
 
     void Start()
     {
-        //Source = GetComponent<AudioSource>();
         firetime = Time.time;
         //fireclip = Resources.Load("Sounds/p_ak_1") as AudioClip;
-        Player =GetComponent<Player>();
+        Player = GetComponent<Player>();
         muzzleFlash.Stop();
-        /* magazineImage = GameObject.Find("Canvas").transform.GetChild(1).GetChild(2).GetComponent<Image>();
-        magazineTxt = GameObject.Find("Canvas").transform.GetChild(1).GetChild(0).GetComponent<Text>(); */
-        //Source = GetComponent<AudioSource>();
-        
+        magazineImage = GameObject.Find("Canvas_UI").transform.GetChild(1).GetChild(2).GetComponent<Image>();
+        magazineTxt = GameObject.Find("Canvas_UI").transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        weaponIcon = Resources.LoadAll<Sprite>("WeaponIcons");
+        weaponImg = GameObject.Find("Canvas_UI").transform.GetChild(3).GetChild(0).GetComponent<Image>();
+
     }
     void Update()
     {
         Debug.DrawRay(firePos.position, firePos.forward * 100f, Color.red);
 
-        if (Input.GetMouseButtonDown(0)&&!isReload)
+        if (Input.GetMouseButtonDown(0) && !isReload)
         {
-            if ( !isReload)
+            if (!isReload)
             {
                 --curBullet;
-                
+
                 Fire();
                 muzzleFlash.Play();
-               
+
                 if (curBullet == 0)
                 {
                     StartCoroutine(Reloading());
@@ -75,7 +77,7 @@ public class FireCtrl: MonoBehaviour
             muzzleFlash.Stop();
         }
         else
-            muzzleFlash.Stop();        
+            muzzleFlash.Stop();
     }
 
     IEnumerator Reloading()
@@ -86,14 +88,14 @@ public class FireCtrl: MonoBehaviour
         #endregion
 
 
-        yield return new WaitForSeconds(playerSound.reload[(int)curtype].length+0.3f);
-        
+        yield return new WaitForSeconds(playerSound.reload[(int)curtype].length + 0.3f);
+
         curBullet = maxBullet;
         isReload = false;
         magazineTxt.text = $"<color=#64FFFF>{curBullet}</color>/{maxBullet}";
         magazineImage.fillAmount = curBullet * 0.1f;
     }
-    
+
 
     private void Fire()
     {
@@ -143,7 +145,7 @@ public class FireCtrl: MonoBehaviour
             }
         }
         //Source.PlayOneShot(fireclip, 1.0f);
-        SoundManager.S_instance.PlaySound(transform.position,playerSound.fire[(int)curtype]);
+        SoundManager.S_instance.PlaySound(transform.position, playerSound.fire[(int)curtype]);
         UpdateBulletTxt();
 
 

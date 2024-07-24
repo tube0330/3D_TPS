@@ -43,8 +43,6 @@ public class Damage : MonoBehaviour
     void playerDamage(object[] obj)
     {
         ShowBloodEffect((Vector3)obj[0]);
-
-        Debug.Log("플레이어가 맞음");
         HP -= (float)obj[1];
         Mathf.Clamp(HP, 0, MaxHP);
 
