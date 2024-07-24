@@ -13,12 +13,15 @@ public class Damage : MonoBehaviour
     private string enemyTag = "ENEMY";
     private string swatTag = "SWAT";
     [SerializeField] private Image BloodScreen;
+    [SerializeField] private Image Img_HPBar;
 
     void Start()
     {
         HP = MaxHP;
         bloodEffect = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         BloodScreen = GameObject.Find("Canvas_UI").transform.GetChild(0).GetComponent<Image>();
+        Img_HPBar = GameObject.Find("Canvas_UI").transform.GetChild(2).GetChild(2).GetComponent<Image>();
+        Img_HPBar.color = Color.green;
     }
 
     #region projectiling 방식
@@ -45,7 +48,9 @@ public class Damage : MonoBehaviour
         HP -= (float)obj[1];
         Mathf.Clamp(HP, 0, MaxHP);
 
-        if (HP <= 0f)
+        Img_HPBar.fillAmount = (HP/MaxHP);
+
+        if (HP <= 0f && Img_HPBar.fillAmount==0)
             PlayerDie();
 
         StartCoroutine(ShowBloodScreen());

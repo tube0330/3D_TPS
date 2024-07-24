@@ -18,15 +18,14 @@ public class FireCtrl: MonoBehaviour
     public PlayerSound playerSound;
     [SerializeField] float firetime;
     public Transform firePosTr;
-    [SerializeField] GameObject bulletprfab;
     [SerializeField] AudioClip fireclip;
     [SerializeField] AudioSource Source;
     [SerializeField] Player Player;
 
     [SerializeField] private ParticleSystem muzzleFlash;
-    private readonly string enemyTag = "Enemy";
-    private readonly string WallTag = "Wall";
-    private readonly string BarrelTag = "Barrel";
+    private readonly string enemyTag = "ENEMY";
+    private readonly string WallTag = "WALL";
+    private readonly string BarrelTag = "BARREL";
     private const float DIST = 20f;
 
     public Image magazineImage;
@@ -41,11 +40,12 @@ public class FireCtrl: MonoBehaviour
     void Start()
     {
         firetime = Time.time;
-        fireclip = Resources.Load("Sounds/p_ak_1_1") as AudioClip;
+        fireclip = Resources.Load("Sounds/p_ak_1") as AudioClip;
         Player =GetComponent<Player>();
         muzzleFlash.Stop();
         magazineImage = GameObject.Find("Canvas").transform.GetChild(1).GetChild(2).GetComponent<Image>();
         magazineTxt = GameObject.Find("Canvas").transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        Source = SoundManager.S_instance.GetComponent<AudioSource>();
         
     }
     void Update()
