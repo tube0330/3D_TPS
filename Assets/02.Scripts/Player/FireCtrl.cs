@@ -16,8 +16,9 @@ public class FireCtrl: MonoBehaviour
     }
     public weaponType curtype = weaponType.SHOTGUN;
     public PlayerSound playerSound;
+
     [SerializeField] float firetime;
-    public Transform firePosTr;
+    [SerializeField] private Transform firePos;
     [SerializeField] AudioClip fireclip;
     [SerializeField] AudioSource Source;
     [SerializeField] Player Player;
@@ -39,18 +40,20 @@ public class FireCtrl: MonoBehaviour
 
     void Start()
     {
+        Source = GetComponent<AudioSource>();
         firetime = Time.time;
         fireclip = Resources.Load("Sounds/p_ak_1") as AudioClip;
         Player =GetComponent<Player>();
         muzzleFlash.Stop();
-        magazineImage = GameObject.Find("Canvas").transform.GetChild(1).GetChild(2).GetComponent<Image>();
-        magazineTxt = GameObject.Find("Canvas").transform.GetChild(1).GetChild(0).GetComponent<Text>();
-        Source = SoundManager.S_instance.GetComponent<AudioSource>();
+        /* magazineImage = GameObject.Find("Canvas").transform.GetChild(1).GetChild(2).GetComponent<Image>();
+        magazineTxt = GameObject.Find("Canvas").transform.GetChild(1).GetChild(0).GetComponent<Text>(); */
+        Source = GetComponent<AudioSource>();
         
     }
     void Update()
     {
-        Debug.DrawRay(firePosTr.position, firePosTr.forward*100f,Color.red);
+        Debug.DrawRay(firePos.position, firePos.forward * 100f, Color.red);
+
         if (Input.GetMouseButtonDown(0)&&!isReload)
         {
             if ( !isReload)
@@ -73,6 +76,7 @@ public class FireCtrl: MonoBehaviour
         else
             muzzleFlash.Stop();        
     }
+
     IEnumerator Reloading()
     {
         isReload = true;
@@ -95,16 +99,16 @@ public class FireCtrl: MonoBehaviour
 
         RaycastHit hit;//광선이 오브젝트에 맞으면 충돌지점이나 거리들을 알려주는 광선 구조체
                        //광선을 쏘았을 때 맞았는지 여부를 측정
-        if (Physics.Raycast(firePosTr.position, firePosTr.forward, out hit, DIST))
+        if (Physics.Raycast(firePos.position, firePos.forward, out hit, DIST))
         {
             if (hit.collider.CompareTag(enemyTag))
             {
+                Debug.Log("Enemy가 맞음");
 
                 object[] _params = new object[2];
                 _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
                 _params[1] = 25f;// 데미지 값을 전달
-                Debug.Log($"{_params[0]}   ");
-                hit.collider.gameObject.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+                hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
             if (hit.collider.CompareTag(WallTag))
@@ -114,21 +118,21 @@ public class FireCtrl: MonoBehaviour
                 _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
 
                 Debug.Log($"{_params[0]}   ");
-                hit.collider.gameObject.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+                hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
             if (hit.collider.CompareTag(BarrelTag))
             {
 
                 object[] _params = new object[2];
-                _params[0] = firePosTr.position;//발사위치
+                _params[0] = firePos.position;//발사위치
                 _params[1] = hit.point;//맞은위치
-                Debug.Log($"{_params[0]}   ");
-                hit.collider.gameObject.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+                hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
         }
         Source.PlayOneShot(fireclip, 1.0f);
+        
         UpdateBulletTxt();
 
 
