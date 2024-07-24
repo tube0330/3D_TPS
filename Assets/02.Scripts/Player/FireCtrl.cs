@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 [System.Serializable]
 public struct PlayerSound
 {
@@ -12,9 +14,9 @@ public class FireCtrl : MonoBehaviour
 {
     public enum weaponType
     {
-        RIFLE = 0, SHOTGUN = 1
+        RIFLE = 1, SHOTGUN = 2
     }
-    public weaponType curtype = weaponType.SHOTGUN;
+    public weaponType curWeaponType = weaponType.SHOTGUN;
     public PlayerSound playerSound;
 
     [SerializeField] float firetime;
@@ -55,7 +57,7 @@ public class FireCtrl : MonoBehaviour
     }
     void Update()
     {
-        Debug.DrawRay(firePos.position, firePos.forward * 100f, Color.red);
+        if(EventSystem.current.IsPointerOverGameObject()) return;   //UI에 특정 이벤트가 발생되면 빠져나감
 
         if (Input.GetMouseButtonDown(0) && !isReload)
         {
@@ -80,15 +82,23 @@ public class FireCtrl : MonoBehaviour
             muzzleFlash.Stop();
     }
 
+    private void UpdateBulletTxt()
+    {
+        magazineImage.fillAmount = curBullet * 0.1f;
+        magazineTxt.text = $"<color=#64FFFF>{curBullet}</color>/{maxBullet}";
+    }
+
+    public void OnChangeWeapon()
+    {
+        curWeaponType = (weaponType)((int)++curWeaponType % 2);
+        weaponImg.sprite = weaponIcon[(int)curWeaponType];  //스프라이트 이미지
+    }
+
     IEnumerator Reloading()
     {
         isReload = true;
-        #region 오류
-        /* SoundManager.S_instance.PlaySound(transform.position, playerSound.reload([int]curtype)); */
-        #endregion
 
-
-        yield return new WaitForSeconds(playerSound.reload[(int)curtype].length + 0.3f);
+        yield return new WaitForSeconds(playerSound.reload[(int)curWeaponType].length + 0.3f);
 
         curBullet = maxBullet;
         isReload = false;
@@ -106,8 +116,6 @@ public class FireCtrl : MonoBehaviour
         {
             if (hit.collider.CompareTag(enemyTag))
             {
-                Debug.Log("Enemy가 맞음");
-
                 object[] _params = new object[2];
                 _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
                 _params[1] = 25f;// 데미지 값을 전달
@@ -116,8 +124,6 @@ public class FireCtrl : MonoBehaviour
             }
             if (hit.collider.CompareTag(swatTag))
             {
-                Debug.Log("Enemy가 맞음");
-
                 object[] _params = new object[2];
                 _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
                 _params[1] = 25f;// 데미지 값을 전달
@@ -126,11 +132,9 @@ public class FireCtrl : MonoBehaviour
             }
             if (hit.collider.CompareTag(WallTag))
             {
-
                 object[] _params = new object[2];
                 _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
 
-                Debug.Log($"{_params[0]}   ");
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
                 //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
@@ -145,10 +149,9 @@ public class FireCtrl : MonoBehaviour
             }
         }
         //Source.PlayOneShot(fireclip, 1.0f);
-        SoundManager.S_instance.PlaySound(transform.position, playerSound.fire[(int)curtype]);
+        SoundManager.S_instance.PlaySound(transform.position, playerSound.fire[(int)curWeaponType]);
+
         UpdateBulletTxt();
-
-
 
         #region Projectile Movement Method
 
@@ -165,13 +168,5 @@ public class FireCtrl : MonoBehaviour
         //        muzzleFlash.Play();
         //}
         #endregion
-
-
-    }
-
-    private void UpdateBulletTxt()
-    {
-        magazineImage.fillAmount = curBullet * 0.1f;
-        magazineTxt.text = $"<color=#64FFFF>{curBullet}</color>/{maxBullet}";
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class LaserBeam : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class LaserBeam : MonoBehaviour
     }
     void Update()
     {
+        if(EventSystem.current.IsPointerOverGameObject()) return;
+        
         //if (fireCtrl.isReload) return;
         //광선을 미리 생성
         Ray ray = new Ray(firePos.position, tr.forward);
