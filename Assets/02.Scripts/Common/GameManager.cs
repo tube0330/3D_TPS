@@ -17,14 +17,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-    }
-
-    void Update()
-    {
+        OnCloseClick(false);
     }
 
     public bool isPause = false;
-    
+
     public void OnPauseClick()
     {
         isPause = !isPause;
@@ -41,5 +38,16 @@ public class GameManager : MonoBehaviour
 
         var canvasGroup = GameObject.Find("Panel_Weapon").GetComponent<CanvasGroup>();
         canvasGroup.blocksRaycasts = !isPause;
+    }
+
+    public void OnCloseClick(bool isOpen)
+    {
+        var canvasGroup = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
+        
+        Time.timeScale = (isOpen) ? 0f : 1f;
+
+        canvasGroup.alpha = (isOpen) ? 1f : 0f;
+        canvasGroup.interactable = isOpen;
+        canvasGroup.blocksRaycasts = isOpen;
     }
 }
