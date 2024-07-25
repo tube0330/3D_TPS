@@ -32,6 +32,7 @@ public class EnemyAI_Ani : MonoBehaviour
     private readonly int hashOffset = Animator.StringToHash("offset");
     private readonly int hashWalkSpeed = Animator.StringToHash("walkSpeed");
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
+    private readonly int hashBarrelDie = Animator.StringToHash("BarrelDie");
 
     void Awake()
     {
@@ -115,6 +116,7 @@ public class EnemyAI_Ani : MonoBehaviour
                 case State.DIE:
                     GetComponent<Rigidbody>().isKinematic = true;
                     EnemyDie();
+                    GameManager.G_Instance.KillScore();
                     break;
 
                 case State.PLAYERDIE:
@@ -122,7 +124,6 @@ public class EnemyAI_Ani : MonoBehaviour
                     GetComponent<Rigidbody>().isKinematic = true;
                     OnPlayerDie();
                     break;
-
             }
         }
     }
@@ -139,8 +140,6 @@ public class EnemyAI_Ani : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<CapsuleCollider>().enabled = false;
         gameObject.tag = "Untagged";    //사망했다면 태그 뺌
-
-        state = State.DIE;
         StartCoroutine(ObjectPoolPush());
     }
 
@@ -160,6 +159,23 @@ public class EnemyAI_Ani : MonoBehaviour
         ani.SetTrigger(hashPlayerDie);
         GameManager.G_Instance.isGameOver = true;
 
+    }
+
+    void BarrelDie()
+    {
+        if(isDie) return;
+        C_enemyFire.isFire = false;
+        C_moveAgent.Stop();
+        isDie = true;
+
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<CapsuleCollider>().enabled = false;
+        gameObject.tag = "Untagged";    //사망했다면 태그 뺌
+        StartCoroutine(ObjectPoolPush());
+        state = State.DIE;
+        isDie = true;
+        ani.SetTrigger(hashBarrelDie);
+        StartCoroutine(ObjectPoolPush());
     }
 
     void Update()

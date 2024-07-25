@@ -27,7 +27,7 @@ public class EnemyFire : MonoBehaviour
     [SerializeField] private bool isReload = false;
 
     public MeshRenderer E_MuzzleFlash;
-    private readonly string PlayerTag = "Player";
+    //private readonly string PlayerTag = "Player";
 
     void Start()
     {

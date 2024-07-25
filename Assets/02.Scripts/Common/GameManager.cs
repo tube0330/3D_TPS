@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager G_Instance;
     public bool isGameOver = false;
+    public Text killTxt;
+    public int killCnt = 0;
 
     void Awake()
     {
@@ -16,8 +18,16 @@ public class GameManager : MonoBehaviour
         else if (G_Instance != this)
             Destroy(gameObject);
 
+        killTxt = GameObject.Find("Canvas_UI").transform.GetChild(7).GetComponent<Text>();
+
         DontDestroyOnLoad(gameObject);
         OnCloseClick(false);
+        LoadGameData();
+    }
+
+    void LoadGameData()
+    {
+        killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
     }
 
     public bool isPause = false;
@@ -43,11 +53,17 @@ public class GameManager : MonoBehaviour
     public void OnCloseClick(bool isOpen)
     {
         var canvasGroup = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
-        
+
         Time.timeScale = (isOpen) ? 0f : 1f;
 
         canvasGroup.alpha = (isOpen) ? 1f : 0f;
         canvasGroup.interactable = isOpen;
         canvasGroup.blocksRaycasts = isOpen;
+    }
+
+    public void KillScore()
+    {
+        ++killCnt;
+        killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");
     }
 }

@@ -108,6 +108,7 @@ public class SwatAI : MonoBehaviour
 
                 case State.DIE:
                     SwatDie();
+                    GameManager.G_Instance.KillScore();
                     break;
 
                 case State.PLAYERDIE:

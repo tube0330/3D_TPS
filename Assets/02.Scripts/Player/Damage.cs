@@ -14,7 +14,7 @@ public class Damage : MonoBehaviour
     public float MaxHP = 100;
     //private string enemyTag = "ENEMY";
     //private string swatTag = "SWAT";
-    
+
     public delegate void PlayerDieHandler();
     public static event PlayerDieHandler OnPlayerDie;
 
@@ -39,6 +39,14 @@ public class Damage : MonoBehaviour
             Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, _normal);
             GameObject Blood = Instantiate(bloodEffect, pos, rot);
             Destroy(Blood, 1.0f);
+
+            HP -= 1;
+            Img_HPBar.fillAmount = (HP / MaxHP);
+
+            if (HP <= 0f && Img_HPBar.fillAmount == 0)
+                PlayerDie();
+
+            StartCoroutine(ShowBloodScreen());
         }
     }
     #endregion
