@@ -51,6 +51,8 @@ public class EnemyAI_Ani : MonoBehaviour
 
     private void OnEnable() //오브젝트가 활성화될 때마다 호출
     {
+        Damage.OnPlayerDie += OnPlayerDie;  //damage class의 delegate, 이벤트 연결
+
         ani.SetFloat(hashOffset, Random.Range(0.2f, 1.0f));
         ani.SetFloat(hashWalkSpeed, Random.Range(1f, 2f));
         StartCoroutine(CheckState());
