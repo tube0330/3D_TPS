@@ -7,13 +7,16 @@ using UnityEngine.UI;
 public class Damage : MonoBehaviour
 {
     //private readonly string E_bulletTag = "E_BULLET";
+    [SerializeField] private Image BloodScreen;
+    [SerializeField] private Image Img_HPBar;
     public GameObject bloodEffect;
     public float HP = 0;
     public float MaxHP = 100;
     private string enemyTag = "ENEMY";
     private string swatTag = "SWAT";
-    [SerializeField] private Image BloodScreen;
-    [SerializeField] private Image Img_HPBar;
+    
+    public delegate void PlayerDie();
+    public static event PlayerDie OnPlayerDie;
 
     void Start()
     {
@@ -46,9 +49,9 @@ public class Damage : MonoBehaviour
         HP -= (float)obj[1];
         Mathf.Clamp(HP, 0, MaxHP);
 
-        Img_HPBar.fillAmount = (HP/MaxHP);
+        Img_HPBar.fillAmount = (HP / MaxHP);
 
-        if (HP <= 0f && Img_HPBar.fillAmount==0)
+        if (HP <= 0f && Img_HPBar.fillAmount == 0)
             PlayerDie();
 
         StartCoroutine(ShowBloodScreen());
@@ -58,19 +61,23 @@ public class Damage : MonoBehaviour
     {
         BloodScreen.color = new Color(1, 0, 0, Random.Range(0.25f, 0.35f));
         yield return new WaitForSeconds(0.1f);
-        BloodScreen.color  =Color.clear;    //텍스처의 색깔을 전부 0
+        BloodScreen.color = Color.clear;    //텍스처의 색깔을 전부 0
     }
 
     public void PlayerDie()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        #region MMORPG 게임에 맞지 않은 로직. 캐주얼 게임에는 ㄱㅊ
+        /* GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         GameObject[] swates = GameObject.FindGameObjectsWithTag(swatTag);
 
         for (int i = 0; i < enemies.Length; i++)
             enemies[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
 
         for (int i = 0; i < swates.Length; i++)
-            swates[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+            swates[i].gameObject.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver); */
+        #endregion
+
+        OnPlayerDie();
     }
 
     private void ShowBloodEffect(Vector3 col)
