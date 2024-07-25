@@ -68,15 +68,16 @@ public class EnemyMoveAgent : MonoBehaviour
             WayPointList.RemoveAt(0);   //0번째 인덱스는 삭제(부모가 잡히니까 부모 빼고 싶어서)
         }
 
+        nextIdx = Random.Range(0, WayPointList.Count);
         MovewayPoint();
     }
 
     void Update()
     {
-        if(nav.isStopped == false)
+        if (nav.isStopped == false)
         {
             Quaternion rot = Quaternion.LookRotation(nav.desiredVelocity);  //NavmeshAgent가 가야할 방향 벡터를 쿼터니언 타입의 각도로 변환
-            enemyTr.rotation = Quaternion.Slerp(enemyTr.rotation, rot, Time.deltaTime*damping); //보간 함수를 이용해 점진적으로 부드럽게 회전시킴
+            enemyTr.rotation = Quaternion.Slerp(enemyTr.rotation, rot, Time.deltaTime * damping); //보간 함수를 이용해 점진적으로 부드럽게 회전시킴
         }
 
         float dist = Vector3.Distance(transform.position, WayPointList[nextIdx].position);  //현재 위치와 도착지점의 거리를 구함
@@ -85,7 +86,9 @@ public class EnemyMoveAgent : MonoBehaviour
 
         if (dist <= 0.5f)   //다음 도착지점이 0.5보다 작거나 같다면
         {
-            nextIdx = ++nextIdx % WayPointList.Count;
+            //nextIdx = ++nextIdx % WayPointList.Count; //1~List.count를 순서대로 가게 하기
+
+            nextIdx = Random.Range(0, WayPointList.Count);  //랜덤으로 가기
             MovewayPoint();
         }
     }

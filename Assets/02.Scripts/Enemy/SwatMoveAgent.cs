@@ -66,6 +66,7 @@ public class SwatMoveAgent : MonoBehaviour
             WayPointList.RemoveAt(0);
         }
 
+        nextIdx = Random.Range(0, WayPointList.Count);
         MovewayPoint();
     }
 
@@ -83,7 +84,9 @@ public class SwatMoveAgent : MonoBehaviour
 
         if (dist <= 0.5f)
         {
-            nextIdx = ++nextIdx % WayPointList.Count;
+            //nextIdx = ++nextIdx % WayPointList.Count;     //순서대로 가기
+
+            nextIdx = Random.Range(0, WayPointList.Count);  //랜덤한 포인트로 가기
             MovewayPoint();
         }
     }
