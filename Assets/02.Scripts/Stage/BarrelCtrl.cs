@@ -66,7 +66,7 @@ public class BarrelCtrl : MonoBehaviour
         GameObject eff = Instantiate(Effect, transform.position, Quaternion.identity);
         Destroy(eff, 2.0f);
 
-        Collider[] cols = Physics.OverlapSphere(transform.position, 20f, 1 << 7);
+        Collider[] cols = Physics.OverlapSphere(transform.position, 20f, 1 << 7 | 1 << 8 | 1 << 10);
         foreach (Collider col in cols)
         {
             Rigidbody rigidbody = col.GetComponent<Rigidbody>();
@@ -76,6 +76,8 @@ public class BarrelCtrl : MonoBehaviour
                 rigidbody.mass = 1.0f;
 
                 rigidbody.AddExplosionForce(1000, transform.position, 20f, 1200f);
+                col.gameObject.SendMessage("E_Die", SendMessageOptions.DontRequireReceiver);
+                col.gameObject.SendMessage("SwatDie", SendMessageOptions.DontRequireReceiver);
             }
             camshake.TurnOn();
             Invoke("BarrelMassChange", 3.0f);

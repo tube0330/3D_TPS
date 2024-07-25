@@ -17,3 +17,7 @@ spawnpoint마다 다른 아이콘으로 patroll point 다른 아이콘
 
 3. 일시정지 버튼 눌러 시간 중지: 싱글 게임에만 해당
 canvasGroup -> blockRayCast 활성화 비활성화에 따라 UI 이벤트를 받을건지 여부
+
+# 240725
+1. Patroll Point 랜덤하게 움직이기
+2. Barrel 폭발 시 Enemy Die
