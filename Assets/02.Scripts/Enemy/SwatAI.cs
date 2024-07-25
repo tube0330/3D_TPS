@@ -52,6 +52,8 @@ public class SwatAI : MonoBehaviour
 
     private void OnEnable()
     {
+        Damage.OnPlayerDie += OnPlayerDie;
+
         StartCoroutine(CheckState());
         StartCoroutine(Action());
     }
@@ -110,7 +112,7 @@ public class SwatAI : MonoBehaviour
 
                 case State.PLAYERDIE:
                     C_SwatFire.isFire = false;
-                    rb.isKinematic = false;
+                    rb.isKinematic = true;
                     OnPlayerDie();
                     break;
             }
@@ -146,6 +148,7 @@ public class SwatAI : MonoBehaviour
 
     void OnPlayerDie()
     {
+        state = State.PLAYERDIE;
         StopAllCoroutines();    //모든 코루틴 종료
         ani.SetTrigger(hashPlayerDie);
         GameManager.G_Instance.isGameOver = true;
@@ -154,5 +157,10 @@ public class SwatAI : MonoBehaviour
     void Update()
     {
         ani.SetFloat(hashSpeed, C_swatmove.speed);
+    }
+
+    void OnDisable()
+    {
+        Damage.OnPlayerDie -= OnPlayerDie;
     }
 }

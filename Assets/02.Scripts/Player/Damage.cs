@@ -12,11 +12,11 @@ public class Damage : MonoBehaviour
     public GameObject bloodEffect;
     public float HP = 0;
     public float MaxHP = 100;
-    private string enemyTag = "ENEMY";
-    private string swatTag = "SWAT";
+    //private string enemyTag = "ENEMY";
+    //private string swatTag = "SWAT";
     
-    public delegate void PlayerDie();
-    public static event PlayerDie OnPlayerDie;
+    public delegate void PlayerDieHandler();
+    public static event PlayerDieHandler OnPlayerDie;
 
     void Start()
     {

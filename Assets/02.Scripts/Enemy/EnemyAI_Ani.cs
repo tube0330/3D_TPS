@@ -51,7 +51,7 @@ public class EnemyAI_Ani : MonoBehaviour
 
     private void OnEnable() //오브젝트가 활성화될 때마다 호출
     {
-        Damage.OnPlayerDie += OnPlayerDie;  //damage class의 delegate, 이벤트 연결
+        Damage.OnPlayerDie += OnPlayerDie;  //damage class의 delegate. 이벤트 연결
 
         ani.SetFloat(hashOffset, Random.Range(0.2f, 1.0f));
         ani.SetFloat(hashWalkSpeed, Random.Range(1f, 2f));
@@ -113,12 +113,13 @@ public class EnemyAI_Ani : MonoBehaviour
                     break;
 
                 case State.DIE:
+                    GetComponent<Rigidbody>().isKinematic = true;
                     EnemyDie();
                     break;
 
                 case State.PLAYERDIE:
                     C_enemyFire.isFire = false;
-                    GetComponent<Rigidbody>().isKinematic = false;
+                    GetComponent<Rigidbody>().isKinematic = true;
                     OnPlayerDie();
                     break;
 
@@ -151,7 +152,6 @@ public class EnemyAI_Ani : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = true;
         gameObject.tag = "ENEMY"; ;     //오브젝트가 활성화 되기 전 태그 이름 줌
         gameObject.SetActive(false);
-        state = State.PTROL;
     }
 
     void OnPlayerDie()
@@ -165,5 +165,10 @@ public class EnemyAI_Ani : MonoBehaviour
     void Update()
     {
         ani.SetFloat(hashSpeed, C_moveAgent.speed);
+    }
+
+    void OnDisable()
+    {
+        Damage.OnPlayerDie -= OnPlayerDie;
     }
 }
