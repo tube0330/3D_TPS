@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Damage : MonoBehaviour
 {
-    //private readonly string E_bulletTag = "E_BULLET";
+    private readonly string E_bulletTag = "E_BULLET";
     [SerializeField] private Image BloodScreen;
     [SerializeField] private Image Img_HPBar;
     public GameObject bloodEffect;
@@ -28,7 +28,7 @@ public class Damage : MonoBehaviour
     }
 
     #region projectiling 방식
-    /* void OnCollisionEnter(Collision col)
+    void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag(E_bulletTag))
         {
@@ -40,7 +40,7 @@ public class Damage : MonoBehaviour
             GameObject Blood = Instantiate(bloodEffect, pos, rot);
             Destroy(Blood, 1.0f);
         }
-    } */
+    }
     #endregion
 
     void playerDamage(object[] obj)

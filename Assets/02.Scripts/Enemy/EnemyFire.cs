@@ -65,7 +65,7 @@ public class EnemyFire : MonoBehaviour
     void Fire()
     {
         #region projectile Movement 방식
-        /* var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
+        var E_bullet = ObjectPoolingManager.poolingManager.E_GetBulletPool();
 
         if (E_bullet != null)
         {
@@ -75,7 +75,7 @@ public class EnemyFire : MonoBehaviour
             E_bullet.gameObject.SetActive(true);
 
             ani.SetTrigger(hashFire);
-        }*/
+        }
 
         isReload = (--curBullet % maxBullet) == 0;  //0되는 순간 true됨
 
@@ -87,7 +87,8 @@ public class EnemyFire : MonoBehaviour
         StartCoroutine(ShowMuzzleFlash());
         #endregion
 
-        RaycastHit hit;
+        #region Raycast
+        /* RaycastHit hit;
 
         if(Physics.Raycast(firePos.position, firePos.forward,out hit, 15f))
         {
@@ -99,7 +100,8 @@ public class EnemyFire : MonoBehaviour
 
             hit.collider.SendMessage("playerDamage", obj, SendMessageOptions.DontRequireReceiver);
             }
-        }
+        } */
+        #endregion
 
         SoundManager.S_instance.PlaySound(firePos.position, fireClip);
     }
