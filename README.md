@@ -21,3 +21,15 @@ canvasGroup -> blockRayCast 활성화 비활성화에 따라 UI 이벤트를 받
 2. Barrel 폭발 시 반경 안에 있는 Enemy는 Die
 3. for문 대신 delegate event 대리자와 이벤트로 Enemy에게 playerDie 알리기
 4. killcount가 게임이 종료되어도 다시 시작하면 이전의 killcount를 불러옴
+
+# 240726
+1. playerPrefs를 활용한 데이터 저장
+
+함수종류
+DeleteAll: 모든 키 값 삭제
+DeleteKey: 특정 키 값 삭제
+Get자료형("키", value);
+Set자료형("키", value);
+
+HasKey: 해당 키 존재 유무
+Save: 변경된 키 값을 물리적인 저장공간에 저장
