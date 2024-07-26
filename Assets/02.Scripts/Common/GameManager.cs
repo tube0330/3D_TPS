@@ -27,7 +27,9 @@ public class GameManager : MonoBehaviour
 
     void LoadGameData()
     {
+        killCnt = PlayerPrefs.GetInt("KILLCOUNT", 0);
         killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
+       
     }
 
     public bool isPause = false;
@@ -65,12 +67,12 @@ public class GameManager : MonoBehaviour
     {
         ++killCnt;
         killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");
-        
-        //PlayerPrefs.SetInt("KILLCOUNT", killCnt);
+
+        PlayerPrefs.SetInt("KILLCOUNT", killCnt);
     }
 
     void OnDisable()    //게임 종료하면 자동으로 호출
     {
-        PlayerPrefs.DeleteKey("KILLCOUNT");
+        //PlayerPrefs.DeleteKey("KILLCOUNT");
     }
 }
