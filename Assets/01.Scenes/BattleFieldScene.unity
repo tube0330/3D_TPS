@@ -1893,6 +1893,7 @@ GameObject:
   - component: {fileID: 530091239}
   - component: {fileID: 530091241}
   - component: {fileID: 530091242}
+  - component: {fileID: 530091243}
   m_Layer: 5
   m_Name: ItemSpeed
   m_TagString: Untagged
@@ -1982,6 +1983,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &530091243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530091237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80898cd9a8b8f01488756182192d39a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemtype: 1
+    itemcal: 1
+    name: "\u2191SPEED"
+    desc: +SPEED *10%
+    value: 0.1
 --- !u!1 &531566844
 GameObject:
   m_ObjectHideFlags: 0
@@ -5188,6 +5207,7 @@ GameObject:
   - component: {fileID: 1476123440}
   - component: {fileID: 1476123442}
   - component: {fileID: 1476123443}
+  - component: {fileID: 1476123444}
   m_Layer: 5
   m_Name: ItemHP
   m_TagString: Untagged
@@ -5277,6 +5297,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1476123444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476123438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80898cd9a8b8f01488756182192d39a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemtype: 0
+    itemcal: 0
+    name: "\u2191HP"
+    desc: +10HP
+    value: 10
 --- !u!1 &1502931745
 GameObject:
   m_ObjectHideFlags: 0
@@ -6469,6 +6507,7 @@ GameObject:
   - component: {fileID: 1915273702}
   - component: {fileID: 1915273704}
   - component: {fileID: 1915273705}
+  - component: {fileID: 1915273706}
   m_Layer: 5
   m_Name: ItemGrenade
   m_TagString: Untagged
@@ -6558,6 +6597,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1915273706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915273700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80898cd9a8b8f01488756182192d39a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemtype: 2
+    itemcal: 0
+    name: "\u2191GRENADE"
+    desc: +2GRENADE
+    value: 2
 --- !u!1 &1934910529
 GameObject:
   m_ObjectHideFlags: 0
@@ -6649,6 +6706,7 @@ GameObject:
   - component: {fileID: 1938245266}
   - component: {fileID: 1938245268}
   - component: {fileID: 1938245269}
+  - component: {fileID: 1938245270}
   m_Layer: 5
   m_Name: ItemShock
   m_TagString: Untagged
@@ -6738,6 +6796,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1938245270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938245264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80898cd9a8b8f01488756182192d39a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemtype: 3
+    itemcal: 1
+    name: "\u2191DAMAGE"
+    desc: +DAMAGE*5%
+    value: 0.05
 --- !u!1 &1955309588
 GameObject:
   m_ObjectHideFlags: 0
