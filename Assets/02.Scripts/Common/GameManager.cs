@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public Text killTxt;
     public int killCnt = 0;
 
+    [SerializeField] DataManager dataManager;
+
     void Awake()
     {
         if (G_Instance == null)
@@ -17,6 +19,9 @@ public class GameManager : MonoBehaviour
 
         else if (G_Instance != this)
             Destroy(gameObject);
+
+        dataManager = GetComponent<DataManager>();
+        dataManager.Initialize();
 
         killTxt = GameObject.Find("Canvas_UI").transform.GetChild(7).GetComponent<Text>();
 
@@ -29,7 +34,7 @@ public class GameManager : MonoBehaviour
     {
         killCnt = PlayerPrefs.GetInt("KILLCOUNT", 0);
         killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
-       
+
     }
 
     public bool isPause = false;
