@@ -149,6 +149,8 @@ public class EnemyAI_Ani : MonoBehaviour
         isDie = false;
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<CapsuleCollider>().enabled = true;
+        GetComponent<EnemyDamage>().E_HP = 100;
+        state = State.PTROL;
         gameObject.tag = "ENEMY"; ;     //오브젝트가 활성화 되기 전 태그 이름 줌
         gameObject.SetActive(false);
     }

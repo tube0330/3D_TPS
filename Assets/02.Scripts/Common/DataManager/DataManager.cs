@@ -11,7 +11,7 @@ public class DataManager : MonoBehaviour
 
     public void Initialize()    //저장경로를 초기화하기 위한 함수
     {
-        dataPath = Application.persistentDataPath + "/gameDate.dat";    //파일 저장 경로와 파일명 지정
+        dataPath = Application.persistentDataPath + "/gameDate.dat";    //파일 저장 경로 + 파일명 지정
     }
 
     public void Save(GameData gameData)

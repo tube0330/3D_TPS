@@ -37,6 +37,10 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         canvasGroup.blocksRaycasts = true;  //다른 UI 이벤트를 받아서 OnDrop이 되겠지
 
         if (itemTr.parent == inventoryTr)   //드래그 시작하자마자 부모가 Inventory가 되니까
-            itemTr.SetParent(itemList.transform);   //끌고갔는데 슬롯에 안넣었으면 본래 자리(Image_ItemList)로 돌아오도록
+        {
+            itemTr.SetParent(itemList.transform);   //끌고갔는데 슬롯에 안넣었으면 본래 자리(Image_ItemList)로 돌아오도록}
+
+            GameManager.G_Instance.RemoveItem(GetComponent<ItemInfo>().itemData);   //Inventory slot에 올라간 아이템을 뺐을 떄 처리
+        }
     }
 }

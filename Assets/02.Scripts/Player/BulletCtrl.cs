@@ -16,12 +16,20 @@ public class BulletCtrl : MonoBehaviour
         tr = transform;
         rb = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
+        Invoke("BulletDisable", 2.0f);
     }
 
     private void OnEnable()
     {
-        Invoke("BulletDisable", 2.0f);
+        damage = GameManager.G_Instance.gameData.damage;
+        GameManager.OnItemChange += UpdateSetUp;
+        
         rb.AddForce(tr.forward * speed);
+    }
+
+    void UpdateSetUp()
+    {
+        damage = GameManager.G_Instance.gameData.damage;
     }
 
     void BulletDisable()

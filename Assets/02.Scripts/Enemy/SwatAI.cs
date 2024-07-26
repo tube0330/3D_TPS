@@ -143,6 +143,8 @@ public class SwatAI : MonoBehaviour
         isDie = false;
         rb.isKinematic = false;
         cap.enabled = true;
+        GetComponent<SwatDamage>().HP = 100;
+        state = State.PATROL;
         gameObject.tag = "SWAT";
         gameObject.SetActive(false);
     }

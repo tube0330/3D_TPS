@@ -10,17 +10,29 @@ public class Damage : MonoBehaviour
     [SerializeField] private Image BloodScreen;
     [SerializeField] private Image Img_HPBar;
     public GameObject bloodEffect;
-    public float HP = 0;
-    public float MaxHP = 100;
+    public float curHP = 0;
+    public float initHP = 100;
     //private string enemyTag = "ENEMY";
     //private string swatTag = "SWAT";
 
     public delegate void PlayerDieHandler();
     public static event PlayerDieHandler OnPlayerDie;
 
+    void OnEnable()
+    {
+        GameManager.OnItemChange += UpdateSetUp;
+    }
+
+    void UpdateSetUp()
+    {
+        initHP = GameManager.G_Instance.gameData.HP;
+        curHP += GameManager.G_Instance.gameData.HP - curHP;
+    }
+
     void Start()
     {
-        HP = MaxHP;
+        initHP = GameManager.G_Instance.gameData.HP;
+        curHP = initHP;
         bloodEffect = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         BloodScreen = GameObject.Find("Canvas_UI").transform.GetChild(0).GetComponent<Image>();
         Img_HPBar = GameObject.Find("Canvas_UI").transform.GetChild(2).GetChild(2).GetComponent<Image>();
@@ -40,10 +52,10 @@ public class Damage : MonoBehaviour
             GameObject Blood = Instantiate(bloodEffect, pos, rot);
             Destroy(Blood, 1.0f);
 
-            HP -= 1;
-            Img_HPBar.fillAmount = (HP / MaxHP);
+            curHP -= 1;
+            Img_HPBar.fillAmount = (curHP / initHP);
 
-            if (HP <= 0f && Img_HPBar.fillAmount == 0)
+            if (curHP <= 0f && Img_HPBar.fillAmount == 0)
                 PlayerDie();
 
             StartCoroutine(ShowBloodScreen());
@@ -54,12 +66,12 @@ public class Damage : MonoBehaviour
     void playerDamage(object[] obj)
     {
         ShowBloodEffect((Vector3)obj[0]);
-        HP -= (float)obj[1];
-        Mathf.Clamp(HP, 0, MaxHP);
+        curHP -= (float)obj[1];
+        Mathf.Clamp(curHP, 0, initHP);
 
-        Img_HPBar.fillAmount = (HP / MaxHP);
+        Img_HPBar.fillAmount = (curHP / initHP);
 
-        if (HP <= 0f && Img_HPBar.fillAmount == 0)
+        if (curHP <= 0f && Img_HPBar.fillAmount == 0)
             PlayerDie();
 
         StartCoroutine(ShowBloodScreen());

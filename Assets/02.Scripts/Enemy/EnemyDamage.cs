@@ -6,7 +6,7 @@ public class EnemyDamage : MonoBehaviour
 {
     [SerializeField] private GameObject BloodEff;
 
-    private float E_HP = 0;
+    public float E_HP = 0;
     private float E_MaxHP = 100;
 
     void Start()

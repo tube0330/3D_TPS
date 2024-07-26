@@ -8,7 +8,7 @@ public class SwatDamage : MonoBehaviour
     [SerializeField] private Animator ani;
     [SerializeField] private GameObject BloodEff;
 
-    [SerializeField] private float HP = 0f;
+    [SerializeField] public float HP = 0f;
     [SerializeField] private float MaxHP = 100f;
 
     //private readonly string bulletTag = "BULLET";

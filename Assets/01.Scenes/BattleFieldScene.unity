@@ -4259,8 +4259,8 @@ MonoBehaviour:
   BloodScreen: {fileID: 0}
   Img_HPBar: {fileID: 0}
   bloodEffect: {fileID: 0}
-  HP: 0
-  MaxHP: 100
+  curHP: 0
+  initHP: 100
 --- !u!137 &1212782671 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 13700004, guid: f3cd25b3bf53c4adaaf087d862e435e6, type: 3}
@@ -5875,6 +5875,12 @@ MonoBehaviour:
     HP: 120
     damage: 25
     speed: 6
+  slotList: {fileID: 859015369}
+  itemObjects:
+  - {fileID: 1476123438}
+  - {fileID: 530091237}
+  - {fileID: 1915273700}
+  - {fileID: 1938245264}
   isPause: 0
 --- !u!4 &1669392357
 Transform:

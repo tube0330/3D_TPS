@@ -31,13 +31,24 @@ public class Player : MonoBehaviour
 
     float h = 0f, v = 0f, r = 0f;
 
+    void OnEnable()
+    {
+        GameManager.OnItemChange += UpdateSetUp;
+    }
+
+    void UpdateSetUp()
+    {
+        moveSpeed = GameManager.G_Instance.gameData.speed;
+    }
+
     void Start()
     {
         tr = transform;
         rb = GetComponent<Rigidbody>();
         ani = GetComponent<Animation>();
         capCol = GetComponent<CapsuleCollider>();
-
+        moveSpeed = GameManager.G_Instance.gameData.speed;
+        
         ani.Play(playerAnimation.idle.name);
         /*ani.clip = playerAnimation.idle;
         ani.Play(playerAnimation.idle.name);*/
