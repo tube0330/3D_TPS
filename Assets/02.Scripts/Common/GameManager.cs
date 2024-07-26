@@ -73,6 +73,6 @@ public class GameManager : MonoBehaviour
 
     void OnDisable()    //게임 종료하면 자동으로 호출
     {
-        //PlayerPrefs.DeleteKey("KILLCOUNT");
+        PlayerPrefs.DeleteKey("KILLCOUNT");
     }
 }
