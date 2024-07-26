@@ -1999,7 +1999,7 @@ MonoBehaviour:
     itemtype: 1
     itemcal: 1
     name: "\u2191SPEED"
-    desc: +SPEED *10%
+    desc: "\u219110%"
     value: 0.1
 --- !u!1 &531566844
 GameObject:
