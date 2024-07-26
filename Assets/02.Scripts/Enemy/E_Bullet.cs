@@ -14,11 +14,11 @@ public class Bullet : MonoBehaviour
         tr = transform;
         rb = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
+        Invoke("BulletDisable", 2.0f);
     }
 
     private void OnEnable()
     {
-        Invoke("BulletDisable", 2.0f);
         rb.AddForce(tr.forward * speed);
     }
 

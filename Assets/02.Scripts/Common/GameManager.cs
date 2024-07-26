@@ -52,9 +52,31 @@ public class GameManager : MonoBehaviour
         gameData.speed = data.speed;
         #endregion
 
+        if (gameData.equipItem.Count > 0)
+            InventorySetUp();
+
         //killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
 
         killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killcnt.ToString("0000");
+    }
+
+    void InventorySetUp()
+    {
+        var slots = slotList.GetComponentsInChildren<Transform>();
+
+        for (int i = 0; i < gameData.equipItem.Count; i++)
+        {
+            for (int j = 1; j < slots.Length; j++)  //j=1 -> slotlist(부모) 빼고 하려고
+            {
+                if (slots[j].childCount > 0) continue;
+
+                int itemIdx = (int)gameData.equipItem[i].itemtype;  //보유한 item 종류에 따라 인덱스 추출
+                itemObjects[itemIdx].GetComponent<Transform>().SetParent(slots[j].transform);   //item의 부모는 slot이 됨
+                itemObjects[itemIdx].GetComponent<ItemInfo>().itemData = gameData.equipItem[i]; //item의 iteminfo 클래스의 itemData에 로드한 gameData.equopItem[i] 데ㅇㅣ터 값을 저장
+                
+                break;  //데이터값 저장할 곳 찾았으니까 이제 빠져나옴
+            }
+        }
     }
 
     void SaveGameData()
