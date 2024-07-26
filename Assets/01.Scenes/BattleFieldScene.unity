@@ -5845,6 +5845,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1669392357}
   - component: {fileID: 1669392356}
+  - component: {fileID: 1669392358}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5867,6 +5868,13 @@ MonoBehaviour:
   isGameOver: 0
   killTxt: {fileID: 0}
   killCnt: 0
+  dataManager: {fileID: 0}
+  gameData:
+    equipItem: []
+    killcnt: 0
+    HP: 120
+    damage: 25
+    speed: 6
   isPause: 0
 --- !u!4 &1669392357
 Transform:
@@ -5883,6 +5891,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1669392358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669392355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f6fbc6b52b8da479de5cb225cd1f66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataPath: 
 --- !u!1001 &1678712434
 PrefabInstance:
   m_ObjectHideFlags: 0

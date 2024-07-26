@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataInfo;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,9 @@ public class GameManager : MonoBehaviour
     public Text killTxt;
     public int killCnt = 0;
 
+    [Header("Datamanager")]
     [SerializeField] DataManager dataManager;
+    [SerializeField] GameData gameData;
 
     void Awake()
     {
@@ -32,9 +35,20 @@ public class GameManager : MonoBehaviour
 
     void LoadGameData()
     {
-        killCnt = PlayerPrefs.GetInt("KILLCOUNT", 0);
-        killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
+        //killCnt = PlayerPrefs.GetInt("KILLCOUNT", 0);
 
+        #region 하드디스크에 저장된 데이터 넘어오는중
+        GameData data = dataManager.Load();
+        gameData.HP = data.HP;
+        gameData.damage = data.damage;
+        gameData.killcnt = data.killcnt;
+        gameData.equipItem = data.equipItem;
+        gameData.speed = data.speed;
+        #endregion
+
+        //killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
+
+        killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killcnt.ToString("0000");
     }
 
     public bool isPause = false;
@@ -70,9 +84,13 @@ public class GameManager : MonoBehaviour
 
     public void KillScore()
     {
-        ++killCnt;
+        /* ++killCnt;
         killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");
 
+        PlayerPrefs.SetInt("KILLCOUNT", killCnt); */
+
+        gameData.killcnt++;
+        killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killcnt.ToString("0000");
         PlayerPrefs.SetInt("KILLCOUNT", killCnt);
     }
 

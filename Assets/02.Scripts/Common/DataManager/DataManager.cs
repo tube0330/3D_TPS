@@ -27,8 +27,28 @@ public class DataManager : MonoBehaviour
         data.speed = gameData.speed;
 
         binary.Serialize(file, data);
-        file.Close();       //닫지 않으면 메모리를 많이 차지한채로 게임을 진행하기 때문에 반드시 닫아야 함
-        
+        file.Close();       //닫지 않으면 메모리를 많이 차지한채로 게임을 진행하기 때문에 반드시 닫아야 함        
+    }
+
+    public GameData Load()
+    {
+        if(File.Exists(dataPath))   //존재 유무 파악
+        {
+            //데이터 불러오기
+            BinaryFormatter binary = new BinaryFormatter();
+            FileStream file = File.Open(dataPath, FileMode.Open);
+
+            GameData data = (GameData)binary.Deserialize(file); //하드디스크에 바이트단위로 저장되더있능ㄴ 데이터를 float, string, int형으로 가져옴(역직렬화)
+            file.Close();
+            return data;
+        }
+
+        else
+        {
+            //파일이 없는 경우 기본값 반환
+            GameData data = new GameData();
+            return data;
+        }
     }
 
 }
