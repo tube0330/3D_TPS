@@ -57,7 +57,9 @@ public class FireCtrl : MonoBehaviour
     }
     void Update()
     {
-        if(EventSystem.current.IsPointerOverGameObject()) return;   //UI에 특정 이벤트가 발생되면 빠져나감
+        Debug.DrawRay(firePos.position, firePos.forward * 25f, Color.green);    //광선 그리기
+        
+        if (EventSystem.current.IsPointerOverGameObject()) return;   //UI에 특정 이벤트가 발생되면 빠져나감
 
         if (Input.GetMouseButtonDown(0) && !isReload)
         {
@@ -97,7 +99,7 @@ public class FireCtrl : MonoBehaviour
     IEnumerator Reloading()
     {
         isReload = true;
-    SoundManager.S_instance.PlaySound(transform.position, playerSound.reload[(int)curWeaponType]);
+        SoundManager.S_instance.PlaySound(transform.position, playerSound.reload[(int)curWeaponType]);
         yield return new WaitForSeconds(playerSound.reload[(int)curWeaponType].length + 0.0f);
 
         curBullet = maxBullet;

@@ -13,9 +13,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Datamanager")]
     [SerializeField] DataManager dataManager;
-    public GameData gameData;
+    //public GameData gameData;
+    public GameDataObject gameData; //위의 방법 대신 Attribute를 사용한 방법
 
-    //인벤토리 아이템이 변경되었을 때 발생 시킬 이벤트 정의
+    //인벤토리 아이템이 변경(추가, 삭제)되었을 때 발생 시킬 이벤트 정의
     public delegate void ItemChangedDelegate();
     public static event ItemChangedDelegate OnItemChange;
     [SerializeField] private GameObject slotList;
@@ -43,21 +44,20 @@ public class GameManager : MonoBehaviour
     {
         //killCnt = PlayerPrefs.GetInt("KILLCOUNT", 0);
 
-        #region 하드디스크에 저장된 데이터 넘어오는중
-        GameData data = dataManager.Load();
-        gameData.HP = data.HP;
-        gameData.damage = data.damage;
-        gameData.killcnt = data.killcnt;
-        gameData.equipItem = data.equipItem;
-        gameData.speed = data.speed;
+        #region 하드디스크에 저장된 데이터 넘어오는중, 데이터 초기
+        // GameData data = dataManager.Load();
+        // gameData.HP = data.HP;
+        // gameData.damage = data.damage;
+        // gameData.killcnt = data.killcnt;
+        // gameData.equipItem = data.equipItem;
+        // gameData.speed = data.speed;
         #endregion
 
         if (gameData.equipItem.Count > 0)
             InventorySetUp();
 
         //killTxt.text = $"<color=#ff0000>KILL</color> " + killCnt.ToString("0000");    //자릿수설정
-
-        killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killcnt.ToString("0000");
+        killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killCnt.ToString("0000");
     }
 
     void InventorySetUp()
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
                 int itemIdx = (int)gameData.equipItem[i].itemtype;  //보유한 item 종류에 따라 인덱스 추출
                 itemObjects[itemIdx].GetComponent<Transform>().SetParent(slots[j].transform);   //item의 부모는 slot이 됨
                 itemObjects[itemIdx].GetComponent<ItemInfo>().itemData = gameData.equipItem[i]; //item의 iteminfo 클래스의 itemData에 로드한 gameData.equopItem[i] 데ㅇㅣ터 값을 저장
-                
+
                 break;  //데이터값 저장할 곳 찾았으니까 이제 빠져나옴
             }
         }
@@ -81,7 +81,8 @@ public class GameManager : MonoBehaviour
 
     void SaveGameData()
     {
-        dataManager.Save(gameData);
+        //dataManager.Save(gameData);
+        UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
     }
 
     public void AddItem(Item item)   //인벤토리에서 아이템을 추가했을 때 데이터 정보를 업데이트하는 함수
@@ -94,7 +95,10 @@ public class GameManager : MonoBehaviour
         {
             case Item.ITEMTYPE.HP:
                 if (item.itemcal == Item.ITEMCALC.VALUE)
+                {
                     gameData.HP += item.value;  //더하는 방식일때
+                    Debug.Log("HP추가");
+                }
 
                 else
                     gameData.HP += gameData.HP * item.value;    //곱하는 방식일때
@@ -122,6 +126,8 @@ public class GameManager : MonoBehaviour
         }
 
         OnItemChange(); //아이템 변경된 것을 실시간으로 반영하기 위해 호출
+
+        UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
     }
 
     public void RemoveItem(Item item)   //인벤토리에서 아이템을 뺐을 때 데이터 정보를 업데이트하는 함수
@@ -160,6 +166,8 @@ public class GameManager : MonoBehaviour
         }
 
         OnItemChange(); //아이템 변경된 것을 실시간으로 반영하기 위해 호출
+
+        UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
     }
 
     public bool isPause = false;
@@ -200,8 +208,8 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.SetInt("KILLCOUNT", killCnt); */
 
-        gameData.killcnt++;
-        killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killcnt.ToString("0000");
+        gameData.killCnt++;
+        killTxt.text = $"<color=#ff0000>KILL</color> " + gameData.killCnt.ToString("0000");
         //PlayerPrefs.SetInt("KILLCOUNT", killCnt);
     }
 

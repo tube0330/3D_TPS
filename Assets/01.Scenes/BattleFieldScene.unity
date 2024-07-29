@@ -5869,12 +5869,7 @@ MonoBehaviour:
   killTxt: {fileID: 0}
   killCnt: 0
   dataManager: {fileID: 0}
-  gameData:
-    equipItem: []
-    killcnt: 0
-    HP: 120
-    damage: 25
-    speed: 6
+  gameData: {fileID: 11400000, guid: f23d27e673f95264684feac618c8aeac, type: 2}
   slotList: {fileID: 859015369}
   itemObjects:
   - {fileID: 1476123438}
