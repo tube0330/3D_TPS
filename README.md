@@ -38,4 +38,5 @@ Save: 변경된 키 값을 물리적인 저장공간에 저장
 1. GameData는 고전적인 방식.
 Attribute를 사용해 자동으로 생성하기 위해 GameData 대신 GameDataObject 스크립트 생성
 2. FireCtrl에서 Raycast를 사용해 적 태그를 가지고 있다면 자동으로 총알 발사
-3. 적들이 Barrel이나 Wall 같은 장애물에 가려져 있으면 총알 발사가 안되게 막기
+3. 적들이 Barrel이나 Wall 같은 장애물에 가려져 있으면 총알 발사 제한
+4. FollowCam_Camera에서 Raycast를 쐈을 때 Player가 아닌 Gameobject가 맞으면 카메라 위치 이동

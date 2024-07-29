@@ -56,6 +56,7 @@ public class SwatAI : MonoBehaviour
 
         StartCoroutine(CheckState());
         StartCoroutine(Action());
+        
     }
 
     IEnumerator CheckState()

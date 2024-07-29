@@ -16,7 +16,7 @@ public class SwatDamage : MonoBehaviour
     [SerializeField] private Text HPtxt;
 
     //private readonly string bulletTag = "BULLET";
-
+    
     void Start()
     {
         C_swatAI = GetComponent<SwatAI>();
@@ -25,6 +25,7 @@ public class SwatDamage : MonoBehaviour
         HP = MaxHP;
         HPBar = transform.GetChild(3).GetChild(1).GetComponent<Image>();
         HPtxt = transform.GetChild(3).GetChild(2).GetComponent<Text>();
+        HPBar.fillAmount = 1f;
     }
 
     void OnDamage(object[] obj)

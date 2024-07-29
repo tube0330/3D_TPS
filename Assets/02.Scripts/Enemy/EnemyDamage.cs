@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class EnemyDamage : MonoBehaviour
 {
     [SerializeField] private GameObject BloodEff;
+    [SerializeField] EnemyAI_Ani C_enemyAI;
 
     public float E_HP = 0;
     private float E_MaxHP = 100;
@@ -14,10 +15,12 @@ public class EnemyDamage : MonoBehaviour
 
     void Start()
     {
+        C_enemyAI = GetComponent<EnemyAI_Ani>();
         BloodEff = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         E_HP = E_MaxHP;
         HPBar = transform.GetChild(4).GetChild(1).GetComponent<Image>();
         HPtxt = transform.GetChild(4).GetChild(2).GetComponent<Text>();
+        HPBar.fillAmount = 1f;
     }
 
     #region projectile 방식과 충돌 감지 isTrigger 체크된 경우 OnTriggerEnter
