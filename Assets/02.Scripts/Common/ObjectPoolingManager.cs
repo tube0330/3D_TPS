@@ -35,10 +35,10 @@ public class ObjectPoolingManager : MonoBehaviour
         EnemyPrefab = Resources.Load<GameObject>("Enemy");
         SwatPrefab = Resources.Load<GameObject>("Swat");
 
-        CreateBulletPool();
-        E_CreateBulletPool();
-        CreateEnemyPool();
-        CreateSwatPool();
+        StartCoroutine(CreateBulletPool());
+        StartCoroutine(E_CreateBulletPool());
+        StartCoroutine(CreateEnemyPool());
+        StartCoroutine(CreateSwatPool());
     }
 
     private void Start()
@@ -57,8 +57,9 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    private void CreateEnemyPool()
+    IEnumerator CreateEnemyPool()
     {
+        yield return new WaitForSeconds(2.0f);
         GameObject EnemyGroup = new GameObject("EnemyGroup");
 
         for (int i = 0; i < 10; i++)
@@ -70,8 +71,9 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    private void CreateSwatPool()
+    IEnumerator CreateSwatPool()
     {
+        yield return new WaitForSeconds(2.0f);
         GameObject SwatGroup = new GameObject("SwatGroup");
 
         for (int i = 0; i < 10; i++)
@@ -83,8 +85,9 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    void CreateBulletPool()
+    IEnumerator CreateBulletPool()
     {
+        yield return new WaitForSeconds(2.0f);
         GameObject PlayerBulletGroup = new GameObject("PlayerBulletGroup");
 
         for (int i = 0; i < 50; i++)
@@ -98,8 +101,9 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    void E_CreateBulletPool()
+    IEnumerator E_CreateBulletPool()
     {
+        yield return new WaitForSeconds(2.0f);
         GameObject EnemyBulletGroup = new GameObject("EnemyBulletGroup");
 
         for (int i = 0; i < maxPool; i++)

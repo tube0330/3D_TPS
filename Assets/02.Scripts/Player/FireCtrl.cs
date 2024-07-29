@@ -41,7 +41,12 @@ public class FireCtrl : MonoBehaviour
     public Sprite[] weaponIcon;
     public Image weaponImg;
 
-
+    [Header("Raycast to Attack Enemies")]
+    private int enemyLayer;     //적 레이어 번호를 받을 변수
+    private int swatLayer;     //적 레이어 번호를 받을 변수
+    public bool isFire = false;
+    private float nextFire;         //다음 발사 시간 저장 변수
+    public float fireRate = 0.1f;   //총알 발사 간걱
 
     void Start()
     {
@@ -54,13 +59,39 @@ public class FireCtrl : MonoBehaviour
         weaponIcon = Resources.LoadAll<Sprite>("WeaponIcons");
         weaponImg = GameObject.Find("Canvas_UI").transform.GetChild(3).GetChild(0).GetComponent<Image>();
 
+        enemyLayer = LayerMask.NameToLayer("ENEMY");    //레이어의 이름을 레이어의 인덱스(정수 값)로 변환
+        swatLayer = LayerMask.NameToLayer("SWAT");
+
     }
     void Update()
     {
-        Debug.DrawRay(firePos.position, firePos.forward * 25f, Color.green);    //광선 그리기
-        
         if (EventSystem.current.IsPointerOverGameObject()) return;   //UI에 특정 이벤트가 발생되면 빠져나감
+        #region Fire to RayCastHit
+        RaycastHit hit; //광선에 맞은 오브젝트의 위치와 거리 정보가 담긴 구조체
+        if (Physics.Raycast(firePos.position, firePos.forward, out hit, 25f,
+         1 << enemyLayer | 1 << swatLayer))
+            isFire = true;
 
+        else
+            isFire = false;
+
+
+
+        if (!isReload && isFire)
+        {
+            if (Time.time > nextFire)
+            {
+                --curBullet;
+                Fire();
+                nextFire = Time.time + fireRate;  //0.1초마다 발사
+
+                if (curBullet == 0)
+                    StartCoroutine(Reloading());
+            }
+        }
+        #endregion
+
+        #region Fire to MouseButtonDown(0)
         if (Input.GetMouseButtonDown(0) && !isReload)
         {
             if (!isReload)
@@ -77,11 +108,10 @@ public class FireCtrl : MonoBehaviour
             }
         }
         else if (Input.GetMouseButtonUp(0))
-        {
             muzzleFlash.Stop();
-        }
         else
             muzzleFlash.Stop();
+        #endregion
     }
 
     private void UpdateBulletTxt()

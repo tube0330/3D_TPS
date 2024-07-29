@@ -323,9 +323,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!136 &643186897139522384
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BloodEff: {fileID: 0}
+  E_HP: 0
 --- !u!1001 &6104600660543747122
 PrefabInstance:
   m_ObjectHideFlags: 0
