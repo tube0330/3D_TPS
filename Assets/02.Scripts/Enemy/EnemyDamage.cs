@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyDamage : MonoBehaviour
 {
@@ -8,12 +9,17 @@ public class EnemyDamage : MonoBehaviour
 
     public float E_HP = 0;
     private float E_MaxHP = 100;
+    [SerializeField] private Image HPBar;
+    [SerializeField] private Text HPtxt;
 
     void Start()
     {
         BloodEff = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         E_HP = E_MaxHP;
+        HPBar = transform.GetChild(4).GetChild(1).GetComponent<Image>();
+        HPtxt = transform.GetChild(4).GetChild(2).GetComponent<Text>();
     }
+
     #region projectile 방식과 충돌 감지 isTrigger 체크된 경우 OnTriggerEnter
     /* void OnCollisionEnter(Collision col)
     {
@@ -36,6 +42,15 @@ public class EnemyDamage : MonoBehaviour
 
         E_HP -= (float)_params[1];
         E_HP = Mathf.Clamp(E_HP, 0, 100f);
+        HPBar.fillAmount = E_HP/E_MaxHP;
+        HPtxt.text = $"HP {E_HP}";
+
+        if (HPBar.fillAmount <= 0.3f)
+            HPBar.color = Color.red;
+        else if (HPBar.fillAmount <= 0.5f)
+            HPBar.color = Color.yellow;
+        else if (HPBar.fillAmount <= 1f)
+            HPBar.color = Color.green;
 
         if (E_HP <= 0f)
             E_Die();

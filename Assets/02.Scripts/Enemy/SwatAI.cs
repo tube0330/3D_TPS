@@ -145,7 +145,7 @@ public class SwatAI : MonoBehaviour
         cap.enabled = true;
         GetComponent<SwatDamage>().HP = 100;
         state = State.PATROL;
-        gameObject.tag = "SWAT";
+        gameObject.tag = "ENEMY";
         gameObject.SetActive(false);
     }
 

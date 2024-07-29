@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Codice.Client.Common.GameUI;
+using UnityEngine.AI;
 
 [System.Serializable]
 public struct PlayerSound
@@ -26,7 +28,6 @@ public class FireCtrl : MonoBehaviour
     [SerializeField] Player Player;
     [SerializeField] private ParticleSystem muzzleFlash;
     private readonly string enemyTag = "ENEMY";
-    private readonly string swatTag = "SWAT";
     private readonly string WallTag = "WALL";
     private readonly string BarrelTag = "BARREL";
     private const float DIST = 20f;
@@ -42,11 +43,13 @@ public class FireCtrl : MonoBehaviour
     public Image weaponImg;
 
     [Header("Raycast to Attack Enemies")]
-    private int enemyLayer;     //적 레이어 번호를 받을 변수
-    private int swatLayer;     //적 레이어 번호를 받을 변수
     public bool isFire = false;
     private float nextFire;         //다음 발사 시간 저장 변수
     public float fireRate = 0.1f;   //총알 발사 간걱
+    private int enemyLayer;     //적 레이어 번호를 받을 변수
+    private int boxLayer;
+    private int barrelLayer;
+    private int layerMask;
 
     void Start()
     {
@@ -60,21 +63,22 @@ public class FireCtrl : MonoBehaviour
         weaponImg = GameObject.Find("Canvas_UI").transform.GetChild(3).GetChild(0).GetComponent<Image>();
 
         enemyLayer = LayerMask.NameToLayer("ENEMY");    //레이어의 이름을 레이어의 인덱스(정수 값)로 변환
-        swatLayer = LayerMask.NameToLayer("SWAT");
+        barrelLayer = LayerMask.NameToLayer("BARREL");
+        boxLayer = LayerMask.NameToLayer("BOXES");
+        layerMask = 1 << enemyLayer | 1 << barrelLayer | 1 << boxLayer | 1 << layerMask;
 
     }
     void Update()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;   //UI에 특정 이벤트가 발생되면 빠져나감
+
         #region Fire to RayCastHit
         RaycastHit hit; //광선에 맞은 오브젝트의 위치와 거리 정보가 담긴 구조체
-        if (Physics.Raycast(firePos.position, firePos.forward, out hit, 25f,
-         1 << enemyLayer | 1 << swatLayer))
-            isFire = true;
+        if (Physics.Raycast(firePos.position, firePos.forward, out hit, 25f, layerMask))
+            isFire = hit.collider.CompareTag(enemyTag);
 
         else
             isFire = false;
-
 
 
         if (!isReload && isFire)
@@ -147,14 +151,6 @@ public class FireCtrl : MonoBehaviour
         if (Physics.Raycast(firePos.position, firePos.forward, out hit, DIST))
         {
             if (hit.collider.CompareTag(enemyTag))
-            {
-                object[] _params = new object[2];
-                _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
-                _params[1] = 25f;// 데미지 값을 전달
-                hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
-                //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
-            }
-            if (hit.collider.CompareTag(swatTag))
             {
                 object[] _params = new object[2];
                 _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달

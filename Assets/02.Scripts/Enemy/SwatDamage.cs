@@ -1,6 +1,8 @@
 using System;
+using Unity.Properties;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SwatDamage : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class SwatDamage : MonoBehaviour
 
     [SerializeField] public float HP = 0f;
     [SerializeField] private float MaxHP = 100f;
+    [SerializeField] private Image HPBar;
+    [SerializeField] private Text HPtxt;
 
     //private readonly string bulletTag = "BULLET";
 
@@ -19,16 +23,27 @@ public class SwatDamage : MonoBehaviour
         ani = GetComponent<Animator>();
         BloodEff = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         HP = MaxHP;
+        HPBar = transform.GetChild(3).GetChild(1).GetComponent<Image>();
+        HPtxt = transform.GetChild(3).GetChild(2).GetComponent<Text>();
     }
 
     void OnDamage(object[] obj)
     {
         ShowBloodEffect((Vector3)obj[0]);
-        
-        Debug.Log("Swat이 맞음");
-        HP -= (float)obj[1];
-        Mathf.Clamp(HP, 0, MaxHP);
 
+        HP -= (float)obj[1];
+        HP = Mathf.Clamp(HP, 0, 100f);
+        HPBar.fillAmount = HP / MaxHP;
+        HPtxt.text = $"HP {HP}";
+
+        if (HPBar.fillAmount <= 0.3f)
+            HPBar.color = Color.red;
+        else if (HPBar.fillAmount <= 0.5f)
+            HPBar.color = Color.yellow;
+        else if (HPBar.fillAmount <= 1f)
+            HPBar.color = Color.green;
+
+        //Mathf.Clamp(HP, 0, MaxHP);
         if (HP <= 0f)
             SwatDie();
     }
