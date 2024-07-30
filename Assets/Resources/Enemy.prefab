@@ -757,6 +757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a075ae31a2fae9a4288a9db377fafdf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  C_enemyFOV: {fileID: 0}
   state: 0
   playerTr: {fileID: 0}
   enemyTr: {fileID: 0}
@@ -817,6 +818,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewRange: 15
   viewAngle: 120
+  tr: {fileID: 0}
+  playertr: {fileID: 0}
+  playerLayer: 0
+  barrelLayer: 0
+  boxLayer: 0
+  layerMask: 0
 --- !u!1001 &6104600660543747122
 PrefabInstance:
   m_ObjectHideFlags: 0

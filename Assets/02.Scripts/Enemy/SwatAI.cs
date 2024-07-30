@@ -12,7 +12,8 @@ public class SwatAI : MonoBehaviour
     }
 
     SwatMoveAgent C_swatmove;
-    SwatFire C_SwatFire;
+    SwatFire C_swatFire;
+    SwatFOV C_swatFOV;
 
     public State state = State.PATROL;
     public Rigidbody rb;
@@ -38,7 +39,8 @@ public class SwatAI : MonoBehaviour
     void Awake()
     {
         C_swatmove = GetComponent<SwatMoveAgent>();
-        C_SwatFire = GetComponent<SwatFire>();
+        C_swatFire = GetComponent<SwatFire>();
+        C_swatFOV = GetComponent<SwatFOV>();
 
         ani = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -68,7 +70,12 @@ public class SwatAI : MonoBehaviour
             float distance = (playerTr.position - swatTr.position).magnitude;
 
             if (distance <= attackDist)
-                state = State.ATTACK;
+                {
+                    if(C_swatFOV.isTracePlayer())
+                    state = State.ATTACK;
+
+                    else state = State.TRACE;
+                }
 
             else if (distance <= traceDist)
                 state = State.TRACE;
@@ -95,13 +102,13 @@ public class SwatAI : MonoBehaviour
 
                 case State.TRACE:
                     C_swatmove.Pub_traceTarget = playerTr.position;
-                    C_SwatFire.isFire = false;
+                    C_swatFire.isFire = false;
                     rb.isKinematic = false;
                     ani.SetBool(hashFire, true);
                     break;
 
                 case State.ATTACK:
-                    C_SwatFire.isFire = true;
+                    C_swatFire.isFire = true;
                     rb.isKinematic = true;
                     C_swatmove.Stop();
                     ani.SetBool(hashMove, false);
@@ -113,7 +120,7 @@ public class SwatAI : MonoBehaviour
                     break;
 
                 case State.PLAYERDIE:
-                    C_SwatFire.isFire = false;
+                    C_swatFire.isFire = false;
                     rb.isKinematic = true;
                     OnPlayerDie();
                     break;
@@ -125,7 +132,7 @@ public class SwatAI : MonoBehaviour
     private void SwatDie()
     {
         C_swatmove.Stop();
-        C_SwatFire.isFire = false;
+        C_swatFire.isFire = false;
         isDie = true;
         rb.isKinematic = true;
         cap.enabled = false;
