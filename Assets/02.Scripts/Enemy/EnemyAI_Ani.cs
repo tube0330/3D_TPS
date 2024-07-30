@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -14,6 +15,7 @@ public class EnemyAI_Ani : MonoBehaviour
 
     private EnemyMoveAgent C_moveAgent;
     private EnemyFire C_enemyFire;
+    [SerializeField] private EnemyFOV C_enemyFOV;
     //private Pet C_Pet;
     public State state = State.PTROL;   //상태(State) 안에 있는 PTROL을 상태를 받을 수 있는 변수 state에 넘김
     [SerializeField] private Transform playerTr;    //거리를 재기 위해 선언
@@ -48,6 +50,7 @@ public class EnemyAI_Ani : MonoBehaviour
         enemyTr = GetComponent<Transform>();
         wait = new WaitForSeconds(0.3f);
         //C_Pet = GetComponent<Pet>();
+        C_enemyFOV = GetComponent<EnemyFOV>();
     }
 
     private void OnEnable() //오브젝트가 활성화될 때마다 호출
@@ -62,6 +65,8 @@ public class EnemyAI_Ani : MonoBehaviour
 
     IEnumerator CheckState()
     {
+        yield return new WaitForSeconds(1f);    //objectpool에 생성시 다른 스크립트의 초기화를 위해 대기하게함
+
         //플레이어와 적 사이의 거리를 구해서 어떤 상태인지만 파악중
         while (!isDie)
         {
@@ -70,10 +75,15 @@ public class EnemyAI_Ani : MonoBehaviour
             float dist = (playerTr.position - enemyTr.position).magnitude;
 
             if (dist <= attackDist)
-                state = State.ATTACK;
+            {
+                if (C_enemyFOV.isViewPlayer())
+                    state = State.ATTACK;
+
+                else state = State.TRACE;
+            }
             // C_Pet.transform.position = new
 
-            else if (dist <= traceDist)
+            else if (C_enemyFOV.isTracePlayer())
                 state = State.TRACE;
 
             /* else if ()
@@ -165,7 +175,7 @@ public class EnemyAI_Ani : MonoBehaviour
 
     void BarrelDie()
     {
-        if(isDie) return;
+        if (isDie) return;
         C_enemyFire.isFire = false;
         C_moveAgent.Stop();
         isDie = true;
