@@ -23,7 +23,7 @@ public class EnemyAI_Ani : MonoBehaviour
     [SerializeField] private Animator ani;
 
     public float attackDist = 5.0f;   //attack 범위 설정
-    private float traceDist = 10f;     //추적 범위 설정
+    //private float traceDist = 10f;     //추적 범위 설정
     public bool isDie = false;  //플레이어의 사망 여부 판단
     private WaitForSeconds wait;
 
