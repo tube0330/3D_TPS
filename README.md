@@ -25,7 +25,7 @@ canvasGroup -> blockRayCast 활성화 비활성화에 따라 UI 이벤트를 받
 # 240726
 1. playerPrefs를 활용한 데이터 저장
 
-[함수종류]
+함수종류
 - DeleteAll: 모든 키 값 삭제
 - DeleteKey: 특정 키 값 삭제
 - Get자료형("키", value);

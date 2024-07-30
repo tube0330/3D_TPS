@@ -597,6 +597,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1892198739988864983}
+    - targetCorrespondingSourceObject: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 241589370136005289}
   m_SourcePrefab: {fileID: 100100000, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
 --- !u!137 &4242455228199591240 stripped
 SkinnedMeshRenderer:
@@ -796,9 +799,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BloodEff: {fileID: 0}
+  C_enemyAI: {fileID: 0}
   E_HP: 0
   HPBar: {fileID: 0}
   HPtxt: {fileID: 0}
+--- !u!114 &241589370136005289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4242455228202700844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44758ced4e743d64d94d6d3977b5bb44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewRange: 15
+  viewAngle: 120
 --- !u!1001 &6104600660543747122
 PrefabInstance:
   m_ObjectHideFlags: 0
