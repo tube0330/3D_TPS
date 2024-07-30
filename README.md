@@ -43,6 +43,6 @@ Attribute를 사용해 자동으로 생성하기 위해 GameData 대신 GameData
 
 # 240730
 1. Enemy Character의 지능화 된 AI
-발사 거리 조건만 만족하면 총알 발사 -> Enemy와 Player 사이에 장애물이 있을 때 총알 발사 제한
+- 발사 거리 조건만 만족하면 총알 발사 -> Enemy와 Player 사이에 장애물이 있을 때 총알 발사 제한
 2. Enemy Character에 추적 사정거리와 시야각을 시각적으로 표시
-DrawWireDisc와 DrawSolidArc 함수 사용으로 Scene View 에서 시각적으로 구성
+- DrawWireDisc와 DrawSolidArc 함수 사용으로 Scene View 에서 시각적으로 구성
