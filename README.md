@@ -26,13 +26,13 @@ canvasGroup -> blockRayCast 활성화 비활성화에 따라 UI 이벤트를 받
 1. playerPrefs를 활용한 데이터 저장
 
 함수종류
-DeleteAll: 모든 키 값 삭제
-DeleteKey: 특정 키 값 삭제
-Get자료형("키", value);
-Set자료형("키", value);
+- DeleteAll: 모든 키 값 삭제
+- DeleteKey: 특정 키 값 삭제
+- Get자료형("키", value);
+- Set자료형("키", value);
 
-HasKey: 해당 키 존재 유무
-Save: 변경된 키 값을 물리적인 저장공간에 저장
+- HasKey: 해당 키 존재 유무
+- Save: 변경된 키 값을 물리적인 저장공간에 저장
 
 # 240729
 1. GameData는 고전적인 방식.
@@ -40,3 +40,9 @@ Attribute를 사용해 자동으로 생성하기 위해 GameData 대신 GameData
 2. FireCtrl에서 Raycast를 사용해 적 태그를 가지고 있다면 자동으로 총알 발사
 3. 적들이 Barrel이나 Wall 같은 장애물에 가려져 있으면 총알 발사 제한
 4. FollowCam_Camera에서 Raycast를 쐈을 때 Player가 아닌 Gameobject가 맞으면 카메라 위치 이동
+
+# 240730
+1. Enemy Character의 지능화 된 AI
+발사 거리 조건만 만족하면 총알 발사 -> Enemy와 Player 사이에 장애물이 있을 때 총알 발사 제한
+2. Enemy Character에 추적 사정거리와 시야각을 시각적으로 표시
+DrawWireDisc와 DrawSolidArc 함수 사용으로 Scene View 에서 시각적으로 구성
