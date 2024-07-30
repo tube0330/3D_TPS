@@ -82,7 +82,9 @@ public class GameManager : MonoBehaviour
     void SaveGameData()
     {
         //dataManager.Save(gameData);
+        #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
+#endif   //.asset 파일에 데이터 저장
     }
 
     public void AddItem(Item item)   //인벤토리에서 아이템을 추가했을 때 데이터 정보를 업데이트하는 함수
