@@ -29,7 +29,7 @@ public class FollowCam : MonoBehaviour
     }
     void Update()
     {
-        if (camTr == null) return;
+        if (target == null) return;
 
         Vector3 castTarget = target.position + (target.up * castOffset);    //타겟(Player)위치에서 1만큼 올림 (1만큼 올려버리면 1만큼 올라가니까 플레이어의 위치에서부터 올라갈거니까)
         Vector3 castDir = (castTarget - camTr.position).normalized; //타겟(Player)위치에서 카메라 위치 빼 방향과 거리 나옴. 방향구하려고 Vector3씀
@@ -48,6 +48,7 @@ public class FollowCam : MonoBehaviour
     }
     void LateUpdate()
     {
+        if (target == null) return;
         var camPos = target.position/*target 포지션에서*/ - (target.forward * distance)/*distance만큼 뒤에 있고*/ + (target.up * h);/*위에 있음*/
         camTr.position = Vector3.Slerp(transform.position, camPos, Time.deltaTime * movedamping);
         camTr.rotation = Quaternion.Slerp(camTr.rotation, target.rotation, Time.deltaTime * rotdamping);
