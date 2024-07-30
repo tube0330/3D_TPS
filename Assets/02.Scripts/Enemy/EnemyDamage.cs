@@ -18,8 +18,8 @@ public class EnemyDamage : MonoBehaviour
         C_enemyAI = GetComponent<EnemyAI_Ani>();
         BloodEff = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         E_HP = E_MaxHP;
-        HPBar = transform.GetChild(4).GetChild(1).GetComponent<Image>();
-        HPtxt = transform.GetChild(4).GetChild(2).GetComponent<Text>();
+        HPBar = transform.GetChild(5).GetChild(1).GetComponent<Image>();
+        HPtxt = transform.GetChild(5).GetChild(2).GetComponent<Text>();
         HPBar.fillAmount = 1f;
     }
 

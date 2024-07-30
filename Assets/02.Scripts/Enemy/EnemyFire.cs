@@ -31,7 +31,7 @@ public class EnemyFire : MonoBehaviour
 
     void Start()
     {
-        firePos = transform.GetChild(3).GetChild(0).GetChild(0).transform;
+        firePos = transform.GetChild(4).GetChild(0).GetChild(0).transform;
         ani = GetComponent<Animator>();
         enemyTr = GetComponent<Transform>();
         playerTr = GameObject.FindWithTag("Player").transform;
@@ -39,7 +39,7 @@ public class EnemyFire : MonoBehaviour
         curBullet = maxBullet;
         reloadWs = new WaitForSeconds(reloadTime);
         reloadClip = Resources.Load<AudioClip>("Sounds/p_reload");
-        E_MuzzleFlash = transform.GetChild(3).GetChild(0).GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
+        E_MuzzleFlash = transform.GetChild(4).GetChild(0).GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
         E_MuzzleFlash.enabled = false;  //mesh Renderer 안보이게
     }
 
