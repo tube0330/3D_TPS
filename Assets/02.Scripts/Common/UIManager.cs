@@ -7,8 +7,10 @@ public class UIManager : MonoBehaviour
 {
     public void OnClickPlayBtn()
     {
-        SceneManager.LoadScene("Level_1");
-        SceneManager.LoadScene("BattleFieldScene", LoadSceneMode.Additive); //기존씬을 삭제하지 않고 추가해서 새로운 씬을 로드.
+        /* SceneManager.LoadScene("Level_1");
+        SceneManager.LoadScene("BattleFieldScene", LoadSceneMode.Additive); //기존씬을 삭제하지 않고 추가해서 새로운 씬을 로드. */
+
+        SceneManager.LoadScene("SceneLoader");
     }
 
     public void OnClickQuitBtn()
