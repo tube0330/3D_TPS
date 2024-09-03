@@ -16,7 +16,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public Transform rInfo;
     public GameObject rItem;
     readonly string roomItemTag = "R_ITEM";
-    Dictionary<string, GameObject> rooms = new Dictionary<string, GameObject>();
+    //Dictionary<string, GameObject> rooms = new Dictionary<string, GameObject>();
 
     RoomOptions ro;
 

@@ -96,27 +96,28 @@ public class Player : MonoBehaviourPun
         if (photonView.IsMine)
         {
             Vector2 dir = moveAction.ReadValue<Vector2>();
-            moveDir = new Vector3(dir.x, 0, dir.y).normalized; // 방향 벡터 정규화
+            moveDir = new Vector3(dir.x, 0, dir.y).normalized;
 
             if (moveDir != Vector3.zero)
             {
                 ani.SetBool("move", true);
-                tr.Translate(moveDir * moveSpeed * Time.deltaTime);
+                tr.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
                 tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime * rotSpeed);
             }
-
             else
+            {
                 ani.SetBool("move", false);
+            }
 
-            //MoveAni();
             Sprint();
         }
-
         else
         {
+            // 다른 플레이어의 위치를 부드럽게 보간
             tr.position = Vector3.Lerp(tr.position, curPos, Time.deltaTime * 10f);
             tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.deltaTime * 10f);
         }
+
     }
 
     private void Sprint()

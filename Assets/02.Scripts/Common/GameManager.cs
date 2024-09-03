@@ -4,6 +4,7 @@ using DataInfo;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Network")]
     public GameObject playerPrefab;
     public Text CurPlayer;
+    public Text logText;
 
     void Awake()
     {
@@ -239,8 +241,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         CurPlayer.text = $"({room.PlayerCount}/{room.MaxPlayers})";
     }
 
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player player)
     {
         SetRoomInfo();
+        string msg = $"\n<color=#00ff00>{player.NickName}</color> Enter room";
+        logText.text += msg;    //방문기록은 계속 이어서 써야되니까 + 연산자 사용
     }
+
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player player)
+    {
+        SetRoomInfo();
+        string msg = $"\n<color=red>{player.NickName}</color> Left room";
+        logText.text += msg;
+    }
+
+    public override void OnLeftRoom() => SceneManager.LoadScene("StartScene");
 }
