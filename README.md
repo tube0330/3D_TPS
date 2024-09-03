@@ -71,3 +71,4 @@ Q를 누르면 자동차에서 내리고 자동차 정지
 - 플레이어끼리는 대전을 하지 않고 Enemy만 공격
 - Kill Count 기록
 - Enemy는 가장 가까운 player를 공격
+3. Cinemachine으로 변경
