@@ -80,13 +80,12 @@ public class FireCtrl : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject()) return;   //UI에 특정 이벤트가 발생되면 빠져나감
 
         #region Fire to RayCastHit
-        RaycastHit hit; //광선에 맞은 오브젝트의 위치와 거리 정보가 담긴 구조체
+        /* RaycastHit hit; //광선에 맞은 오브젝트의 위치와 거리 정보가 담긴 구조체
         if (Physics.Raycast(firePos.position, firePos.forward, out hit, 25f, layerMask))
             isFire = hit.collider.CompareTag(enemyTag);
 
         else
-            isFire = false;
-
+            isFire = false; */
 
         #region 0.1초마다 발사
         /* if (!isReload && isFire)
@@ -126,6 +125,7 @@ public class FireCtrl : MonoBehaviour
             muzzleFlash.Stop(); */
         #endregion
 
+        #region playerInputSystem
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
         // Check for fire input
@@ -147,6 +147,7 @@ public class FireCtrl : MonoBehaviour
             muzzleFlash.Stop();
 
         UpdateBulletTxt();
+        #endregion
     }
 
     private void UpdateBulletTxt()
@@ -213,19 +214,18 @@ public class FireCtrl : MonoBehaviour
         UpdateBulletTxt();
 
         #region Projectile Movement Method
-
-        ////오브젝트 풀링이 아닐때
-        ////Instantiate(bulletprfab, firePosTr.position, firePosTr.rotation);
-        ////오브젝트 풀링일 때
-        //var _bullet = ObjectPoolingManager.poolingManager.GetBulletPool();
-        //if (_bullet != null)
-        //{
-        //    _bullet.transform.position = firePosTr.position;
-        //    _bullet.transform.rotation = firePosTr.rotation;
-        //    _bullet.SetActive(true);
-        //    if (_bullet)
-        //        muzzleFlash.Play();
-        //}
+        /* 오브젝트 풀링이 아닐때
+        Instantiate(bulletprfab, firePosTr.position, firePosTr.rotation); */
+        /* 오브젝트 풀링일 때
+        var _bullet = ObjectPoolingManager.poolingManager.GetBulletPool();
+        if (_bullet != null)
+        {
+           _bullet.transform.position = firePosTr.position;
+           _bullet.transform.rotation = firePosTr.rotation;
+           _bullet.SetActive(true);
+           if (_bullet)
+               muzzleFlash.Play();
+        } */
         #endregion
     }
 }

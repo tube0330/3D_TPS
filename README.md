@@ -66,7 +66,12 @@ Q를 누르면 자동차에서 내리고 자동차 정지
 1. Input System으로 변경
 2. PUN2 이용해 네트워크 게임으로 변경
 - 랜덤매치메이킹 방식으로 접속
-- 
+- 공개방, 방목록 리스트 표시
+- 로그 UI로 접속했던 ID와 접속한 ID 표시
+- 접속자 수 / 최대 접속자 수
+- 플레이어끼리는 대전을 하지 않고 Enemy만 공격
+- Kill Count 기록
+- Enemy는 가장 가까운 player를 공격
 
 3. Start Scene은 Lobby가 되고 나머지 Scene이 Main Scene
 
