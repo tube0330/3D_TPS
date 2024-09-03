@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -14,7 +15,7 @@ public class PlayerAnimation
     public AnimationClip runRight;
     public AnimationClip Sprint;
 } */
-public class Player : MonoBehaviourPun
+public class Player : MonoBehaviourPun, IPunObservable
 {
     //public PlayerAnimation playerAnimation;
 
@@ -33,10 +34,10 @@ public class Player : MonoBehaviourPun
     //float h = 0f, v = 0f, r = 0f;
 
     [Header("PlayerInput")]
-    public PlayerInput playerInput;
-    public InputActionMap playerMap;
-    public InputAction moveAction;
-    public InputAction sprintAction;
+    PlayerInput playerInput;
+    InputActionMap playerMap;
+    InputAction moveAction;
+    InputAction sprintAction;
     Vector3 moveDir = Vector3.zero;
 
     Vector3 curPos = Vector3.zero;
@@ -44,6 +45,8 @@ public class Player : MonoBehaviourPun
 
     void Awake()
     {
+        if (tr == null)
+            tr = transform;
         photonView.Synchronization = ViewSynchronization.Unreliable;
         photonView.ObservedComponents[0] = this;
     }
@@ -60,7 +63,6 @@ public class Player : MonoBehaviourPun
 
     void Start()
     {
-        tr = transform;
         ani = GetComponent<Animator>();
         moveSpeed = GameManager.G_Instance.gameData.speed;
         col = GetComponent<CapsuleCollider>();
@@ -154,8 +156,9 @@ public class Player : MonoBehaviourPun
             ani.CrossFade(playerAnimation.idle.name, 0.3f);
     } */
 
-    public void OnPhotonSerializeView(PhotonStream stream, bool isLocal)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+
         if (stream.IsWriting)
         {
             stream.SendNext(tr.position);

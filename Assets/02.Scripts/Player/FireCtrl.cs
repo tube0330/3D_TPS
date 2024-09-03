@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
 [System.Serializable]
 public struct PlayerSound
@@ -11,7 +12,7 @@ public struct PlayerSound
     public AudioClip[] fire;
     public AudioClip[] reload;
 }
-public class FireCtrl : MonoBehaviour
+public class FireCtrl : MonoBehaviourPun
 {
     public enum weaponType
     {
@@ -126,26 +127,28 @@ public class FireCtrl : MonoBehaviour
         #endregion
 
         #region playerInputSystem
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-
-        // Check for fire input
-        if (fireAction.ReadValue<float>() > 0f && !isReload)
+        if (photonView.IsMine)
         {
-            if (curBullet > 0 && Time.time > nextFire)
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+
+            if (fireAction.ReadValue<float>() > 0f && !isReload)
             {
-                Fire();
-                muzzleFlash.Play();
-                nextFire = Time.time;
+                if (curBullet > 0 && Time.time > nextFire)
+                {
+                    Fire();
+                    muzzleFlash.Play();
+                    nextFire = Time.time;
 
-                if (curBullet == 0)
-                    StartCoroutine(Reloading());
+                    if (curBullet == 0)
+                        StartCoroutine(Reloading());
+                }
             }
+
+            else if (curBullet == 0)
+                muzzleFlash.Stop();
+
+            UpdateBulletTxt();
         }
-
-        else if (curBullet == 0)
-            muzzleFlash.Stop();
-
-        UpdateBulletTxt();
         #endregion
     }
 

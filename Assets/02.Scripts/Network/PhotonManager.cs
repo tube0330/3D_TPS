@@ -94,15 +94,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print("Joined room");
-        StartCoroutine(MainScene());
+        //StartCoroutine(MainScene());
+        Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("BattleFieldScene_Backup");
     }
 
-    IEnumerator MainScene()
+    /* IEnumerator MainScene()
     {
         PhotonNetwork.IsMessageQueueRunning = false;
         AsyncOperation ao = SceneManager.LoadSceneAsync("BattleFieldScene_Backup");
         yield return ao;
-    }
+        PhotonNetwork.IsMessageQueueRunning = true;
+    } */
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -165,5 +169,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = id.text;
         PlayerPrefs.SetString("ID", id.text);   //ID에 id.text 저장
         PhotonNetwork.JoinRoom(rName);
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError("Room creation failed: " + message);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError("Join room failed: " + message);
     }
 }

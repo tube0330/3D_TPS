@@ -29190,7 +29190,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 2
+  Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
@@ -29231,8 +29231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -191, y: 350}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -877, y: 390}
+  m_SizeDelta: {x: 119.087, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1701517944
 MonoBehaviour:
@@ -30763,8 +30763,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.6589966, y: -0.52301025}
-  m_SizeDelta: {x: -28.231, y: -21.957}
+  m_AnchoredPosition: {x: 3.6589966, y: -24.768}
+  m_SizeDelta: {x: -28.231, y: -70.446}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2035763656
 MonoBehaviour:

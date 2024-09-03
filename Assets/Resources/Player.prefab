@@ -722,31 +722,6 @@ MonoBehaviour:
   Bullet: {fileID: 5112093845060281638, guid: 0bd4294012c80f548b15445bb3d3d839, type: 3}
   moveSpeed: 5
   rotSpeed: 90
-  playerInput: {fileID: 0}
-  playerMap:
-    m_Name: Player Map
-    m_Id: 199a3356-4d13-434c-b5a2-21fd52add58c
-    m_Asset: {fileID: 0}
-    m_Actions: []
-    m_Bindings: []
-  moveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 84538371-c6b8-4a2e-baa8-f5da4d3cdd58
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  sprintAction:
-    m_Name: Sprint
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 37599970-66d0-4816-8da4-e24b9a8ca512
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!114 &2713461104442085508
 MonoBehaviour:
   m_ObjectHideFlags: 0

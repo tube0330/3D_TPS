@@ -130,10 +130,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831688005}
     m_Modifications:
-    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
-      propertyPath: m_Size.z
-      value: 745
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -189,6 +185,10 @@ PrefabInstance:
     - target: {fileID: 8152493775193411352, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
+      propertyPath: m_Size.z
+      value: 745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2693,10 +2693,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831688005}
     m_Modifications:
-    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
-      propertyPath: m_Size.z
-      value: 745
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -2752,6 +2748,10 @@ PrefabInstance:
     - target: {fileID: 8152493775193411352, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
+      propertyPath: m_Size.z
+      value: 745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -26293,10 +26293,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831688005}
     m_Modifications:
-    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
-      propertyPath: m_Size.z
-      value: 745
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -26340,6 +26336,10 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_Name
       value: AmmoBox (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
+      propertyPath: m_Size.z
+      value: 745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27638,17 +27638,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca06cd952a786fc479ea7c9736b79323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAnimation:
-    idle: {fileID: 7400000, guid: df787a42d52d64ff4b908f7a344d499e, type: 2}
-    runForward: {fileID: 7400000, guid: 185c4b4f1e1c1441d920959e7dee49a5, type: 2}
-    runBackward: {fileID: 7400000, guid: 777be73b9098940d086517b3fe6beb8a, type: 2}
-    runLeft: {fileID: 7400000, guid: 268781a61383b42a98eeda538dfa52e9, type: 2}
-    runRight: {fileID: 7400000, guid: f65e8694646404294b2de66b5827d6e5, type: 2}
-    Sprint: {fileID: 7400000, guid: 52726528637b14f8586ef4583b34b790, type: 2}
   tr: {fileID: 0}
   ani: {fileID: 0}
   source: {fileID: 0}
   clip: {fileID: 0}
+  col: {fileID: 0}
   FirePos: {fileID: 0}
   Bullet: {fileID: 5112093845060281638, guid: 0bd4294012c80f548b15445bb3d3d839, type: 3}
   moveSpeed: 5
@@ -27675,7 +27669,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 479d94af985554c7e9f8a50c3eeea6d1, type: 3}
   firetime: 0
   firePos: {fileID: 2093828235}
-  Player: {fileID: 0}
+  _player: {fileID: 0}
   muzzleFlash: {fileID: 2064587236}
   magazineImage: {fileID: 0}
   magazineTxt: {fileID: 0}
@@ -27949,10 +27943,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831688005}
     m_Modifications:
-    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
-      propertyPath: m_Size.z
-      value: 745
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -27996,6 +27986,10 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_Name
       value: AmmoBox (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
+      propertyPath: m_Size.z
+      value: 745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29752,6 +29746,9 @@ MonoBehaviour:
   - {fileID: 530091237}
   - {fileID: 1915273700}
   - {fileID: 1938245264}
+  playerPrefab: {fileID: 0}
+  CurPlayer: {fileID: 0}
+  logText: {fileID: 0}
   isPause: 0
 --- !u!4 &1669392357
 Transform:
@@ -30184,10 +30181,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831688005}
     m_Modifications:
-    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
-      propertyPath: m_Size.z
-      value: 745
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -30243,6 +30236,10 @@ PrefabInstance:
     - target: {fileID: 8152493775193411352, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
+      propertyPath: m_Size.z
+      value: 745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31207,10 +31204,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831688005}
     m_Modifications:
-    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
-      propertyPath: m_Size.z
-      value: 745
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -31254,6 +31247,10 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 45fb3b613218da844b047d1f9349e0d6, type: 3}
       propertyPath: m_Name
       value: AmmoBox (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080105402458743434, guid: fddf72d4012c0c54d99ec60bd73031ca, type: 3}
+      propertyPath: m_Size.z
+      value: 745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

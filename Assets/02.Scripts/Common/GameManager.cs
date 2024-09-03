@@ -52,8 +52,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     IEnumerator CreatePlayer()
     {
         yield return new WaitForSeconds(1f);
+        float pos = Random.Range(0, 3f);
         GameObject player = PhotonNetwork.Instantiate("Player", new Vector3(2f, 0f, 0f), Quaternion.identity);
-        player.transform.position = new Vector3(2f, 0.3f, 0f);
+        player.transform.position = new Vector3(pos, 0.3f, pos);
+        Debug.Log($"Player instantiated at {player.transform.position}");
     }
 
     void LoadGameData()
@@ -191,7 +193,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     public bool isPause = false;
-
     public void OnPauseClick()
     {
         isPause = !isPause;
@@ -235,25 +236,33 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void OnApplicationQuit() => SaveGameData();    //게임이 끝났을 때 자동호출
 
+    [PunRPC]
     void SetRoomInfo()
     {
         Room room = PhotonNetwork.CurrentRoom;
         CurPlayer.text = $"({room.PlayerCount}/{room.MaxPlayers})";
     }
 
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player player)
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        SetRoomInfo();
-        string msg = $"\n<color=#00ff00>{player.NickName}</color> Enter room";
-        logText.text += msg;    //방문기록은 계속 이어서 써야되니까 + 연산자 사용
+        //SetRoomInfo();
+        photonView.RPC(nameof(SetRoomInfo), RpcTarget.All);
+        string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> Enter room";
+
+        photonView.RPC("UpdateLogText", RpcTarget.All, msg);    // 모든 클라이언트에서 UpdateLogText RPC 호출
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player player)
     {
-        SetRoomInfo();
+        //SetRoomInfo();
+        photonView.RPC(nameof(SetRoomInfo), RpcTarget.All);
         string msg = $"\n<color=red>{player.NickName}</color> Left room";
-        logText.text += msg;
+
+        photonView.RPC("UpdateLogText", RpcTarget.All, msg);    // 모든 클라이언트에서 UpdateLogText RPC 호출
     }
 
     public override void OnLeftRoom() => SceneManager.LoadScene("StartScene");
+
+    [PunRPC]
+    void UpdateLogText(string msg) => logText.text += msg;
 }
