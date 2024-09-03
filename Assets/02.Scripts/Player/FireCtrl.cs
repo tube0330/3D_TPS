@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public struct PlayerSound
@@ -24,7 +24,7 @@ public class FireCtrl : MonoBehaviour
     [SerializeField] private Transform firePos;
     //[SerializeField] AudioClip fireclip;
     //[SerializeField] AudioSource Source;
-    [SerializeField] Player Player;
+    [SerializeField] Player _player;
     [SerializeField] private ParticleSystem muzzleFlash;
     private readonly string enemyTag = "ENEMY";
     private readonly string WallTag = "WALL";
@@ -50,11 +50,16 @@ public class FireCtrl : MonoBehaviour
     private int barrelLayer;
     private int layerMask;
 
+    [Header("playerInput")]
+    PlayerInput playerInput;
+    InputActionMap playerMap;
+    InputAction fireAction;
+
     void Start()
     {
         firetime = Time.time;
         //fireclip = Resources.Load("Sounds/p_ak_1") as AudioClip;
-        Player = GetComponent<Player>();
+        _player = GetComponent<Player>();
         muzzleFlash.Stop();
         magazineImage = GameObject.Find("Canvas_UI").transform.GetChild(1).GetChild(2).GetComponent<Image>();
         magazineTxt = GameObject.Find("Canvas_UI").transform.GetChild(1).GetChild(0).GetComponent<Text>();
@@ -66,6 +71,9 @@ public class FireCtrl : MonoBehaviour
         boxLayer = LayerMask.NameToLayer("BOXES");
         layerMask = 1 << enemyLayer | 1 << barrelLayer | 1 << boxLayer | 1 << layerMask;
 
+        playerInput = GetComponent<PlayerInput>();
+        playerMap = playerInput.actions.FindActionMap("Player");
+        fireAction = playerInput.actions["Fire"];
     }
     void Update()
     {
@@ -80,7 +88,8 @@ public class FireCtrl : MonoBehaviour
             isFire = false;
 
 
-        if (!isReload && isFire)
+        #region 0.1초마다 발사
+        /* if (!isReload && isFire)
         {
             if (Time.time > nextFire)
             {
@@ -91,11 +100,12 @@ public class FireCtrl : MonoBehaviour
                 if (curBullet == 0)
                     StartCoroutine(Reloading());
             }
-        }
+        } */
+        #endregion
         #endregion
 
         #region Fire to MouseButtonDown(0)
-        if (Input.GetMouseButtonDown(0) && !isReload)
+        /* if (Input.GetMouseButtonDown(0) && !isReload)
         {
             if (!isReload)
             {
@@ -113,8 +123,30 @@ public class FireCtrl : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
             muzzleFlash.Stop();
         else
-            muzzleFlash.Stop();
+            muzzleFlash.Stop(); */
         #endregion
+
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        // Check for fire input
+        if (fireAction.ReadValue<float>() > 0f && !isReload)
+        {
+            if (curBullet > 0)
+            {
+                --curBullet;
+                Fire();
+                muzzleFlash.Play();
+
+                if (curBullet == 0)
+                
+                    StartCoroutine(Reloading());
+            }
+        }
+
+        else if (curBullet == 0)
+            muzzleFlash.Stop();
+
+        UpdateBulletTxt();
     }
 
     private void UpdateBulletTxt()

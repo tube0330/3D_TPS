@@ -31,7 +31,10 @@ public class Player : MonoBehaviour
 
     [Header("PlayerInput")]
     public PlayerInput playerInput;
-
+    public InputActionMap playerMap;
+    public InputAction moveAction;
+    public InputAction sprintAction;
+    Vector3 moveDir = Vector3.zero;
 
     float h = 0f, v = 0f, r = 0f;
 
@@ -57,52 +60,67 @@ public class Player : MonoBehaviour
         ani.Play(playerAnimation.idle.name);*/
 
         FirePos = GameObject.Find("FirePos").GetComponent<Transform>();
+
+        playerInput = GetComponent<PlayerInput>();
+        playerMap = playerInput.actions.FindActionMap("Player");
+        moveAction = playerInput.actions["Move"];
+        sprintAction = playerInput.actions["Sprint"];
     }
 
     void Update()
     {
-        h = Input.GetAxis("Horizontal");
+        /* h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
         r = Input.GetAxis("Mouse X");
 
         Vector3 moveDir = (h * Vector3.right) + (v * Vector3.forward);
         tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.Self);
-
-        {
-            MoveAni();
-        }
-
         tr.Rotate(Vector3.up * r * Time.deltaTime * rotSpeed);
 
+        MoveAni();
+        Sprint(); */
+
+        Vector2 dir = moveAction.ReadValue<Vector2>();
+        moveDir = new Vector3(dir.x, 0, dir.y).normalized; // 방향 벡터 정규화
+
+        if (moveDir != Vector3.zero)
+        {
+            tr.Translate(moveDir * moveSpeed * Time.deltaTime, Space.Self);
+            tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime);
+        }
+    
+        MoveAni();
         Sprint();
     }
 
     private void Sprint()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
+        bool isSprinting = sprintAction.ReadValue<float>() > 0; // 스프린트 액션의 상태를 읽어옴
+
+        if (isSprinting && moveDir != Vector3.zero)
         {
             moveSpeed = 10f;
             ani.CrossFade(playerAnimation.Sprint.name, 3.0f);
         }
 
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        else
             moveSpeed = 5f;
     }
 
     private void MoveAni()
     {
-        if (h > 0.1f)
-            ani.CrossFade(playerAnimation.runRight.name, 0.3f);
-        else if (h < -0.1f)
-            ani.CrossFade(playerAnimation.runLeft.name, 0.3f);
-
-        else if (v > 0.1f)
+        if (moveDir.z > 0.1f)
             ani.CrossFade(playerAnimation.runForward.name, 0.3f);
-
-        else if (v < -0.1f)
+        else if (moveDir.z < -0.1f)
             ani.CrossFade(playerAnimation.runBackward.name, 0.3f);
 
-        else
+        if (moveDir.x > 0.1f)
+            ani.CrossFade(playerAnimation.runRight.name, 0.3f);
+        else if (moveDir.x < -0.1f)
+            ani.CrossFade(playerAnimation.runLeft.name, 0.3f);
+
+        if (moveDir == Vector3.zero)
             ani.CrossFade(playerAnimation.idle.name, 0.3f);
     }
+
 }
