@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class PlayerAnimation
@@ -18,16 +19,19 @@ public class Player : MonoBehaviour
 
     [SerializeField] Transform tr;
     [SerializeField] Animation ani;
-    [SerializeField] Rigidbody rb;
-    [SerializeField] CapsuleCollider capCol;
     [SerializeField] AudioSource source;
     [SerializeField] AudioClip clip;
+    [SerializeField] CapsuleCollider col;
 
     [SerializeField] Transform FirePos;
     [SerializeField] GameObject Bullet;
 
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float rotSpeed = 90f;
+
+    [Header("PlayerInput")]
+    public PlayerInput playerInput;
+
 
     float h = 0f, v = 0f, r = 0f;
 
@@ -44,11 +48,10 @@ public class Player : MonoBehaviour
     void Start()
     {
         tr = transform;
-        rb = GetComponent<Rigidbody>();
         ani = GetComponent<Animation>();
-        capCol = GetComponent<CapsuleCollider>();
         moveSpeed = GameManager.G_Instance.gameData.speed;
-        
+        col = GetComponent<CapsuleCollider>();
+
         ani.Play(playerAnimation.idle.name);
         /*ani.clip = playerAnimation.idle;
         ani.Play(playerAnimation.idle.name);*/

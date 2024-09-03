@@ -5,8 +5,8 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager S_instance;
-    public float soundVolum = 1.0f;     //사운드볼륨
-    public bool isSoundMute = false;    //음소거
+    public float soundVolum = 1.0f;
+    public bool isSoundMute = false;    //占쏙옙占쌀곤옙
     public AudioClip clip1;
     public AudioClip clip2;
 
@@ -30,10 +30,8 @@ public class SoundManager : MonoBehaviour
 
         GameObject soundObj = new GameObject("Sound!");
 
-        //소리는 위치를 전달받음
         soundObj.transform.position = pos;
 
-        //오디오소스 컴퍼넌트가 없다면 AddComponent<AudioSource>()로 오디오소스를 부착할 수 있다.
         AudioSource audioSource = soundObj.AddComponent<AudioSource>();
 
         audioSource.clip = clip;

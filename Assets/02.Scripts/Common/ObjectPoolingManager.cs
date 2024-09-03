@@ -157,7 +157,6 @@ public class ObjectPoolingManager : MonoBehaviour
                     _enemy.gameObject.SetActive(true);
                     break;
                 }
-
             }
         }
     }
