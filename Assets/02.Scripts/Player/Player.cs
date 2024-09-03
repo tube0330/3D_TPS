@@ -43,11 +43,9 @@ public class Player : MonoBehaviourPun
     Quaternion curRot = Quaternion.identity;
 
     void Awake()
-    {        
+    {
         photonView.Synchronization = ViewSynchronization.Unreliable;
         photonView.ObservedComponents[0] = this;
-        curPos = tr.position;
-        curRot = tr.rotation;
     }
 
     void OnEnable()
@@ -77,6 +75,9 @@ public class Player : MonoBehaviourPun
         playerMap = playerInput.actions.FindActionMap("Player");
         moveAction = playerInput.actions["Move"];
         sprintAction = playerInput.actions["Sprint"];
+
+        curPos = tr.position;
+        curRot = tr.rotation;
     }
 
     void Update()
@@ -92,21 +93,30 @@ public class Player : MonoBehaviourPun
         MoveAni();
         Sprint(); */
 
-        Vector2 dir = moveAction.ReadValue<Vector2>();
-        moveDir = new Vector3(dir.x, 0, dir.y).normalized; // 방향 벡터 정규화
-
-        if (moveDir != Vector3.zero)
+        if (photonView.IsMine)
         {
-            ani.SetBool("move", true);
-            tr.Translate(moveDir * moveSpeed * Time.deltaTime);
-            tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime);
+            Vector2 dir = moveAction.ReadValue<Vector2>();
+            moveDir = new Vector3(dir.x, 0, dir.y).normalized; // 방향 벡터 정규화
+
+            if (moveDir != Vector3.zero)
+            {
+                ani.SetBool("move", true);
+                tr.Translate(moveDir * moveSpeed * Time.deltaTime);
+                tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime * rotSpeed);
+            }
+
+            else
+                ani.SetBool("move", false);
+
+            //MoveAni();
+            Sprint();
         }
 
         else
-            ani.SetBool("move", false);
-
-        //MoveAni();
-        Sprint();
+        {
+            tr.position = Vector3.Lerp(tr.position, curPos, Time.deltaTime * 10f);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.deltaTime * 10f);
+        }
     }
 
     private void Sprint()
@@ -143,4 +153,18 @@ public class Player : MonoBehaviourPun
             ani.CrossFade(playerAnimation.idle.name, 0.3f);
     } */
 
+    public void OnPhotonSerializeView(PhotonStream stream, bool isLocal)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(tr.position);
+            stream.SendNext(tr.rotation);
+        }
+
+        else
+        {
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+        }
+    }
 }

@@ -35,7 +35,7 @@ public class EnemyAI_Ani : MonoBehaviour
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
     private readonly int hashBarrelDie = Animator.StringToHash("BarrelDie");
 
-    void Awake()
+    void Start()
     {
         ani = GetComponent<Animator>();
         C_moveAgent = GetComponent<EnemyMoveAgent>();
@@ -56,6 +56,8 @@ public class EnemyAI_Ani : MonoBehaviour
     {
         Damage.OnPlayerDie += OnPlayerDie;  //damage class의 delegate. 이벤트 연결
 
+        if(ani == null) return;
+            
         ani.SetFloat(hashOffset, Random.Range(0.2f, 1.0f));
         ani.SetFloat(hashWalkSpeed, Random.Range(1f, 2f));
         StartCoroutine(CheckState());

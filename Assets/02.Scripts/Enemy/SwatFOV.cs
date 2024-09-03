@@ -15,9 +15,10 @@ public class SwatFOV : MonoBehaviour
     [SerializeField] int boxLayer;
     [SerializeField] int layerMask;
 
-    void Start()
+    IEnumerator Start()
     {
         tr = transform;
+        yield return new WaitForSeconds(2f);
         playertr = GameObject.FindWithTag("Player").GetComponent<Transform>();
 
         playerLayer = LayerMask.NameToLayer("Player");

@@ -44,13 +44,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(gameObject);
         OnCloseClick(false);
         LoadGameData();
-        CreatePlayer();
+        StartCoroutine(CreatePlayer());
     }
 
-    void CreatePlayer()
+    IEnumerator CreatePlayer()
     {
-        GameObject player = Instantiate(playerPrefab);
-        player.transform.position = Vector3.zero;
+        yield return new WaitForSeconds(1f);
+        GameObject player = PhotonNetwork.Instantiate("Player", new Vector3(2f, 0f, 0f), Quaternion.identity);
+        player.transform.position = new Vector3(2f, 0.3f, 0f);
     }
 
     void LoadGameData()

@@ -36,7 +36,7 @@ public class SwatAI : MonoBehaviour
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
 
 
-    void Awake()
+    IEnumerator Start()
     {
         C_swatmove = GetComponent<SwatMoveAgent>();
         C_swatFire = GetComponent<SwatFire>();
@@ -46,6 +46,7 @@ public class SwatAI : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cap = GetComponent<CapsuleCollider>();
         swatTr = transform;
+        yield return new WaitForSeconds(1.5f);
         playerTr = GameObject.FindWithTag("Player").transform;
         if (playerTr != null)
             playerTr = playerTr.GetComponent<Transform>();
@@ -63,6 +64,7 @@ public class SwatAI : MonoBehaviour
 
     IEnumerator CheckState()
     {
+        yield return new WaitForSeconds(2f);
         while (!isDie)
         {
             if (state == State.DIE) yield break;

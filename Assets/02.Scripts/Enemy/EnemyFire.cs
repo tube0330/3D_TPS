@@ -29,11 +29,13 @@ public class EnemyFire : MonoBehaviour
     public MeshRenderer E_MuzzleFlash;
     //private readonly string PlayerTag = "Player";
 
-    void Start()
+    IEnumerator Start()
     {
         firePos = transform.GetChild(4).GetChild(0).GetChild(0).transform;
         ani = GetComponent<Animator>();
         enemyTr = GetComponent<Transform>();
+
+        yield return new WaitForSeconds(2f);
         playerTr = GameObject.FindWithTag("Player").transform;
         fireClip = Resources.Load<AudioClip>("Sounds/p_m4_1");
         curBullet = maxBullet;

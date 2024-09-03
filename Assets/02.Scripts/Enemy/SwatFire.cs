@@ -32,8 +32,9 @@ public class SwatFire : MonoBehaviour
     public MeshRenderer S_MuzzleFlash;
     private readonly string PlayerTag = "Player";
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForSeconds(2.0f);
         playerTr = GameObject.FindWithTag(PlayerTag).transform;
         swatTr = GetComponent<Transform>();
         firePos = transform.GetChild(2).GetChild(0).GetChild(0).transform;
