@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[System.Serializable]
+/* [System.Serializable]
 public class PlayerAnimation
 {
     public AnimationClip idle;
@@ -12,13 +13,13 @@ public class PlayerAnimation
     public AnimationClip runLeft;
     public AnimationClip runRight;
     public AnimationClip Sprint;
-}
-public class Player : MonoBehaviour
+} */
+public class Player : MonoBehaviourPun
 {
-    public PlayerAnimation playerAnimation;
+    //public PlayerAnimation playerAnimation;
 
     [SerializeField] Transform tr;
-    [SerializeField] Animation ani;
+    [SerializeField] Animator ani;
     [SerializeField] AudioSource source;
     [SerializeField] AudioClip clip;
     [SerializeField] CapsuleCollider col;
@@ -29,6 +30,8 @@ public class Player : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float rotSpeed = 90f;
 
+    //float h = 0f, v = 0f, r = 0f;
+
     [Header("PlayerInput")]
     public PlayerInput playerInput;
     public InputActionMap playerMap;
@@ -36,7 +39,16 @@ public class Player : MonoBehaviour
     public InputAction sprintAction;
     Vector3 moveDir = Vector3.zero;
 
-    float h = 0f, v = 0f, r = 0f;
+    Vector3 curPos = Vector3.zero;
+    Quaternion curRot = Quaternion.identity;
+
+    void Awake()
+    {        
+        photonView.Synchronization = ViewSynchronization.Unreliable;
+        photonView.ObservedComponents[0] = this;
+        curPos = tr.position;
+        curRot = tr.rotation;
+    }
 
     void OnEnable()
     {
@@ -51,13 +63,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         tr = transform;
-        ani = GetComponent<Animation>();
+        ani = GetComponent<Animator>();
         moveSpeed = GameManager.G_Instance.gameData.speed;
         col = GetComponent<CapsuleCollider>();
 
-        ani.Play(playerAnimation.idle.name);
-        /*ani.clip = playerAnimation.idle;
-        ani.Play(playerAnimation.idle.name);*/
+        /* ani.Play(playerAnimation.idle.name);
+        ani.clip = playerAnimation.idle;
+        ani.Play(playerAnimation.idle.name); */
 
         FirePos = GameObject.Find("FirePos").GetComponent<Transform>();
 
@@ -85,29 +97,37 @@ public class Player : MonoBehaviour
 
         if (moveDir != Vector3.zero)
         {
-            tr.Translate(moveDir * moveSpeed * Time.deltaTime, Space.Self);
+            ani.SetBool("move", true);
+            tr.Translate(moveDir * moveSpeed * Time.deltaTime);
             tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime);
         }
-    
-        MoveAni();
+
+        else
+            ani.SetBool("move", false);
+
+        //MoveAni();
         Sprint();
     }
 
     private void Sprint()
     {
+        ani.SetBool("move", true);
         bool isSprinting = sprintAction.ReadValue<float>() > 0; // 스프린트 액션의 상태를 읽어옴
 
         if (isSprinting && moveDir != Vector3.zero)
         {
             moveSpeed = 10f;
-            ani.CrossFade(playerAnimation.Sprint.name, 3.0f);
+            ani.SetFloat("moveSpeed", moveSpeed);
         }
 
         else
+        {
             moveSpeed = 5f;
+            ani.SetFloat("moveSpeed", moveSpeed);
+        }
     }
 
-    private void MoveAni()
+    /* private void MoveAni()
     {
         if (moveDir.z > 0.1f)
             ani.CrossFade(playerAnimation.runForward.name, 0.3f);
@@ -121,6 +141,6 @@ public class Player : MonoBehaviour
 
         if (moveDir == Vector3.zero)
             ani.CrossFade(playerAnimation.idle.name, 0.3f);
-    }
+    } */
 
 }

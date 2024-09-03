@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using DataInfo;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager G_Instance;
     public bool isGameOver = false;
     public Text killTxt;
     public int killCnt = 0;
 
-    [Header("Datamanager")]
+    [Header("DataManager")]
     [SerializeField] DataManager dataManager;
     //public GameData gameData;
     public GameDataObject gameData; //위의 방법 대신 Attribute를 사용한 방법
@@ -21,6 +23,10 @@ public class GameManager : MonoBehaviour
     public static event ItemChangedDelegate OnItemChange;
     [SerializeField] private GameObject slotList;
     public GameObject[] itemObjects;
+
+    [Header("Network")]
+    public GameObject playerPrefab;
+    public Text CurPlayer;
 
     void Awake()
     {
@@ -38,6 +44,13 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         OnCloseClick(false);
         LoadGameData();
+        CreatePlayer();
+    }
+
+    void CreatePlayer()
+    {
+        GameObject player = Instantiate(playerPrefab);
+        player.transform.position = Vector3.zero;
     }
 
     void LoadGameData()
@@ -45,12 +58,12 @@ public class GameManager : MonoBehaviour
         //killCnt = PlayerPrefs.GetInt("KILLCOUNT", 0);
 
         #region 하드디스크에 저장된 데이터 넘어오는중, 데이터 초기
-        // GameData data = dataManager.Load();
-        // gameData.HP = data.HP;
-        // gameData.damage = data.damage;
-        // gameData.killcnt = data.killcnt;
-        // gameData.equipItem = data.equipItem;
-        // gameData.speed = data.speed;
+        /* GameData data = dataManager.Load();
+        gameData.HP = data.HP;
+        gameData.damage = data.damage;
+        gameData.killcnt = data.killcnt;
+        gameData.equipItem = data.equipItem;
+        gameData.speed = data.speed; */
         #endregion
 
         if (gameData.equipItem.Count > 0)
@@ -82,7 +95,7 @@ public class GameManager : MonoBehaviour
     void SaveGameData()
     {
         //dataManager.Save(gameData);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
 #endif   //.asset 파일에 데이터 저장
     }
@@ -217,13 +230,16 @@ public class GameManager : MonoBehaviour
         //PlayerPrefs.SetInt("KILLCOUNT", killCnt);
     }
 
-    void OnDisable()    //게임 종료하면 자동으로 호출
+    void OnApplicationQuit() => SaveGameData();    //게임이 끝났을 때 자동호출
+
+    void SetRoomInfo()
     {
-        //PlayerPrefs.DeleteKey("KILLCOUNT");
+        Room room = PhotonNetwork.CurrentRoom;
+        CurPlayer.text = $"({room.PlayerCount}/{room.MaxPlayers})";
     }
 
-    void OnApplicationQuit()    //게임이 끝났을 때 자동호출
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        SaveGameData();
+        SetRoomInfo();
     }
 }

@@ -20,7 +20,7 @@ public class FireCtrl : MonoBehaviour
     public weaponType curWeaponType = weaponType.SHOTGUN;
     public PlayerSound playerSound;
 
-    [SerializeField] float firetime;
+    [SerializeField] float firetime;    //쿨타임
     [SerializeField] private Transform firePos;
     //[SerializeField] AudioClip fireclip;
     //[SerializeField] AudioSource Source;
@@ -131,14 +131,13 @@ public class FireCtrl : MonoBehaviour
         // Check for fire input
         if (fireAction.ReadValue<float>() > 0f && !isReload)
         {
-            if (curBullet > 0)
+            if (curBullet > 0 && Time.time > nextFire)
             {
-                --curBullet;
                 Fire();
                 muzzleFlash.Play();
+                nextFire = Time.time;
 
                 if (curBullet == 0)
-                
                     StartCoroutine(Reloading());
             }
         }
@@ -177,6 +176,7 @@ public class FireCtrl : MonoBehaviour
 
     private void Fire()
     {
+        --curBullet;
 
         RaycastHit hit;//광선이 오브젝트에 맞으면 충돌지점이나 거리들을 알려주는 광선 구조체
                        //광선을 쏘았을 때 맞았는지 여부를 측정

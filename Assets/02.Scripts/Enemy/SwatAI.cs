@@ -46,7 +46,7 @@ public class SwatAI : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cap = GetComponent<CapsuleCollider>();
         swatTr = transform;
-        playerTr = GameObject.Find("Player").GetComponent<Transform>();
+        playerTr = GameObject.FindWithTag("Player").transform;
         if (playerTr != null)
             playerTr = playerTr.GetComponent<Transform>();
         wait = new WaitForSeconds(0.3f);

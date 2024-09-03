@@ -12,6 +12,8 @@ TagManager:
   - SWAT
   - WALL
   - BARREL
+  - Bullet
+  - R_ITEM
   layers:
   - Default
   - TransparentFX

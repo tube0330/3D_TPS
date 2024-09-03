@@ -18,7 +18,7 @@ public class SwatFOV : MonoBehaviour
     void Start()
     {
         tr = transform;
-        playertr = GameObject.Find("Player").GetComponent<Transform>();
+        playertr = GameObject.FindWithTag("Player").GetComponent<Transform>();
 
         playerLayer = LayerMask.NameToLayer("Player");
         barrelLayer = LayerMask.NameToLayer("BARREL");

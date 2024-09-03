@@ -34,7 +34,7 @@ public class SwatFire : MonoBehaviour
 
     void Start()
     {
-        playerTr = GameObject.FindWithTag("Player").transform;
+        playerTr = GameObject.FindWithTag(PlayerTag).transform;
         swatTr = GetComponent<Transform>();
         firePos = transform.GetChild(2).GetChild(0).GetChild(0).transform;
         ani = GetComponent<Animator>();
