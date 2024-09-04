@@ -41,6 +41,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - UpdateLogText
   - SetRoomInfo
+  - OnDamage
+  - E_DieRPC
+  - OnDamageRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -1,21 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyDamage : MonoBehaviour
+public class EnemyDamage : MonoBehaviourPun
 {
-    [SerializeField] private GameObject BloodEff;
-    [SerializeField] EnemyAI_Ani C_enemyAI;
+    [SerializeField] GameObject BloodEff;
+    [SerializeField] EnemyAI_Ani _enemyAI;
 
     public float E_HP = 0;
-    private float E_MaxHP = 100;
-    [SerializeField] private Image HPBar;
-    [SerializeField] private Text HPtxt;
+    float E_MaxHP = 100;
+    [SerializeField] Image HPBar;
+    [SerializeField] Text HPtxt;
 
     void Start()
     {
-        C_enemyAI = GetComponent<EnemyAI_Ani>();
+        _enemyAI = GetComponent<EnemyAI_Ani>();
         BloodEff = Resources.Load<GameObject>("Effects/BulletImpactFleshBigEffect");
         E_HP = E_MaxHP;
         HPBar = transform.GetChild(5).GetChild(1).GetComponent<Image>();
@@ -39,13 +40,14 @@ public class EnemyDamage : MonoBehaviour
     } */
     #endregion
 
-    void OnDamage(object[] _params)
+    [PunRPC]
+    void OnDamageRPC(object[] _params)
     {
         ShowBloodEffect((Vector3)_params[0]);
 
         E_HP -= (float)_params[1];
         E_HP = Mathf.Clamp(E_HP, 0, 100f);
-        HPBar.fillAmount = E_HP/E_MaxHP;
+        HPBar.fillAmount = E_HP / E_MaxHP;
         HPtxt.text = $"HP {E_HP}";
 
         if (HPBar.fillAmount <= 0.3f)
@@ -59,13 +61,26 @@ public class EnemyDamage : MonoBehaviour
             E_Die();
     }
 
-    void E_Die()
+    public void OnDamages(object[] _params)
     {
-        Debug.Log("사망");
-        GetComponent<EnemyAI_Ani>().state = EnemyAI_Ani.State.DIE;
+        if (photonView.IsMine)
+            photonView.RPC(nameof(OnDamageRPC), RpcTarget.All, _params);
     }
 
-    private void ShowBloodEffect(Vector3 col)
+    [PunRPC]
+    void E_DieRPC()
+    {
+        Debug.Log("사망");
+        _enemyAI.state = EnemyAI_Ani.State.DIE;
+    }
+
+    void E_Die()
+    {
+        if (photonView.IsMine)
+            photonView.RPC(nameof(E_DieRPC), RpcTarget.All);
+    }
+
+    void ShowBloodEffect(Vector3 col)
     {
         /* Vector3 pos = col.contacts[0].point;    //Collision 구조체 안에 있는 contacts라는 배열에 맞은 위치를 넘김
         Vector3 _normal = col.contacts[0].normal;   //                  "                         방향     "

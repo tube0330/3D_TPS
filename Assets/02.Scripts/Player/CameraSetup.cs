@@ -1,20 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Photon.Pun;
 using UnityEngine;
 
-public class CameraSetup : MonoBehaviour
+public class CameraSetup : MonoBehaviourPun
 {
-    CinemachineVirtualCamera cam;
-
     void Start()
     {
-        cam = FindObjectOfType<CinemachineVirtualCamera>();    
-    }
-
-    void Update()
-    {
-        cam.LookAt = transform;
-        cam.Follow = transform;
+        if (photonView.IsMine)
+        {
+            CinemachineVirtualCamera cam = FindObjectOfType<CinemachineVirtualCamera>();
+            cam.Follow = transform;
+            cam.LookAt = transform;
+        }
     }
 }

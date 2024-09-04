@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]    //이 오브젝트에서 navmeshagent가 없으면 안된다고 명시
 
-public class EnemyMoveAgent : MonoBehaviour
+public class EnemyMoveAgent : MonoBehaviourPun
 {
     public List<Transform> WayPointList;    //패트롤 지점(위치)을 담기 위한 List Generic(일반형) 변수
-    [SerializeField] private NavMeshAgent agent;
-    private Transform enemyTr;
-    private readonly float patrolSpeed = 7f;
-    private readonly float traceSpeed = 4.0f;
-    private float damping = 1.0f;    //회전할 때 속도 조절
+    [SerializeField] NavMeshAgent agent;
+    Transform enemyTr;
+    readonly float patrolSpeed = 7f;
+    readonly float traceSpeed = 4.0f;
+    float damping = 1.0f;    //회전할 때 속도 조절
     public int nextIdx = 0;  //다음 순찰 지점의 배열 인덱스 값
-    private bool _patrolling;
+    bool _patrolling;
     public bool patrolling  //_patrolling를 보호하기 위해 프로퍼티 생성
     {
         get { return _patrolling; }
@@ -33,7 +34,7 @@ public class EnemyMoveAgent : MonoBehaviour
         }
     }
 
-    private Vector3 _traceTarget;
+    Vector3 _traceTarget;
     public Vector3 traceTarget
     {
         get { return _traceTarget; }
@@ -74,25 +75,28 @@ public class EnemyMoveAgent : MonoBehaviour
 
     void Update()
     {
-        if (agent.isStopped == false)
+        if (PhotonNetwork.IsConnected)
         {
-            if (agent.desiredVelocity != Vector3.zero)
+            if (agent.isStopped == false)
             {
-                Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);  //NavmeshAgent가 가야할 방향 벡터를 쿼터니언 타입의 각도로 변환
-                enemyTr.rotation = Quaternion.Slerp(enemyTr.rotation, rot, Time.deltaTime * damping); //보간 함수를 이용해 점진적으로 부드럽게 회전시킴}
+                if (agent.desiredVelocity != Vector3.zero)
+                {
+                    Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);  //NavmeshAgent가 가야할 방향 벡터를 쿼터니언 타입의 각도로 변환
+                    enemyTr.rotation = Quaternion.Slerp(enemyTr.rotation, rot, Time.deltaTime * damping); //보간 함수를 이용해 점진적으로 부드럽게 회전시킴}
+                }
             }
-        }
 
-        float dist = Vector3.Distance(transform.position, WayPointList[nextIdx].position);  //현재 위치와 도착지점의 거리를 구함
-        /* => float dist = (WayPointList[nextIdx].position - transform.position).magnitude; */
-        if (_patrolling == false) return;
+            float dist = Vector3.Distance(transform.position, WayPointList[nextIdx].position);  //현재 위치와 도착지점의 거리를 구함
+            /* => float dist = (WayPointList[nextIdx].position - transform.position).magnitude; */
+            if (_patrolling == false) return;
 
-        if (dist <= 0.5f)   //다음 도착지점이 0.5보다 작거나 같다면
-        {
-            //nextIdx = ++nextIdx % WayPointList.Count; //1~List.count를 순서대로 가게 하기
+            if (dist <= 0.5f)   //다음 도착지점이 0.5보다 작거나 같다면
+            {
+                //nextIdx = ++nextIdx % WayPointList.Count; //1~List.count를 순서대로 가게 하기
 
-            nextIdx = Random.Range(0, WayPointList.Count);  //랜덤으로 가기
-            MovewayPoint();
+                nextIdx = Random.Range(0, WayPointList.Count);  //랜덤으로 가기
+                MovewayPoint();
+            }
         }
     }
 

@@ -100,9 +100,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     void SaveGameData()
     {
         //dataManager.Save(gameData);
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
-#endif   //.asset 파일에 데이터 저장
+        #endif   //.asset 파일에 데이터 저장
     }
 
     public void AddItem(Item item)   //인벤토리에서 아이템을 추가했을 때 데이터 정보를 업데이트하는 함수
@@ -146,9 +146,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         OnItemChange(); //아이템 변경된 것을 실시간으로 반영하기 위해 호출
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
-#endif
+        #endif
     }
 
     public void RemoveItem(Item item)   //인벤토리에서 아이템을 뺐을 때 데이터 정보를 업데이트하는 함수
@@ -187,9 +187,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         OnItemChange(); //아이템 변경된 것을 실시간으로 반영하기 위해 호출
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
-#endif
+        #endif
     }
 
     public bool isPause = false;
