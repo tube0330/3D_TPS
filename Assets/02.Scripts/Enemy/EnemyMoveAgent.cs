@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class EnemyMoveAgent : MonoBehaviour
 {
     public List<Transform> WayPointList;    //패트롤 지점(위치)을 담기 위한 List Generic(일반형) 변수
-    [SerializeField] private NavMeshAgent nav;
+    [SerializeField] private NavMeshAgent agent;
     private Transform enemyTr;
     private readonly float patrolSpeed = 7f;
     private readonly float traceSpeed = 4.0f;
@@ -25,7 +25,7 @@ public class EnemyMoveAgent : MonoBehaviour
 
             if (_patrolling)
             {
-                nav.speed = patrolSpeed;
+                agent.speed = patrolSpeed;
                 damping = 1.0f;
 
                 MovewayPoint();
@@ -40,7 +40,7 @@ public class EnemyMoveAgent : MonoBehaviour
         set
         {
             _traceTarget = value;
-            nav.speed = traceSpeed;
+            agent.speed = traceSpeed;
             damping = 7.0f;
 
             TraceTarget(_traceTarget);
@@ -49,16 +49,16 @@ public class EnemyMoveAgent : MonoBehaviour
 
     public float speed
     {
-        get { return nav.velocity.magnitude; }  //navMeshAgent 속도
-        set { nav.speed = value; }
+        get { return agent.velocity.magnitude; }  //navMeshAgent 속도
+        set { agent.speed = value; }
     }
 
     void Start()
     {
         enemyTr = GetComponent<Transform>();
-        nav = GetComponent<NavMeshAgent>();
-        nav.autoBraking = false;
-        nav.updateRotation = false; //부드럽지 않기 때문에 navmeshagent를 이용해 회전하는 기능 비활성화.
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
+        agent.updateRotation = false; //부드럽지 않기 때문에 navmeshagent를 이용해 회전하는 기능 비활성화.
 
         var group = GameObject.Find("WayPointGroup");   //하이라키에 있는 오브젝트명이 WayPointGroup를 찾아 대입
 
@@ -74,10 +74,13 @@ public class EnemyMoveAgent : MonoBehaviour
 
     void Update()
     {
-        if (nav.isStopped == false)
+        if (agent.isStopped == false)
         {
-            Quaternion rot = Quaternion.LookRotation(nav.desiredVelocity);  //NavmeshAgent가 가야할 방향 벡터를 쿼터니언 타입의 각도로 변환
-            enemyTr.rotation = Quaternion.Slerp(enemyTr.rotation, rot, Time.deltaTime * damping); //보간 함수를 이용해 점진적으로 부드럽게 회전시킴
+            if (agent.desiredVelocity != Vector3.zero)
+            {
+                Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);  //NavmeshAgent가 가야할 방향 벡터를 쿼터니언 타입의 각도로 변환
+                enemyTr.rotation = Quaternion.Slerp(enemyTr.rotation, rot, Time.deltaTime * damping); //보간 함수를 이용해 점진적으로 부드럽게 회전시킴}
+            }
         }
 
         float dist = Vector3.Distance(transform.position, WayPointList[nextIdx].position);  //현재 위치와 도착지점의 거리를 구함
@@ -95,24 +98,24 @@ public class EnemyMoveAgent : MonoBehaviour
 
     void MovewayPoint()
     {
-        if (nav.isPathStale) return;    //최단 경로 계산이 끝나지 않거나 길을 잃어버린 경우
+        if (agent.isPathStale) return;    //최단 경로 계산이 끝나지 않거나 길을 잃어버린 경우
 
-        nav.destination = WayPointList[nextIdx].position;   //추적대상 = List에 담았던 트랜스폼
-        nav.isStopped = false;
+        agent.destination = WayPointList[nextIdx].position;   //추적대상 = List에 담았던 트랜스폼
+        agent.isStopped = false;
     }
 
     void TraceTarget(Vector3 pos)
     {
-        if (nav.isPathStale) return;
+        if (agent.isPathStale) return;
 
-        nav.destination = pos;
-        nav.isStopped = false;
+        agent.destination = pos;
+        agent.isStopped = false;
     }
 
     public void Stop()
     {
-        nav.isStopped = true;
-        nav.velocity = Vector3.zero;
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         _patrolling = false;
     }
 }

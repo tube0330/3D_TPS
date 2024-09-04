@@ -97,22 +97,26 @@ public class Player : MonoBehaviourPun, IPunObservable
 
         if (photonView.IsMine)
         {
+            // 플레이어의 이동 입력을 받아옴
             Vector2 dir = moveAction.ReadValue<Vector2>();
             moveDir = new Vector3(dir.x, 0, dir.y).normalized;
 
             if (moveDir != Vector3.zero)
             {
                 ani.SetBool("move", true);
+
+                // 이동
                 tr.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
+
+                // 현재 회전과 목표 회전을 부드럽게 보간
                 tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime * rotSpeed);
             }
             else
-            {
                 ani.SetBool("move", false);
-            }
 
             Sprint();
         }
+
         else
         {
             // 다른 플레이어의 위치를 부드럽게 보간

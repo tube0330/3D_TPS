@@ -8,7 +8,7 @@ public class SwatMoveAgent : MonoBehaviour
     public List<Transform> WayPointList;
 
     [SerializeField] private Transform tr;
-    [SerializeField] private NavMeshAgent nav;
+    [SerializeField] private NavMeshAgent agent;
     private float patrolSpeed = 7f;
     private float traceSpeed = 5.0f;
     private float damping = 1.0f;
@@ -24,7 +24,7 @@ public class SwatMoveAgent : MonoBehaviour
 
             if (patrol)
             {
-                nav.speed = patrolSpeed;
+                agent.speed = patrolSpeed;
                 damping = 1.0f;
 
                 MovewayPoint();
@@ -38,7 +38,7 @@ public class SwatMoveAgent : MonoBehaviour
         set
         {
             traceTarget = value;
-            nav.speed = traceSpeed;
+            agent.speed = traceSpeed;
             damping = 7.0f;
 
 
@@ -48,15 +48,15 @@ public class SwatMoveAgent : MonoBehaviour
 
     public float speed
     {
-        get { return nav.velocity.magnitude; }
-        set { nav.speed = value; }
+        get { return agent.velocity.magnitude; }
+        set { agent.speed = value; }
     }
 
     void Start()
     {
         tr = transform;
-        nav = GetComponent<NavMeshAgent>();
-        nav.autoBraking = false;
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
 
         var group = GameObject.Find("WayPointGroup");
 
@@ -72,10 +72,13 @@ public class SwatMoveAgent : MonoBehaviour
 
     void Update()
     {
-        if (nav.isStopped == false)
+        if (agent.isStopped == false)
         {
-            Quaternion rot = Quaternion.LookRotation(nav.desiredVelocity);
-            tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * damping);
+            if (agent.desiredVelocity != Vector3.zero)
+            {
+                Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);
+                tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * damping);
+            }
         }
 
         float dist = Vector3.Distance(tr.position, WayPointList[nextIdx].position);
@@ -93,24 +96,24 @@ public class SwatMoveAgent : MonoBehaviour
 
     void MovewayPoint()
     {
-        if (nav.isPathStale) return;
+        if (agent.isPathStale) return;
 
-        nav.destination = WayPointList[nextIdx].position;
-        nav.isStopped = false;
+        agent.destination = WayPointList[nextIdx].position;
+        agent.isStopped = false;
     }
 
     void TraceTarget(Vector3 pos)
     {
-        if (nav.isPathStale) return;
+        if (agent.isPathStale) return;
 
-        nav.destination = pos;
-        nav.isStopped = false;
+        agent.destination = pos;
+        agent.isStopped = false;
     }
 
     public void Stop()
     {
-        nav.isStopped = true;
-        nav.velocity = Vector3.zero;
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         patrol = false;
     }
 }

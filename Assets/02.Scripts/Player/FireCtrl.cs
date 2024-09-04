@@ -131,20 +131,21 @@ public class FireCtrl : MonoBehaviourPun
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            if (fireAction.ReadValue<float>() > 0f && !isReload)
+            // 발사 조건: 발사 버튼이 눌린 상태이고, 리로드 중이 아니며, 다음 발사 시간이 지난 경우
+            if (fireAction.ReadValue<float>() > 0f && !isReload && Time.time > nextFire)
             {
-                if (curBullet > 0 && Time.time > nextFire)
+                if (curBullet > 0)
                 {
-                    Fire();
+                    Fire();  // 총알 발사
                     muzzleFlash.Play();
-                    nextFire = Time.time;
+                    nextFire = Time.time + fireRate;  // 다음 발사 시간 설정
 
                     if (curBullet == 0)
                         StartCoroutine(Reloading());
                 }
             }
 
-            else if (curBullet == 0)
+            if (curBullet == 0 || fireAction.ReadValue<float>() == 0f)
                 muzzleFlash.Stop();
 
             UpdateBulletTxt();
@@ -179,39 +180,39 @@ public class FireCtrl : MonoBehaviourPun
 
     private void Fire()
     {
-        --curBullet;
+        --curBullet;  // 한 발씩 총알 감소
 
-        RaycastHit hit;//광선이 오브젝트에 맞으면 충돌지점이나 거리들을 알려주는 광선 구조체
-                       //광선을 쏘았을 때 맞았는지 여부를 측정
+        RaycastHit hit; // 광선이 오브젝트에 맞으면 충돌지점이나 거리들을 알려주는 광선 구조체
         if (Physics.Raycast(firePos.position, firePos.forward, out hit, DIST))
         {
+            // 적을 맞췄을 때 처리
             if (hit.collider.CompareTag(enemyTag))
             {
                 object[] _params = new object[2];
-                _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
-                _params[1] = 25f;// 데미지 값을 전달
+                _params[0] = hit.point; // 첫번째 배열에는 맞은 위치를 전달
+                _params[1] = 25f; // 데미지 값을 전달
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
-                //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
-            if (hit.collider.CompareTag(WallTag))
+
+            // 벽을 맞췄을 때 처리
+            else if (hit.collider.CompareTag(WallTag))
             {
                 object[] _params = new object[2];
-                _params[0] = hit.point;//첫번째 배열에는 맞은 위치를 전달
-
+                _params[0] = hit.point; // 첫번째 배열에는 맞은 위치를 전달
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
-                //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
-            if (hit.collider.CompareTag(BarrelTag))
+            
+            // 배럴을 맞췄을 때 처리
+            else if (hit.collider.CompareTag(BarrelTag))
             {
-
                 object[] _params = new object[2];
-                _params[0] = firePos.position;//발사위치
-                _params[1] = hit.point;//맞은위치
+                _params[0] = firePos.position; // 발사 위치
+                _params[1] = hit.point; // 맞은 위치
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
-                //광선에 맞은 오브젝트의 함수를 호출하면서 매개변수 값을 전달
             }
         }
-        //Source.PlayOneShot(fireclip, 1.0f);
+
+        // 사운드 재생
         SoundManager.S_instance.PlaySound(transform.position, playerSound.fire[(int)curWeaponType]);
 
         UpdateBulletTxt();
