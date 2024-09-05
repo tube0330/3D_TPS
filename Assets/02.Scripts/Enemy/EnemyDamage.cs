@@ -40,32 +40,41 @@ public class EnemyDamage : MonoBehaviourPun
     } */
     #endregion
 
-    [PunRPC]
-    void OnDamageRPC(object[] _params)
-    {
-        ShowBloodEffect((Vector3)_params[0]);
+   [PunRPC]
+void OnDamageRPC(object[] _params)
+{
+    Debug.Log("OnDamageRPC 호출됨");
 
-        E_HP -= (float)_params[1];
-        E_HP = Mathf.Clamp(E_HP, 0, 100f);
-        HPBar.fillAmount = E_HP / E_MaxHP;
-        HPtxt.text = $"HP {E_HP}";
+    ShowBloodEffect((Vector3)_params[0]);
 
-        if (HPBar.fillAmount <= 0.3f)
-            HPBar.color = Color.red;
-        else if (HPBar.fillAmount <= 0.5f)
-            HPBar.color = Color.yellow;
-        else if (HPBar.fillAmount <= 1f)
-            HPBar.color = Color.green;
+    E_HP -= (float)_params[1];
+    E_HP = Mathf.Clamp(E_HP, 0, 100f);
+    HPBar.fillAmount = E_HP / E_MaxHP;
+    HPtxt.text = $"HP {E_HP}";
 
-        if (E_HP <= 0f)
-            E_Die();
-    }
+    Debug.Log($"현재 HP: {E_HP}, HP Bar: {HPBar.fillAmount}");
+
+    if (HPBar.fillAmount <= 0.3f)
+        HPBar.color = Color.red;
+    else if (HPBar.fillAmount <= 0.5f)
+        HPBar.color = Color.yellow;
+    else if (HPBar.fillAmount <= 1f)
+        HPBar.color = Color.green;
+
+    if (E_HP <= 0f)
+        E_Die();
+}
+
 
     public void OnDamages(object[] _params)
+{
+    if (photonView.IsMine)
     {
-        if (photonView.IsMine)
-            photonView.RPC(nameof(OnDamageRPC), RpcTarget.All, _params);
+        Debug.Log("OnDamages 호출됨");
+        photonView.RPC(nameof(OnDamageRPC), RpcTarget.All, _params);
     }
+}
+
 
     [PunRPC]
     void E_DieRPC()

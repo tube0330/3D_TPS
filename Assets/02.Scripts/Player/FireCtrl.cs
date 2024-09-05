@@ -139,7 +139,7 @@ public class FireCtrl : MonoBehaviourPun
                     Fire();  // 총알 발사
                     muzzleFlash.Play();
                     nextFire = Time.time + fireRate;  // 다음 발사 시간 설정
-
+                    photonView.RPC(nameof(Fire), RpcTarget.Others);
                     if (curBullet == 0)
                         StartCoroutine(Reloading());
                 }
@@ -176,10 +176,10 @@ public class FireCtrl : MonoBehaviourPun
         UpdateBulletTxt();
         isReload = false;
     }
-
     [PunRPC]
     private void Fire()
     {
+        isFire = true;
         --curBullet;  // 한 발씩 총알 감소
 
         RaycastHit hit; // 광선이 오브젝트에 맞으면 충돌지점이나 거리들을 알려주는 광선 구조체

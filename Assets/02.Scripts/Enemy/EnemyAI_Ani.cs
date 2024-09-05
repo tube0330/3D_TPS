@@ -35,16 +35,15 @@ public class EnemyAI_Ani : MonoBehaviour
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
     private readonly int hashBarrelDie = Animator.StringToHash("BarrelDie");
 
-    void Start()
+    IEnumerator Start()
     {
         ani = GetComponent<Animator>();
         C_moveAgent = GetComponent<EnemyMoveAgent>();
         C_enemyFire = GetComponent<EnemyFire>();
-
-        var player = GameObject.FindGameObjectWithTag("Player");
-
-        if (player != null)
-            playerTr = player.GetComponent<Transform>();
+        yield return new WaitForSeconds(1.5f);
+        playerTr = GameObject.FindWithTag("Player").transform;
+        if (playerTr != null)
+            playerTr = playerTr.GetComponent<Transform>();
 
         enemyTr = GetComponent<Transform>();
         wait = new WaitForSeconds(0.3f);
@@ -56,8 +55,8 @@ public class EnemyAI_Ani : MonoBehaviour
     {
         Damage.OnPlayerDie += OnPlayerDie;  //damage class의 delegate. 이벤트 연결
 
-        if(ani == null) return;
-            
+        if (ani == null) return;
+
         ani.SetFloat(hashOffset, Random.Range(0.2f, 1.0f));
         ani.SetFloat(hashWalkSpeed, Random.Range(1f, 2f));
         StartCoroutine(CheckState());
@@ -111,10 +110,13 @@ public class EnemyAI_Ani : MonoBehaviour
                     break;
 
                 case State.TRACE:
-                    GetComponent<Rigidbody>().isKinematic = false;
-                    C_enemyFire.isFire = false;
-                    C_moveAgent.traceTarget = playerTr.position;
-                    ani.SetBool(hashMove, true);
+                    if (playerTr != null)  // playerTr가 null인지 체크
+                    {
+                        GetComponent<Rigidbody>().isKinematic = false;
+                        C_enemyFire.isFire = false;
+                        C_moveAgent.traceTarget = playerTr.position;
+                        ani.SetBool(hashMove, true);
+                    }
                     break;
 
                 case State.ATTACK:
