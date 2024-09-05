@@ -177,7 +177,7 @@ public class FireCtrl : MonoBehaviourPun
         isReload = false;
     }
 
-
+    [PunRPC]
     private void Fire()
     {
         --curBullet;  // 한 발씩 총알 감소
@@ -201,7 +201,7 @@ public class FireCtrl : MonoBehaviourPun
                 _params[0] = hit.point; // 첫번째 배열에는 맞은 위치를 전달
                 hit.collider.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
             }
-            
+
             // 배럴을 맞췄을 때 처리
             else if (hit.collider.CompareTag(BarrelTag))
             {

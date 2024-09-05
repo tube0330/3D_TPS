@@ -1,9 +1,10 @@
 using System;
+using Photon.Pun;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SwatDamage : MonoBehaviour
+public class SwatDamage : MonoBehaviourPun
 {
     [SerializeField] private SwatAI C_swatAI;
     [SerializeField] private Animator ani;
@@ -15,7 +16,7 @@ public class SwatDamage : MonoBehaviour
     [SerializeField] private Text HPtxt;
 
     //private readonly string bulletTag = "BULLET";
-    
+
     void Start()
     {
         C_swatAI = GetComponent<SwatAI>();
@@ -27,7 +28,8 @@ public class SwatDamage : MonoBehaviour
         HPBar.fillAmount = 1f;
     }
 
-    void OnDamage(object[] obj)
+    [PunRPC]
+    void OnDamageRPC(object[] obj)
     {
         ShowBloodEffect((Vector3)obj[0]);
 
@@ -47,10 +49,22 @@ public class SwatDamage : MonoBehaviour
         if (HP <= 0f)
             SwatDie();
     }
+    public void OnDamages(object[] _params)
+    {
+        if (photonView.IsMine)
+            photonView.RPC(nameof(OnDamageRPC), RpcTarget.All, _params);
+    }
+
+    [PunRPC]
+    void SwatDieRPC()
+    {
+        C_swatAI.state = SwatAI.State.DIE;
+    }
 
     void SwatDie()
     {
-        C_swatAI.state = SwatAI.State.DIE;
+        if (photonView.IsMine)
+            photonView.RPC(nameof(SwatDieRPC), RpcTarget.All);
     }
 
     void ShowBloodEffect(Vector3 col)

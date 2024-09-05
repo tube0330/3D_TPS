@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject playerPrefab;
     public Text CurPlayer;
     public Text logText;
+    public List<Transform> spawnPointList;
 
     void Awake()
     {
@@ -42,11 +43,25 @@ public class GameManager : MonoBehaviourPunCallbacks
         dataManager.Initialize();
 
         killTxt = GameObject.Find("Canvas_UI").transform.GetChild(7).GetComponent<Text>();
+        PhotonNetwork.IsMessageQueueRunning = true;
 
         DontDestroyOnLoad(gameObject);
         OnCloseClick(false);
         LoadGameData();
         StartCoroutine(CreatePlayer());
+    }
+
+    void Start()
+    {
+        var spawnPoint = GameObject.Find("SpawnPoints");
+        if (spawnPoint != null)
+            spawnPoint.GetComponentsInChildren<Transform>(spawnPointList);
+        spawnPointList.RemoveAt(0);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(CreateEnemy());
+            StartCoroutine(CreateSwat());
+        }
     }
 
     IEnumerator CreatePlayer()
@@ -57,6 +72,50 @@ public class GameManager : MonoBehaviourPunCallbacks
         player.transform.position = new Vector3(pos, 0.3f, pos);
         Debug.Log($"Player instantiated at {player.transform.position}");
     }
+
+    IEnumerator CreateEnemy()
+{
+    while (!GameManager.G_Instance.isGameOver)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            if (GameManager.G_Instance.isGameOver) yield break;
+
+            int idx = Random.Range(0, spawnPointList.Count);
+            
+            // 적 생성 후 변수에 저장
+            GameObject enemy = PhotonNetwork.InstantiateRoomObject("Enemy", spawnPointList[idx].position, spawnPointList[idx].rotation, 0, null);
+            
+            // 부모 오브젝트 아래로 적 이동 (enemyParent는 부모 오브젝트)
+            Transform EnemyGroup = GameObject.Find("EnemyGroup").transform;
+            enemy.transform.SetParent(EnemyGroup.transform);
+
+            yield return new WaitForSeconds(3f); // 3초 대기 후 다음 적 생성
+        }
+    }
+}
+
+    IEnumerator CreateSwat()
+{
+    while (!GameManager.G_Instance.isGameOver)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            if (GameManager.G_Instance.isGameOver) yield break;
+
+            int idx = Random.Range(0, spawnPointList.Count);
+            
+            // 적 생성 후 변수에 저장
+            GameObject swat = PhotonNetwork.InstantiateRoomObject("Swat", spawnPointList[idx].position, spawnPointList[idx].rotation, 0, null);
+            
+            // 부모 오브젝트 아래로 적 이동 (enemyParent는 부모 오브젝트)
+            Transform SwatGroup = GameObject.Find("SwatGroup").transform;
+            swat.transform.SetParent(SwatGroup.transform);
+
+            yield return new WaitForSeconds(6f); // 3초 대기 후 다음 적 생성
+        }
+    }
+}
 
     void LoadGameData()
     {
@@ -100,9 +159,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     void SaveGameData()
     {
         //dataManager.Save(gameData);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
-        #endif   //.asset 파일에 데이터 저장
+#endif   //.asset 파일에 데이터 저장
     }
 
     public void AddItem(Item item)   //인벤토리에서 아이템을 추가했을 때 데이터 정보를 업데이트하는 함수
@@ -146,9 +205,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         OnItemChange(); //아이템 변경된 것을 실시간으로 반영하기 위해 호출
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
-        #endif
+#endif
     }
 
     public void RemoveItem(Item item)   //인벤토리에서 아이템을 뺐을 때 데이터 정보를 업데이트하는 함수
@@ -187,9 +246,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         OnItemChange(); //아이템 변경된 것을 실시간으로 반영하기 위해 호출
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(gameData);   //.asset 파일에 데이터 저장
-        #endif
+#endif
     }
 
     public bool isPause = false;

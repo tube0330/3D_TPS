@@ -35,7 +35,6 @@ public class SwatAI : MonoBehaviour
     private readonly int hashDieIndex = Animator.StringToHash("dieIdx");
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
 
-
     IEnumerator Start()
     {
         C_swatmove = GetComponent<SwatMoveAgent>();
@@ -59,7 +58,7 @@ public class SwatAI : MonoBehaviour
 
         StartCoroutine(CheckState());
         StartCoroutine(Action());
-        
+
     }
 
     IEnumerator CheckState()
@@ -72,12 +71,12 @@ public class SwatAI : MonoBehaviour
             float distance = (playerTr.position - swatTr.position).magnitude;
 
             if (distance <= attackDist)
-                {
-                    if(C_swatFOV.isTracePlayer())
+            {
+                if (C_swatFOV.isTracePlayer())
                     state = State.ATTACK;
 
-                    else state = State.TRACE;
-                }
+                else state = State.TRACE;
+            }
 
             else if (distance <= traceDist)
                 state = State.TRACE;
@@ -103,10 +102,13 @@ public class SwatAI : MonoBehaviour
                     break;
 
                 case State.TRACE:
-                    C_swatmove.Pub_traceTarget = playerTr.position;
-                    C_swatFire.isFire = false;
-                    rb.isKinematic = false;
-                    ani.SetBool(hashFire, true);
+                    if (playerTr != null)  // playerTr가 null인지 체크
+                    {
+                        C_swatmove.Pub_traceTarget = playerTr.position;
+                        C_swatFire.isFire = false;
+                        rb.isKinematic = false;
+                        ani.SetBool(hashFire, true);
+                    }
                     break;
 
                 case State.ATTACK:

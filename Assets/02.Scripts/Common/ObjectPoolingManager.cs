@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class ObjectPoolingManager : MonoBehaviour
+public class ObjectPoolingManager : MonoBehaviourPunCallbacks
 {
     public static ObjectPoolingManager poolingManager;
 
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private GameObject E_bulletPrefab;
+    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] GameObject E_bulletPrefab;
 
     private int maxPool = 50;
     public List<GameObject> bulletPoolList;
@@ -23,7 +24,7 @@ public class ObjectPoolingManager : MonoBehaviour
     void Awake()
     {
         if (poolingManager == null)
-            poolingManager = GetComponent<ObjectPoolingManager>();
+            poolingManager = this;
 
         else if (poolingManager != this)
             Destroy(gameObject);
@@ -37,8 +38,12 @@ public class ObjectPoolingManager : MonoBehaviour
 
         StartCoroutine(CreateBulletPool());
         StartCoroutine(E_CreateBulletPool());
-        StartCoroutine(CreateEnemyPool());
-        StartCoroutine(CreateSwatPool());
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(CreateEnemyPool());
+            StartCoroutine(CreateSwatPool());
+        }
     }
 
     private void Start()
@@ -50,11 +55,11 @@ public class ObjectPoolingManager : MonoBehaviour
 
         SpawnPointList.RemoveAt(0);
 
-        if (SpawnPointList.Count > 0)
+        /* if (SpawnPointList.Count > 0 && PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(CreateEnemy());
             StartCoroutine(CreateSwat());
-        }
+        } */
     }
 
     IEnumerator CreateEnemyPool()
@@ -64,10 +69,20 @@ public class ObjectPoolingManager : MonoBehaviour
 
         for (int i = 0; i < 10; i++)
         {
-            var enemyObj = Instantiate(EnemyPrefab, EnemyGroup.transform);
+            /* var enemyObj = Instantiate(EnemyPrefab, EnemyGroup.transform);
             enemyObj.name = $"{(i + 1).ToString()}명";
             enemyObj.SetActive(false);
-            EnemyPoolList.Add(enemyObj);
+            EnemyPoolList.Add(enemyObj); */
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var enemyObj = PhotonNetwork.InstantiateRoomObject(EnemyPrefab.name, Vector3.zero, Quaternion.identity);
+
+                enemyObj.name = $"{(i + 1).ToString()}명";
+                enemyObj.SetActive(false);
+                EnemyPoolList.Add(enemyObj);
+                enemyObj.transform.parent = EnemyGroup.transform;   // 적을 EnemyGroup의 자식으로 설정.
+            }
         }
     }
 
@@ -78,10 +93,20 @@ public class ObjectPoolingManager : MonoBehaviour
 
         for (int i = 0; i < 10; i++)
         {
-            var swatObj = Instantiate(SwatPrefab, SwatGroup.transform);
+            /* var swatObj = Instantiate(SwatPrefab, SwatGroup.transform);
             swatObj.name = $"{(i + 1).ToString()}명";
             swatObj.SetActive(false);
-            SwatPoolList.Add(swatObj);
+            SwatPoolList.Add(swatObj); */
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var swatObj = PhotonNetwork.Instantiate(SwatPrefab.name, Vector3.zero, Quaternion.identity);
+
+                swatObj.name = $"{(i + 1).ToString()}명";
+                swatObj.SetActive(false);
+                SwatPoolList.Add(swatObj);
+                swatObj.transform.parent = SwatGroup.transform;   // 적을 SwatGroup 자식으로 설정.
+            }
         }
     }
 
@@ -139,6 +164,16 @@ public class ObjectPoolingManager : MonoBehaviour
         return null;
     }
 
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("OnJoinedRoom called. Player count: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            StartCoroutine(CreateSwat());
+            StartCoroutine(CreateEnemy());
+        }
+    }
+
     IEnumerator CreateEnemy()
     {
         while (!GameManager.G_Instance.isGameOver)
@@ -154,6 +189,7 @@ public class ObjectPoolingManager : MonoBehaviour
                     int idx = Random.Range(0, SpawnPointList.Count);
                     _enemy.transform.position = SpawnPointList[idx].position;
                     _enemy.transform.rotation = SpawnPointList[idx].rotation;
+                    Debug.Log(_enemy.transform.position = SpawnPointList[idx].position);
                     _enemy.gameObject.SetActive(true);
                     break;
                 }

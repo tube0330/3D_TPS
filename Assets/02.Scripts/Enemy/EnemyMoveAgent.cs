@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]    //이 오브젝트에서 navmeshagent가 없으면 안된다고 명시
 
-public class EnemyMoveAgent : MonoBehaviourPun
+public class EnemyMoveAgent : MonoBehaviour
 {
     public List<Transform> WayPointList;    //패트롤 지점(위치)을 담기 위한 List Generic(일반형) 변수
     [SerializeField] NavMeshAgent agent;
@@ -44,7 +44,8 @@ public class EnemyMoveAgent : MonoBehaviourPun
             agent.speed = traceSpeed;
             damping = 7.0f;
 
-            TraceTarget(_traceTarget);
+            if (PhotonNetwork.IsConnected)
+                TraceTarget(_traceTarget);
         }
     }
 
@@ -70,7 +71,8 @@ public class EnemyMoveAgent : MonoBehaviourPun
         }
 
         nextIdx = Random.Range(0, WayPointList.Count);
-        MovewayPoint();
+        if (PhotonNetwork.IsConnected)
+            MovewayPoint();
     }
 
     void Update()
